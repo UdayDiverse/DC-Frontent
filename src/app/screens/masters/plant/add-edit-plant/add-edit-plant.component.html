@@ -1,0 +1,107 @@
+@if(!loading()){
+<div class="main-content">
+    <div class="page-title">
+        <h1>Edit Plant</h1>
+        <div class="action-buttons">
+            <!-- <button class="custom-button-filters" (click)="onSaveButtonClick()">Save</button> -->
+            <button [disabled]="!plantForm.valid" class="custom-button-filters" (click)="onPressSubmit()"
+                [disabled]="!plantForm.valid">Save</button>
+            <button class="custom-button-secondary" [routerLink]='"/" + ROUTES.MASTERS.PLANT.VIEW'>Close</button>
+        </div>
+    </div>
+
+    <div class="content-section p-3">
+        <form [formGroup]="plantForm">
+            <div class="dynamic-form-row">
+                <div class="">
+                    <div class="custom-form-input">
+                        <label for="">Plant Code <span class="text-danger">*</span></label>
+                        <input type="text" class="input-field" formControlName="plantCode" />
+                    </div>
+                </div>
+
+                <div class="">
+                    <div class="custom-form-input">
+                        <label for="">Plant Name <span class="text-danger">*</span></label>
+                        <input type="text" class="input-field" formControlName="plantName" />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="custom-form-input">
+                        <label for="">Plant Address 1 <span class="text-danger">*</span></label>
+                        <input type="text" class="input-field" formControlName="address1" readonly />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="custom-form-input">
+                        <label for="">Plant Address 2 <span class="text-danger">*</span></label>
+                        <input type="text" class="input-field" formControlName="address2" readonly />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="custom-form-input">
+                        <label for="">State <span class="text-danger">*</span></label>
+                        <input type="text" class="input-field" formControlName="state" readonly />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="custom-form-input">
+                        <label for="">Postal Code <span class="text-danger">*</span></label>
+                        <input type="text" class="input-field" formControlName="postal" readonly />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="custom-form-input">
+                        <label for="">Country <span class="text-danger">*</span></label>
+                        <input type="text" class="input-field" formControlName="country" readonly />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="custom-form-input">
+                        <label for="">Business Area <span class="text-danger">*</span></label>
+                        <input type="text" class="input-field" formControlName="businessArea" readonly />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="custom-form-input">
+                        <label for="">Plant Type<span class="text-danger">*</span></label>
+                        <input type="text" class="input-field" formControlName="plantType" readonly />
+                    </div>
+                </div>
+
+                <div class="">
+                    <div class="custom-form-input">
+                        <label for="">GSTIN No <span class="text-danger">*</span></label>
+                        <input type="text" class="input-field" formControlName="gstNo" [maxlength]="15" />
+                        @if (plantForm.get("gstNo")?.value &&
+                        plantForm.get("gstNo")?.value.toString().length
+                        < 15) { <small class="text-danger">GSTIN length must be 15</small>
+                            }
+                    </div>
+                </div>
+
+                <div class="">
+                    <div class="custom-form-input">
+                        <label for="">PAN No <span class="text-danger">*</span></label>
+                        <input type="text" class="input-field" formControlName="panNo" readonly />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="custom-form-input">
+                        <label for="">Plant Zone</label>
+                        <ng-select class="input-field" formControlName="plantZone" placeholder="Select Plant Zone">
+                            @for (zone of plantZones(); track $index) {
+                            <ng-option [value]="zone.value">{{zone.value}}</ng-option> }
+                        </ng-select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+}@else {
+<div class="progress-bar-wrapper">
+    <div class="progress-bar-indeterminate"></div>
+</div>
+
+}

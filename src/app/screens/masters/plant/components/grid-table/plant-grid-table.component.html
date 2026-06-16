@@ -1,0 +1,70 @@
+<div class="custom-table">
+  <table #table [ngClass]="sortDirection() === 'asc' ?  'asc' : 'dsc'">
+    <thead>
+      <tr>
+        <th (click)="sortData('plantCode')">Plant Code</th>
+        <th (click)="sortData('plantName')">Plant Name</th>
+        <th (click)="sortData('plantAddress1')">Address</th>
+        <th (click)="sortData('state')">State</th>
+        <th (click)="sortData('country')">Country</th>
+        <th (click)="sortData('postal')">Postal</th>
+        <th (click)="sortData('plantType')">Plant Type</th>
+        <th (click)="sortData('plantZone')">Plant Zone</th>
+        <th (click)="sortData('businessArea')">Business Area</th>
+        <th (click)="sortData('gstNo')">GST</th>
+        <th (click)="sortData('panNo')">PAN</th>
+        <th class="text-center">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (plant of plantList; track plant.id) {
+      <tr>
+        <td class="pointer" container="body">
+          <span placement="end" tooltipClass="table-datetime-popover" [ngbTooltip]="tipContent">
+            <u>{{plant?.plantCode}}</u>
+          </span>
+          <ng-template #tipContent>
+            <div class="">
+              <div class="content-row">
+                <span>Creation Date</span>
+                <span>{{plant.creationDate | date: 'yyyy-MM-dd'}}</span>
+              </div>
+              <div class="content-row">
+                <span>Last Update Date</span>
+                <span>{{plant.lastUpdateDate | date: 'yyyy-MM-dd'}}</span>
+              </div>
+            </div>
+          </ng-template>
+        </td>
+        <td>{{plant?.plantName}}</td>
+        <td
+          style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-decoration: underline;">
+          <span placement="top-left" [ngbTooltip]="fullAddress">
+            {{plant?.plantAddress1}} {{plant?.plantAddress2}} {{plant?.plantAddress3}}
+          </span>
+          <ng-template #fullAddress>
+            <div>
+              {{plant?.plantAddress1}} {{plant?.plantAddress2}} {{plant?.plantAddress3}}
+            </div>
+          </ng-template>
+        </td>
+        <td>{{plant?.state}}</td>
+        <td>{{plant?.country}}</td>
+        <td>{{plant?.postal}}</td>
+        <td>{{plant?.plantType}}</td>
+        <td>{{plant?.plantZone}}</td>
+        <td>{{plant?.businessArea}}</td>
+        <td>{{plant?.gstNo}}</td>
+        <td>{{plant?.panNo}}</td>
+        <td class="text-center">
+          <img src="assets/images/icons/editPencil.svg" class="pointer" alt="edit"
+            (click)="onGoToEditPlant(plant?.interfaceID)">
+        </td>
+      </tr>
+      }@empty {
+      <tr>
+        <td align="center" colspan="13">No Plant Found</td>
+      </tr> }
+    </tbody>
+  </table>
+</div>

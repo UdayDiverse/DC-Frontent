@@ -1,0 +1,155 @@
+@if (loadSpinner()) {
+
+
+<div class="custom-table">
+  <table #table [ngClass]="sortDirection() === 'asc' ?  'asc' : 'dsc'">
+    <thead>
+      <tr>
+        <th (click)="sortData('challanNumber')">Challan Number</th>
+        <th (click)="sortData('challanType')">Challan Type</th>
+        <th (click)="sortData('creationDate')">Challan Creation Date</th>
+        <th (click)="sortData('creationDate')">Challan Creation Time</th>
+        <th (click)="sortData('plantCode')">Plant Code</th>
+        <th (click)="sortData('plantName')">Plant Name</th>
+        <th (click)="sortData('destinationType')">Destination Type</th>
+        <th (click)="sortData('destinationCode')">Destination Code</th>
+        <th (click)="sortData('destinationName')">Destination Name</th>
+        <th (click)="sortData('destinationAddress1')">Destination Address</th>
+        <th (click)="sortData('status')">Challan Status</th>
+        <th (click)="sortData('approvedBy')">Approver</th>
+        <th (click)="sortData('approverRemarks')">Approver Remarks</th>
+        <th>Attachments</th>
+        <th (click)="sortData('transporterType')">Transporter Type</th>
+        <th (click)="sortData('printCount')">Print Count</th>
+        <th>Print Challan</th>
+        <th>Action</th>
+        <th>View Challan</th>
+        <th>View Audit Logs</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (challan of challansList; track challan.id) {
+      <tr>
+        <td class="pointer" container="body">
+          <span placement="end" [ngbTooltip]="tipContent" tooltipClass="table-datetime-popover">
+            <u>{{ challan?.challanNumber }}</u>
+          </span>
+          <ng-template #tipContent>
+            <div class="">
+              <div class="content-row">
+                <span>Creation Date</span>
+                <span>{{challan.creationDate | date: 'yyyy-MM-dd'}}</span>
+              </div>
+              <div class="content-row">
+                <span>Created By</span>
+                <span>{{challan.createdByDetails?.name}}</span>
+              </div>
+              @if (challan?.lastUpdatedByDetails) {
+
+              <div class="content-row">
+                <span>Last Update Date</span>
+                <span>{{challan?.lastUpdateDate | date: 'yyyy-MM-dd'}}</span>
+              </div>
+              <div class="content-row">
+                <span>Last Updated By</span>
+                <span>{{challan?.lastUpdatedByDetails?.name}}</span>
+              </div>
+              }@if (challan?.approverByDetails) {
+
+              <div class="content-row">
+                <span>Approval Date</span>
+                <span>{{challan?.approvedOn | date: 'yyyy-MM-dd'}}</span>
+              </div>
+              <div class="content-row">
+                <span>Approved By</span>
+                <span>{{challan?.approverByDetails?.name}}</span>
+              </div>
+              }
+            </div>
+          </ng-template>
+        </td>
+        <td>{{challan?.challanType}}</td>
+        <td>{{challan?.creationDate | date: 'yyyy-MM-dd'}}</td>
+        <td>{{challan?.creationDate | date: 'hh:mm a'}}</td>
+        <td>{{challan?.plantCode}}</td>
+        <td>{{challan?.plantName}}</td>
+        <td>{{challan?.destinationType}}</td>
+        <td>{{challan?.destinationCode}}</td>
+        <td>{{challan?.destinationName}}</td>
+        <td
+          style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-decoration: underline;">
+          <span placement="top-left" [ngbTooltip]="fullAddress">
+            {{challan?.destinationAddress1}}{{challan?.destinationAddress2}}
+          </span>
+          <ng-template #fullAddress>
+            <div>
+              {{challan?.destinationAddress1}}{{challan?.destinationAddress2}}
+            </div>
+          </ng-template>
+        </td>
+        <td>{{challan?.status?.split("_").join(" ")}}</td>
+        <td>{{challan?.approverByDetails?.name}}</td>
+        <td>{{challan?.approverRemarks}}</td>
+        <td class="text-center ">
+          <img class="pointer" src="../../../assets/images/icons/cloud-arrow-down.svg" alt="" width="15px" height="20px"
+            (click)="openPopup(attachmentPopup, challan?.id)">
+
+          <ng-template #attachmentPopup let-modal>
+            <div class="modal-header">
+              <h4 class="fw-bold fs-5">Attachments For Challan Number: {{challan?.challanNumber}}</h4>
+              <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+            </div>
+            <div class="modal-body">
+              <ul>
+                <li *ngFor="let file of attachmentList" (click)="viewAttachment(file)">
+                  <a class="text-primary text-decoration-underline pointer" role="button">
+                    {{ file.documentName }}
+
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </ng-template>
+
+          <!-- <button (click)="openPopup(attachmentPopup, challan?.id)">Show Attachments</button> -->
+
+        </td>
+        <td>{{challan?.transporterType}}</td>
+        <td>{{challan?.printCount}}</td>
+        <td class="text-center">
+          @if (challan?.status !== 'CANCELLED') {
+          <img class="pointer" src="../../../assets/images/icons/print-solid-full.svg" alt="" width="18px" height="24px"
+            (click)="printDeliveryChallan(challan?.challanNumber, challan?.status, challan?.transporterType, challan?.totalItemSum)">
+          }
+        </td>
+        <td class="text-center">
+          @if ((challan?.status === 'OPEN' || challan?.status === 'Rejected') &&
+          isPermitted('DC_TXN_DC_TXN_EDIT')) {
+          <img class="pointer" src="../../../assets/images/icons/editPencil.svg" alt="" width="15px" height="18px"
+            (click)="openEditScreen(challan?.challanNumber)">
+          }
+        </td>
+        <td class="text-center">
+          <img class="pointer" src="../../../assets/images/icons/viewPassword.svg" alt="" width="15px" height="18px"
+            (click)="openViewScreen(challan?.challanNumber)">
+        </td>
+        <td class="text-center">
+          <img class="pointer" src="../../../assets/images/icons/audit-icon.svg" alt="" width="15px" height="18px"
+            (click)="openAuditsModal(challan?.challanNumber)">
+        </td>
+      </tr>
+      }@empty {
+      <tr>
+        <td align="center" colspan="13">No Delivery Challan Found</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+}@else {
+<div class="progress-bar-wrapper">
+  <div class="progress-bar-indeterminate"></div>
+</div>
+}
+
+<ng-template #printChallan></ng-template>

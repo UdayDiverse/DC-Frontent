@@ -1,0 +1,137 @@
+<div class="page-title">
+    <h1>Gate In</h1>
+</div>
+
+<div class="filter-section">
+    <app-gate-in-filters [filters]="filters()" (getData)="getData($event)"></app-gate-in-filters>
+</div>
+
+@if (!loading()) {
+<div class="content-section">
+
+    <div class="p-2">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Challan No</th>
+                    <th>Challan Date</th>
+                    <th>Expected Date</th>
+                    <th>Source</th>
+                    <th>Destination</th>
+                    <th>Status</th>
+                    <th>Gate In</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let challan of challansList()">
+                    <td>
+                        <a class="text-dark pointer">
+                            {{ challan.challanNumber }}
+                        </a>
+                    </td>
+                    <td>{{ challan?.creationDate | date:'yyyy-MM-dd hh:mm a' }}</td>
+                    <td>{{ challan?.expectedDate | date:'yyyy-MM-dd' }}</td>
+                    <td>{{ challan?.source || challan?.plantCode }}</td>
+                    <td>{{ challan?.destination || challan?.destinationName }}</td>
+                    <td>{{ challan?.status?.split("_").join(" ") }}</td>
+                    <td class="">
+                        <img class=" pointer" src="../../../assets/images/icons/editPencil.svg" alt="" width="15px"
+                            height="18px" (click)="openGateInScreen(challan)">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="custom-table" *ngIf="selectedChallan && gateInForm">
+        <h4 class="fw-bold mt-5">
+            Item Details for Challan No:
+            <span class="challan-no">{{selectedChallan.challanNumber || selectedChallan.challanNo}}</span>
+        </h4>
+
+        <form [formGroup]="gateInForm" (ngSubmit)="sumbitGateIn()" id="gateInForm">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 90px;">HSN Code</th>
+                        <th style="width: 300px;">Description with Model No.</th>
+                        <th style="width: 80px;">UOM</th>
+                        <th style="width: 80px;">Quantity</th>
+                        <th style="width: 80px;">Recieved Qty</th>
+                        <th style="width: 80px;">Remaining Qty</th>
+                        <th style="width: 80px;">Receiving Qty</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody formArrayName="items">
+                    <tr *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
+                        <td class=""><input type="text" formControlName="hsnCode" class="input-field2" readonly></td>
+                        <td class=""><input type="text" formControlName="descriptionModelNumber" class="input-field2"
+                                readonly></td>
+                        <td class=""><input type="text" formControlName="uom" class="input-field2" readonly></td>
+                        <td class=""><input type="text" formControlName="quantity" class="input-field2" readonly></td>
+                        <td class=""><input type="text" formControlName="recievedQty" class="input-field2" readonly>
+                        </td>
+                        <td class=""><input type="text" formControlName="remainingQty" class="input-field2" readonly>
+                        </td>
+
+                        <td class="">
+                            <input type="number" formControlName="recivedQuantity" class="input-field2"
+                                [readonly]="item.value?.remainingQty === 0">
+
+                            <div class="text-danger small"
+                                *ngIf="item.get('recivedQuantity')?.hasError('exceedRemaining') && item.get('recivedQuantity')?.dirty">
+                                Receiving Qty cannot be more than Remaining Qty.
+                            </div>
+                        </td>
+
+                        <td class="">
+                            <img class="pointer" src="../../../assets/images/icons/editPencil.svg" alt="Edit" width="15"
+                                height="20" [ngbPopover]="remarksPopContent" popoverTitle="Remarks"
+                                [autoClose]="'outside'" triggers="manual" placement="left" #remarkPopover="ngbPopover"
+                                (click)="openPopover(remarkPopover)">
+
+                            <ng-template #remarksPopContent>
+                                <div class="">
+                                    <textarea rows="3" class="input-field" #remarks maxlength="150"
+                                        formControlName="remarks"></textarea>
+                                </div>
+                                <button type="button" class="custom-button-secondary-green"
+                                    (click)="submitRemark(i, remarkPopover)">
+                                    Submit remarks
+                                </button>
+                            </ng-template>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+
+        <h4 class="fw-bold mt-5">Received Item History</h4>
+        <table class="table" *ngIf="gateInHistoryRows.length > 0">
+            <thead>
+                <tr>
+                    <th>HSN Code</th>
+                    <th>Description with Model No.</th>
+                    <th>Gate In Date</th>
+                    <th>Received Qty</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let hist of gateInHistoryRows">
+                    <td>{{ hist.hsnCode }}</td>
+                    <td>{{ hist.modelNumber }}</td>
+                    <td>{{ hist.gateInDate | date:'yyyy-MM-dd hh:mm a' }}</td>
+                    <td>{{ hist.recivedQuantity }}</td>
+                    <td>{{ hist.remarks }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+}@else {
+<div class="progress-bar-wrapper">
+    <div class="progress-bar-indeterminate"></div>
+</div>
+}

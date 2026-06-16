@@ -1,0 +1,62 @@
+<div class="custom-table">
+    <table #table [ngClass]="sortDirection() === 'asc' ?  'asc' : 'dsc'">
+        <thead>
+            <tr>
+                <th (click)="sortData('challanNumber')">Challan Number</th>
+                <th (click)="sortData('')">Receiver</th>
+                <th (click)="sortData('')">Receiver EmpCode</th>
+                <th (click)="sortData('')">Receiver Email Id</th>
+                <th (click)="sortData('actionOn')">Email Date</th>
+                <th (click)="sortData('actionOn')">Email Time</th>
+                <th (click)="sortData('actionType')">Purpose for Email</th>
+                <th (click)="sortData('status')">Email Status</th>
+                <th (click)="sortData('error')">Error Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (emailLog of errorLoggingList; track emailLog.id) {
+            <tr>
+                <!-- <td class="pointer" container="body">
+                    <span placement="end" tooltipClass="table-datetime-popover" [ngbTooltip]="tipContent">
+                        <u>{{emailLog.responseCode}}</u>
+                    </span>
+                    <ng-template #tipContent>
+                        <div class="">
+                            <div class="content-row">
+                                <span>Created By</span>
+                                <span>{{emailLog.createdBy}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>Creation Date</span>
+                                <span>{{emailLog.creationDate | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>Last Updated By</span>
+                                <span>{{emailLog.lastUpdatedBy}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>Last Update Date</span>
+                                <span>{{emailLog.lastUpdateDate | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                        </div>
+                    </ng-template>
+                </td> -->
+                <td>{{emailLog.challanNumber}}</td>
+                <td>{{emailLog.receiverByDetails?.name}}</td>
+                <td>{{emailLog.receiverByDetails?.empCode}}</td>
+                <td>{{emailLog.receiverByDetails?.emailId}}</td>
+                <td>{{emailLog.actionOn | date: 'yyyy-MM-dd'}}</td>
+                <td>{{emailLog.actionOn | date: 'hh:mm a'}}</td>
+                <td>{{emailLog.actionType}}</td>
+                <td>{{emailLog.status}}</td>
+                <td>{{emailLog.error}}</td>
+
+            </tr>
+            }@empty {
+            <tr>
+                <td align="center" colspan="13">No Data Found</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

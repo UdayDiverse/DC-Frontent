@@ -1,0 +1,58 @@
+<div class="custom-table">
+    <table #table [ngClass]="sortDirection() === 'asc' ?  'asc' : 'dsc'">
+        <thead>
+            <tr>
+                <th (click)="sortData('responseCode')">Response Code</th>
+                <th (click)="sortData('description')">Description</th>
+                <th (click)="sortData('messageSource')">Message Source</th>
+                <th (click)="sortData('methodName')">Method Name</th>
+                <th (click)="sortData('detailDescriptions')">Detail Description</th>
+                <th (click)="sortData('creationDate')">Error Date</th>
+                <th (click)="sortData('creationDate')">Error Time</th>
+                <!-- <th (click)="sortData('')">End Date</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            @for (errorLog of errorLoggingList; track errorLog.id) {
+            <tr>
+                <!-- <td class="pointer" container="body">
+                    <span placement="end" tooltipClass="table-datetime-popover" [ngbTooltip]="tipContent">
+                        <u>{{errorLog.responseCode}}</u>
+                    </span>
+                    <ng-template #tipContent>
+                        <div class="">
+                            <div class="content-row">
+                                <span>Created By</span>
+                                <span>{{errorLog.createdBy}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>Creation Date</span>
+                                <span>{{errorLog.creationDate | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>Last Updated By</span>
+                                <span>{{errorLog.lastUpdatedBy}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>Last Update Date</span>
+                                <span>{{errorLog.lastUpdateDate | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                        </div>
+                    </ng-template>
+                </td> -->
+                <td>{{errorLog.responseCode}}</td>
+                <td>{{errorLog.description}}</td>
+                <td>{{errorLog.messageSource}}</td>
+                <td>{{errorLog.methodName}}</td>
+                <td>{{errorLog.detailDescriptions}}</td>
+                <td>{{errorLog.creationDate| date: 'yyyy-MM-dd'}}</td>
+                <td>{{errorLog.creationDate| date: 'hh:mm a'}}</td>
+            </tr>
+            }@empty {
+            <tr>
+                <td align="center" colspan="13">No Data Found</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

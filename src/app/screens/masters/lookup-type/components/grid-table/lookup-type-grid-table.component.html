@@ -1,0 +1,53 @@
+<div class="custom-table">
+  <table #table [ngClass]="sortDirection() === 'asc' ?  'asc' : 'dsc'">
+    <thead>
+      <tr>
+        <th (click)="sortData('type')">Type</th>
+        <th (click)="sortData('description')">Description</th>
+        <th (click)="sortData('status')">Status</th>
+        <th class="text-center">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (lookup of lookupTypesList(); track lookup.id) {
+      <tr>
+        <td>
+          <span placement="end" tooltipClass="table-datetime-popover" [ngbTooltip]="tipContent">
+            <u>{{lookup.type}}</u>
+          </span>
+          <ng-template #tipContent>
+            <div class="">
+              <div class="content-row">
+                <span>Creation Date</span>
+                <span>{{lookup.creationDate | date: 'yyyy-MM-dd'}}</span>
+              </div>
+              <div class="content-row">
+                <span>Created By</span>
+                <span>{{lookup.createdBy}}</span>
+              </div>
+              <div class="content-row">
+                <span>Last Update Date</span>
+                <span>{{lookup.lastUpdateDate | date: 'yyyy-MM-dd'}}</span>
+              </div>
+              <div class="content-row">
+                <span>Last Updated By</span>
+                <span>{{lookup.lastUpdatedBy}}</span>
+              </div>
+            </div>
+          </ng-template>
+        </td>
+        <td>{{lookup.description}}</td>
+        <td>{{lookup.status}}</td>
+        <td class="text-center">
+          <img src="assets/images/icons/editPencil.svg" class="pointer" alt="edit"
+            (click)="onEditLookupType(lookup?.id)">
+        </td>
+      </tr>
+      }@empty {
+      <tr>
+        <td align="center" colspan="13">No Lookup Found</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,116 @@
+<div class="custom-table">
+    <table #table [ngClass]="sortDirection() === 'asc' ? 'asc' : 'dsc'">
+        <thead>
+            <tr>
+                <th (click)="rowSelectionService.isVehicleFilterApplied() && 
+                    rowSelectionService.toggleSelectAllFromText(controlOutgoingList)"
+                    class="select-all-header text-center"
+                    [class.disabled-header]="!rowSelectionService.isVehicleFilterApplied()">
+                    {{ rowSelectionService.isVehicleFilterApplied() ? 'Select All' : 'Select' }}
+                </th>
+                <th (click)="sortData('documentType')">Document Type</th>
+                <th (click)="sortData('documentNo')">Document Number</th>
+                <th (click)="sortData('plantCode')">Plant Code</th>
+                <th (click)="sortData('transporterCode')">Transporter Type <span class="text-danger">*</span></th>
+                <th (click)="sortData('transporterCode')">Transporter Code <span class="text-danger">*</span></th>
+                <th (click)="sortData('transporterName')">Transporter Name <span class="text-danger">*</span></th>
+                <th (click)="sortData('vehicleNumber')">Vehicle Number</th>
+                <th (click)="sortData('vehicleSize')">Vehicle Size</th>
+                <th (click)="sortData('')">FRLR Number</th>
+                <th (click)="sortData('')">FRLR Date</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (controlOutGoing of editableArray; track controlOutGoing?.interfaceId; let i = $index) {
+            <tr>
+                <td>
+                    <input type="checkbox" [checked]="(controlOutGoing.documentType === 'RGP' || controlOutGoing.documentType === 'NRGP')
+                          ? rowSelectionService.selectedDCIds.has(controlOutGoing.interfaceId)
+                          : rowSelectionService.selectedNERPIds.has(controlOutGoing.interfaceId)"
+                        (change)="rowSelectionService.toggleSelection(controlOutGoing.interfaceId, $event, controlOutGoing.documentType)"
+                        [disabled]="!rowSelectionService.isRowSelectable(controlOutGoing)" />
+                </td>
+                <td>{{controlOutGoing?.documentType}}</td>
+                <td>{{controlOutGoing?.documentNo}}</td>
+                <td>{{controlOutGoing?.plantCode}}</td>
+                <td>
+                    {{editableArray[i].transporterType}}
+                </td>
+                <td>
+                    <div class="custom-form-input">
+                        @if (editableArray[i].transporterType === 'Registered') {
+                        <ng-select class="input-field" [(ngModel)]="editableArray[i].transporterCode"
+                            (change)="onTransporterCodeChange($event, i)">
+                            @for (transporter of transporters; track $index) {
+                            <ng-option [value]="transporter">{{transporter?.code}}
+                                ({{transporter?.name}})</ng-option>
+                            }
+                        </ng-select>
+                        }@else {
+                        <input type="text" class="input-field" (input)="onFieldEdit(i)"
+                            [(ngModel)]="editableArray[i].transporterCode" />
+                        }
+                    </div>
+                    <!-- </div> -->
+                </td>
+                <td>
+
+                    <div class="custom-form-input">
+                        <input type="text" style="width: 200px;" class="custom-input-field" (input)="onFieldEdit(i)"
+                            [(ngModel)]="editableArray[i].transporterName"
+                            [disabled]="editableArray[i].transporterType === 'Registered'" />
+                    </div>
+                </td>
+                <td>
+                    <div class="custom-form-input">
+                        <input type="text" class="custom-input-field" style="width: 100px;" (input)="onFieldEdit(i)"
+                            [(ngModel)]="editableArray[i].vehicleNumber" [maxlength]="10"
+                            (keypress)="allowAlphaNumeric($event)" />
+                    </div>
+                </td>
+                <td>
+                    <div class="custom-form-input">
+                        <ng-select class="input-field" [(ngModel)]="editableArray[i].vehicleSize">
+                            @for (size of vehicleSizes; track $index) {
+                            <ng-option [value]="size?.value">{{size?.value}}
+                            </ng-option>
+                            }
+                        </ng-select>
+                    </div>
+                </td>
+                <td>
+                    <div class="custom-form-input">
+                        <input type="text" class="custom-input-field" style="width: 100px;" (input)="onFieldEdit(i)"
+                            [(ngModel)]="editableArray[i].frlrNumber" />
+                    </div>
+                </td>
+                <td>
+                    <div class="custom-form-input">
+
+                        <div class="input-group datepicker" style="width: 150px;">
+                            <input class="form-control"
+                                [ngModel]="controlOutGoing.frlrDate ? (controlOutGoing.frlrDate) : ''"
+                                (ngModelChange)="editableArray[i].frlrDate = $event; onFieldEdit(controlOutGoing)"
+                                [maxDate]="todayNgb" placeholder="yyyy-mm-dd" name="fromDt" [autoClose]="true"
+                                ngbDatepicker #fromDt="ngbDatepicker" />
+                            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="fromDt.toggle()"
+                                type="button">
+                            </button>
+                        </div>
+                    </div>
+                </td>
+                <td class="text-center">
+                    <button class="custom-button-save" *ngIf="hasDataChanged(i)" (click)="saveRow(i)">
+                        Save
+                    </button>
+                </td>
+            </tr>
+            } @empty {
+            <tr>
+                <td align="center" colspan="13">No Control Outgoing Found</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

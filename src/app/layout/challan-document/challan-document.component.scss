@@ -1,0 +1,170 @@
+.pdf-page {
+  font-family: "Times New Roman", Times, serif;
+}
+
+.print-page {
+  width: 210mm;
+  // min-height: 297mm;
+  /* REMOVED fixed height: 297mm — it was causing overflow/overlap */
+  padding: 15mm;
+  box-sizing: border-box;
+  // border: 1px solid black;
+
+  /* Ensure each challan copy starts on a fresh PDF page */
+  // page-break-after: always;
+  // break-after: page;
+
+  /* Prevent the page from being cut mid-content */
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.challan-highlighted-text strong {
+  font-size: 0.9rem !important;
+  font-weight: 800 !important;
+}
+
+// .print-page + .print-page {
+//   page-break-before: always;
+//   break-before: page;
+//   margin-top: 0;
+// }
+
+/* Last copy should not force an extra blank page */
+// .print-page:last-child {
+//   page-break-after: auto;
+//   break-after: auto;
+// }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 0.1px solid black !important;
+  font-size: 0.7rem;
+}
+
+tr>th {
+  background-color: rgb(190, 188, 188);
+}
+
+h4,
+span,
+strong,
+small {
+  font-size: 0.7rem;
+  color: black;
+}
+
+::ng-deep .h4 {
+  margin-bottom: 0 !important;
+}
+
+.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.col-md-6,
+.col-12 {
+  padding-left: 5px !important;
+  padding-right: 0 !important;
+}
+
+.section-border {
+  border: 1px solid black;
+  padding: 5px;
+
+}
+
+.items-table-wrapper {
+  width: 100%;
+  margin-top: 2px;
+}
+
+.invoice-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+.invoice-table th,
+.invoice-table td {
+  border: 1px solid #000;
+  font-size: 10px;
+  padding: 2px 4px;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.invoice-table th {
+  background: #d3d3d3;
+  font-weight: 700;
+}
+
+.container {
+  --bs-gutter-x: 0;
+}
+
+.borderless table {
+  border-top-style: none;
+  border-left-style: none;
+  border-right-style: none;
+  border-bottom-style: none;
+}
+
+/* Allow table rows to break across PDF pages naturally */
+tr {
+  page-break-inside: auto;
+  break-inside: auto;
+}
+
+/* Keep the footer summary rows together — never split them */
+tr.no-break {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.description-cell {
+  white-space: normal !important;
+  word-break: break-word;
+  text-align: left !important;
+  vertical-align: top;
+  line-height: 1.3;
+}
+
+.inner-table {
+  width: 100%;
+}
+
+.inner-table td {
+  width: 50%;
+  border: none !important;
+  padding: 0 10px;
+  vertical-align: top;
+}
+
+.inner-table strong {
+  display: inline-block;
+  min-width: 80px;
+}
+
+/* Prevents html2pdf from adding extra space */
+html,
+body {
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+@media print {
+
+  table td,
+  table th {
+    border-width: 0.5px !important;
+  }
+}

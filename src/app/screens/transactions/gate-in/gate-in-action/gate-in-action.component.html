@@ -1,0 +1,98 @@
+<div class="page-title d-flex align-items-center justify-content-between mb-4">
+    <h1 class="fw-bold m-0">
+        Gate In
+    </h1>
+    <div class="action-buttons d-flex gap-2">
+        <button class="custom-button-filters" type="button"
+            [disabled]="!gateInForm || gateInForm.invalid || isNothingSelected" (click)="sumbitGateIn()">Save</button>
+        <button class="custom-button-secondary" [routerLink]='"/" + ROUTES.TRANSACTIONS.GATE_IN'>Close</button>
+    </div>
+</div>
+
+<div class="custom-table card p-4 shadow-sm mt-3" *ngIf="selectedChallan && gateInForm">
+    <h4 class="fw-bold mb-4 border-bottom pb-2">
+        Item Details for Challan No:
+        {{ selectedChallan.challanNumber || selectedChallan.challanNo }}
+    </h4>
+
+    <form [formGroup]="gateInForm" id="gateInForm">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 90px;">HSN Code</th>
+                    <th style="width: 300px;">Description with Model No.</th>
+                    <th style="width: 80px;">UOM</th>
+                    <th style="width: 80px;">Quantity</th>
+                    <th style="width: 80px;">Recieved Qty</th>
+                    <th style="width: 80px;">Remaining Qty</th>
+                    <th style="width: 80px;">Receiving Qty</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody formArrayName="items">
+                <tr *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
+                    <td class=""><input type="text" formControlName="hsnCode" class="input-field2" readonly></td>
+                    <td class=""><input type="text" formControlName="descriptionModelNumber" class="input-field2"
+                            readonly>
+                    </td>
+                    <td class=""><input type="text" formControlName="uom" class="input-field2" readonly></td>
+                    <td class=""><input type="text" formControlName="quantity" class="input-field2" readonly></td>
+                    <td class=""><input type="text" formControlName="recievedQty" class="input-field2" readonly>
+                    </td>
+                    <td class=""><input type="text" formControlName="remainingQty" class="input-field2" readonly>
+                    </td>
+
+                    <td class="">
+                        <input type="number" formControlName="recivedQuantity" class="input-field2"
+                            [readonly]="item.value?.remainingQty === 0">
+
+                        <div class="text-danger small " style="white-space: normal; word-break: break-word;"
+                            *ngIf="item.get('recivedQuantity')?.hasError('exceedRemaining') && item.get('recivedQuantity')?.dirty">
+                            Receiving Qty can't be more than Remaining Qty.
+                        </div>
+                    </td>
+
+                    <td class="">
+                        <img class="pointer" src="../../../assets/images/icons/editPencil.svg" alt="Edit" width="15"
+                            height="20" [ngbPopover]="remarksPopContent" popoverTitle="Remarks" [autoClose]="'outside'"
+                            triggers="manual" placement="left" #remarkPopover="ngbPopover"
+                            (click)="openPopover(remarkPopover)">
+
+                        <ng-template #remarksPopContent>
+                            <div class="">
+                                <textarea rows="3" class="input-field" #remarks maxlength="150"
+                                    formControlName="remarks"></textarea>
+                            </div>
+                            <button type="button" class="custom-button-secondary-green"
+                                (click)="submitRemark(i, remarkPopover)">
+                                Submit remarks
+                            </button>
+                        </ng-template>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+
+    <h4 class="fw-bold mt-2">Received Item History</h4>
+    <table class="table" *ngIf="gateInHistoryRows.length > 0">
+        <thead>
+            <tr>
+                <th>HSN Code</th>
+                <th>Description with Model No.</th>
+                <th>Gate In Date</th>
+                <th>Received Qty</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let hist of gateInHistoryRows">
+                <td>{{ hist.hsnCode }}</td>
+                <td>{{ hist.modelNumber }}</td>
+                <td>{{ hist.gateInDate | date:'yyyy-MM-dd hh:mm a' }}</td>
+                <td>{{ hist.recivedQuantity }}</td>
+                <td>{{ hist.remarks }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

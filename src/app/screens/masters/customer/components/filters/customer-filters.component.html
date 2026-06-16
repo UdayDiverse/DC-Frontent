@@ -1,0 +1,56 @@
+<div class="filters-box">
+    <div class="dynamic-form-row">
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Customer Code</label>
+                <ng-select class="input-field" [(ngModel)]="customerCode" placeholder="Select Customer Code"
+                    [items]="filters?.CustomerCode">
+                </ng-select>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Customer Name</label>
+                <ng-select class="input-field" [(ngModel)]="customerName" placeholder="Select Customer Name"
+                    [items]="filters?.CustomerName" bindLabel="name" bindValue="id">
+                </ng-select>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Business Area</label>
+                <ng-select class="input-field" [(ngModel)]="businessArea" placeholder="Select Business Area">
+                    @for (item of filters?.AuCode; track $index) {
+                    <ng-option [value]="item">{{item}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Status</label>
+                <ng-select class="input-field" [(ngModel)]="status" placeholder="Select Status">
+                    @for (item of filters?.Status; track $index) {
+                    <ng-option [value]="item">{{item === "A"? "Active" : item === "I" ? "Inactive": item}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+
+        <div class="col-lg-2 d-flex gap-3 align-items-center">
+            <div class="custom-form-input">
+                <label for="" class="d-block">&nbsp;</label>
+                <div class="d-flex">
+                    <button class="custom-button-filters" (click)="handleSearch()" type="button"
+                        [disabled]="customerCode() === undefined && customerName() === undefined && status() === undefined && businessArea() === undefined">Search</button>
+                    <button class="custom-button-filters ms-2" (click)="onClearFilter()"
+                        [disabled]="customerCode() === undefined && customerName() === undefined && status() === undefined && businessArea() === undefined">Clear</button>
+                    <button class="custom-button-export ms-2" (click)="exportData()">
+                        <img src="assets/images/icons/excel.svg" alt="export" /> Export
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

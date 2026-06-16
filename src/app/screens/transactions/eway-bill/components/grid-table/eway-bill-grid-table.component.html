@@ -1,0 +1,145 @@
+<div class="custom-table">
+    <table #table [ngClass]="sortDirection() === 'asc' ?  'asc' : 'dsc'">
+        <thead>
+            <tr>
+                <th (click)="sortData('challanNumber')">Challan Number</th>
+                <th (click)="sortData('challanType')">Challan Type</th>
+                <th (click)="sortData('creationDate')">Challan Date</th>
+                <th (click)="sortData('eWayBillNumber')">e-Way Bill Number</th>
+                <th (click)="sortData('eWayBillType')">e-Way Bill Type</th>
+                <th (click)="sortData('plantCode')">Plant Code</th>
+                <th (click)="sortData('plantName')">Plant Name</th>
+                <th (click)="sortData('destinationType')">Destination Type</th>
+                <th (click)="sortData('destinationCode')">Destination Code</th>
+                <th (click)="sortData('destinationName')">Destination Name</th>
+                <th (click)="sortData('transporterType')">Transporter Type</th>
+                <th (click)="sortData('')">e-Way Bill Generation Type</th>
+                <th (click)="sortData('')">e-Way Bill Generation Date</th>
+                <!-- <th (click)="sortData('approverRemarks')">Attachments</th> -->
+                <th (click)="sortData('')">Print Challan</th>
+                <th (click)="sortData('')">Add e-Way Bill Details</th>
+                <th (click)="sortData('')">Download e-Way Bill</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (challan of challansList; track challan.id) {
+            <tr>
+                <td class="pointer" container="body">
+                    <span placement="end" tooltipClass="table-datetime-popover" [ngbTooltip]="tipContent">
+                        <u>{{challan?.challanNumber}}</u>
+                    </span>
+                    <ng-template #tipContent>
+                        <div class="">
+                            <div class="content-row">
+                                <span>Creation Date</span>
+                                <span>{{challan.creationDate | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>Created By</span>
+                                <span>{{challan.createdByDetails?.name}}</span>
+                            </div>
+                            @if (challan?.lastUpdatedByDetails) {
+
+                            <div class="content-row">
+                                <span>Last Update Date</span>
+                                <span>{{challan?.lastUpdateDate | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>Last Updated By</span>
+                                <span>{{challan?.lastUpdatedByDetails?.name}}</span>
+                            </div>
+                            }@if (challan?.approverByDetails) {
+
+                            <div class="content-row">
+                                <span>Approval Date</span>
+                                <span>{{challan?.lastUpdateDate | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>Approved By</span>
+                                <span>{{challan?.approverByDetails?.name}}</span>
+                            </div>
+                            }
+                        </div>
+                    </ng-template>
+                </td>
+                <td>{{challan?.challanType}}</td>
+                <td>{{challan?.creationDate | date: 'yyyy-MM-dd'}}</td>
+                <td class="pointer" container="body">
+                    <span placement="end" tooltipClass="table-datetime-popover" [ngbTooltip]="ewayTipContent">
+                        <u>{{challan?.eWayBillNumber}}</u>
+                    </span>
+                    <ng-template #ewayTipContent>
+                        <div class="">
+                            <div class="content-row">
+                                <span>e-Way Bill Creation Date</span>
+                                <span>{{challan.ewayBillCreationDate | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>e-Way Bill Created By</span>
+                                <span>{{challan.ewayBillCreatedByDetails?.name}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>e-Way Bill Last Update Date</span>
+                                <span>{{challan.ewayBillLastUpdateDate | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>e-Way Bill Last Updated By</span>
+                                <span>{{challan.ewayBillLastUpdateByDetails?.name}}</span>
+                            </div>
+                        </div>
+                    </ng-template>
+                </td>
+
+                <td>{{challan?.eWayBillType}}</td>
+                <td>{{challan?.plantCode}}</td>
+                <td>{{challan?.plantName}}</td>
+                <td>{{challan?.destinationType}}</td>
+                <td>{{challan?.destinationCode}}</td>
+                <td>{{challan?.destinationName}}</td>
+                <td>{{challan?.transporterType}}</td>
+                <td>{{challan?.eWayBillCreationFlag}}</td>
+                <td>{{challan?.ewayBillGenerationDate | date: 'yyyy-MM-dd'}}</td>
+                <!-- <td
+                    style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-decoration: underline;">
+                    <span placement="top-left" [ngbTooltip]="fullAddress">
+                        {{challan?.destinationAddress1}}{{challan?.destinationAddress2}}
+                    </span>
+                    <ng-template #fullAddress>
+                        <div>
+                            {{challan?.destinationAddress1}}{{challan?.destinationAddress2}}
+                        </div>
+                    </ng-template>
+                </td> -->
+                <!-- <td class="text-center ">
+                    <img class="pointer" src="../../../assets/images/icons/cloud-arrow-down.svg" alt="" width="15px"
+                        height="20px" (click)="downloadAttachments(challan?.id)">
+                </td> -->
+                <td class="text-center">
+                    <img class="pointer" src="../../../assets/images/icons/print-solid-full.svg" alt="" width="18px"
+                        height="24px" height="20px"
+                        (click)="printDeliveryChallan(challan?.challanNumber, challan?.status, challan?.totalItemSum)">
+                </td>
+                <td class="text-center">
+                    <!-- @if (challan?.status === "CONTROL_OUTGOING") { -->
+
+                    <img class="pointer" src="../../../assets/images/icons/editPencil.svg" alt="" width="15px"
+                        height="18px" (click)="openEditScreen(challan?.challanNumber)">
+                    <!-- } -->
+                </td>
+                <td class="text-center">
+                    @if (challan?.status === "EWAY_BILL_GENERATED" || challan?.status === "EWAY_BILL_CANCELLED") {
+                    <img class="pointer" src="../../../assets/images/icons/cloud-arrow-down.svg" alt="" width="15px"
+                        height="20px" (click)="printEwayBill(challan)">
+                    }
+                </td>
+            </tr>
+            }@empty {
+            <tr>
+                <td align="center" colspan="13">No e-Way Bill Generation Found</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<ng-template #printChallan></ng-template>

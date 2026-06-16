@@ -1,0 +1,113 @@
+<div class="left-sidebar">
+  <div class="brand-logo">
+    <img src="assets/images/logo.png" alt="" width="91.6" height="40" />
+  </div>
+  <div class="left-sidebar-inner">
+    <div class="accordion" id="sidebarAccordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="masterHeading">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMasters"
+            aria-expanded="true" aria-controls="collapseMasters">
+            Masters
+          </button>
+        </h2>
+        <div id="collapseMasters" class="accordion-collapse collapse" [ngClass]="{ 'show': isMasterModule }"
+          aria-labelledby="masterHeading" data-bs-parent="#sidebarAccordion">
+          <div class="accordion-body">
+            <ul>
+              @if (securityGroups('DC_MST_PLANT_MASTER_VIEW')) {
+              <li [routerLink]='ROUTES.MASTERS.PLANT.VIEW'>Plant Master</li>
+              }
+              @if (securityGroups('DC_MST_TRANSPORTER_MASTER_VIEW')) {
+              <li [routerLink]='ROUTES.MASTERS.TRANSPORTER'>Transporter Master</li>
+              }
+              @if (securityGroups('DC_MST_VENDOR_MASTER_VIEW')) {
+              <li [routerLink]='ROUTES.MASTERS.VENDOR'>Vendor Master</li>
+              }
+              @if (securityGroups('DC_MST_CUSTOMER_MASTER_VIEW')) {
+              <li [routerLink]='ROUTES.MASTERS.CUSTOMER'>Customer Master</li>
+              }
+              @if (securityGroups('DC_MST_SUB_INVENTORY_MASTER_VIEW')) {
+              <li [routerLink]='ROUTES.MASTERS.SUBINVENTORY'>Sub Inventory Master</li>
+              }
+              @if (securityGroups('DC_MST_LOOKUP_MASTER_VIEW')) {
+              <li [routerLink]='ROUTES.MASTERS.LOOKUP.VIEW'>Lookup Master</li>
+              }
+              <!-- @if (securityGroups('DC_MST_LOOKUP_TYPE_MASTER_VIEW')) {
+              <li [routerLink]='ROUTES.MASTERS.LOOKUP_TYPE.VIEW'>Lookup Type Master</li>
+              } -->
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="transactionsHeading">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseTransactions" aria-expanded="false" aria-controls="collapseTransactions">
+            Transactions
+          </button>
+        </h2>
+        <div id="collapseTransactions" class="accordion-collapse collapse" [ngClass]="{ 'show': isTransactionModule }"
+          aria-labelledby="transactionsHeading" data-bs-parent="#sidebarAccordion">
+          <div class="accordion-body">
+            <ul>
+              <!-- @if (securityGroups('DC_TXN_CREATE_CHALLAN_VIEW')) {
+              <li [routerLink]='ROUTES.TRANSACTIONS.CREATE_CHALLAN'>
+                Delivery Challan Creation</li>
+              } -->
+              @if (securityGroups('DC_TXN_DC_TXN_VIEW')) {
+              <li [routerLink]='ROUTES.TRANSACTIONS.CHALLAN_VIEW'>Delivery Challan View</li>
+              }
+              @if (securityGroups('DC_TXN_APPROVAL_TXN_VIEW')) {
+              <li [routerLink]='ROUTES.TRANSACTIONS.CHALLAN_APPROVAL'>Delivery Challan Approval</li>
+              }
+              @if (securityGroups('DC_TXN_CONTROL_OUTGOING_TXN_VIEW')) {
+              <li [routerLink]='ROUTES.TRANSACTIONS.CONTROL_OUTGOING'>Control Outgoing</li>
+              }
+              @if (securityGroups('DC_TXN_EWAY_BILL_TXN_VIEW')) {
+              <li [routerLink]='ROUTES.TRANSACTIONS.EWAY_BILL_GENERATION'>E-way Bill Generation</li>
+              }
+              @if (securityGroups('DC_TXN_GATEOUT_TXN_VIEW')) {
+              <li [routerLink]='ROUTES.TRANSACTIONS.GATE_OUT'>Gate Out</li>
+              }
+              @if (securityGroups('DC_TXN_DUE_DATE_EXT_VIEW')) {
+              <li [routerLink]='ROUTES.TRANSACTIONS.DUEDATE_EXTENSION'>Due Date Extension</li>
+              }
+              @if (securityGroups('DC_TXN_GATE_IN_TXN_VIEW')) {
+              <li [routerLink]='ROUTES.TRANSACTIONS.GATE_IN'>Gate In</li>
+              }
+            </ul>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="reportsHeading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseReports" aria-expanded="false" aria-controls="collapseReports">
+              Reports
+            </button>
+          </h2>
+          <div id="collapseReports" class="accordion-collapse collapse"
+            [ngClass]="{ 'show': !isMasterModule && !isTransactionModule }" aria-labelledby="reportsHeading"
+            data-bs-parent="#sidebarAccordion">
+            <div class="accordion-body">
+              <ul>
+                @if (securityGroups('DC_REPORTS_AGEING_REPORT_VIEW')) {
+                <li [routerLink]="ROUTES.REPORTS.AGEING">Ageing Report</li>
+                }
+                @if (securityGroups('DC_REPORTS_FREIGHT_OUTBOUND_REPORT_VIEW')) {
+                <li [routerLink]="ROUTES.REPORTS.FREIGHT_OUTBOUND">Freight Outbound Report</li>
+                }
+                @if (securityGroups('DC_REPORTS_ERROR_LOGGING_REPORT_VIEW')) {
+                <li [routerLink]="ROUTES.REPORTS.ERROR_LOGGING">Error Logging Report</li>
+                }
+                @if (securityGroups('DC_REPORTS_EMAIL_REPORT_VIEW')) {
+                <li [routerLink]="ROUTES.REPORTS.EMAIL">Email Report</li>
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

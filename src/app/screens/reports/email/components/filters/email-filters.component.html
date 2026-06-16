@@ -1,0 +1,73 @@
+<div class="filters-box">
+    <div class="dynamic-form-row">
+        <div class="col-lg-2 col-md-2">
+            <div class="custom-form-input">
+                <label for="">From Date</label>
+                <div class="input-group datepicker">
+                    <input class="form-control " [(ngModel)]="fromDate" placeholder="yyyy-mm-dd" name="fromDt"
+                        [autoClose]="true" ngbDatepicker #fromDt="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="fromDt.toggle()" type="button">
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-2">
+            <div class="custom-form-input">
+                <label for="">To Date</label>
+                <div class="input-group datepicker">
+                    <input class="form-control" [(ngModel)]="toDate" placeholder="yyyy-mm-dd" name="toDate"
+                        [autoClose]="true" ngbDatepicker #toDt="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="toDt.toggle()" type="button">
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Challan Number</label>
+                <!-- <input type="text" class="input-field" /> -->
+                <ng-select class="input-field" [(ngModel)]="challanNumber" placeholder="Select Challan Number">
+                    @for (code of filters?.challanNumbers; track $index) {
+                    <ng-option [value]="code">{{code}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Email</label>
+                <ng-select class="input-field" [(ngModel)]="email" placeholder="Select Email Id">
+                    @for (code of filters?.Emails; track $index) {
+                    <ng-option [value]="code">{{code?.split("_").join(" ")}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Email Status</label>
+                <ng-select class="input-field" [(ngModel)]="status" placeholder="Select Email Status">
+                    @for (code of filters?.status; track $index) {
+                    <ng-option [value]="code">{{code?.split("_").join(" ")}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+        <div class=" d-flex gap-3 align-items-center">
+            <div class="custom-form-input">
+                <label for="" class="d-block">&nbsp;</label>
+                <div class="d-flex">
+                    <button class="custom-button-filters" (click)="handleSearch()" type="button"
+                        [disabled]="fromDate() === undefined && toDate() === undefined && challanNumber() === undefined && status() === undefined && email() === undefined">Search</button>
+                    <button class="custom-button-filters ms-2" (click)="onClearFilter()"
+                        [disabled]="fromDate() === undefined && toDate() === undefined && status() === undefined && email() === undefined && challanNumber() === undefined">Clear</button>
+                    <button class="custom-button-export ms-2" (click)="exportData()">
+                        <img src="assets/images/icons/excel.svg" alt="export" /> Export
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

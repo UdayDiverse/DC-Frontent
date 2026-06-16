@@ -1,0 +1,67 @@
+<div class="custom-table">
+  <table #table [ngClass]="sortDirection() === 'asc' ?  'asc' : 'dsc'">
+    <thead>
+      <tr>
+        <th (click)="sortData('code')">Transporter Code</th>
+        <th (click)="sortData('name')">Transporter Name</th>
+        <th (click)="sortData('address1')">Address</th>
+        <th (click)="sortData('bpGroup')">BP Group</th>
+        <th (click)="sortData('state')">State</th>
+        <th (click)="sortData('gstInNo')">GSTIN</th>
+        <th (click)="sortData('panNo')">PAN</th>
+        <th (click)="sortData('contactNumber')">Phone</th>
+        <th (click)="sortData('emailId')">Email</th>
+        <th (click)="sortData('startDate')">Start Date</th>
+        <th (click)="sortData('endDate')">End Date</th>
+        <th (click)="sortData('status')">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (transport of transporter; track transport.id) {
+      <tr>
+        <td class="pointer" container="body">
+          <span placement="end" tooltipClass="table-datetime-popover" [ngbTooltip]="tipContent">
+            <u>{{transport?.code}}</u>
+          </span>
+          <ng-template #tipContent>
+            <div class="">
+              <div class="content-row">
+                <span>Creation Date</span>
+                <span>{{transport.creationDate | date: 'yyyy-MM-dd'}}</span>
+              </div>
+              <div class="content-row">
+                <span>Last Update Date</span>
+                <span>{{transport.lastUpdateDate | date: 'yyyy-MM-dd'}}</span>
+              </div>
+            </div>
+          </ng-template>
+        </td>
+        <td>{{transport?.name}}</td>
+        <td
+          style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-decoration: underline;">
+          <span placement="top-left" [ngbTooltip]="fullAddress">
+            {{transport?.address1}}{{transport?.address2}}{{transport?.address3}}{{transport?.address4}}
+          </span>
+          <ng-template #fullAddress>
+            <div>
+              {{transport?.address1}}{{transport?.address2}}{{transport?.address3}}{{transport?.address4}}
+            </div>
+          </ng-template>
+        </td>
+        <td>{{transport?.bpGroup}}</td>
+        <td>{{transport?.state}}</td>
+        <td>{{transport?.gstInNo}}</td>
+        <td>{{transport?.panNo}}</td>
+        <td>{{transport?.contactNumber}}</td>
+        <td>{{transport?.emailId}}</td>
+        <td>{{transport?.startDate | date: 'yyyy-MM-dd'}}</td>
+        <td>{{transport?.endDate | date: 'yyyy-MM-dd'}}</td>
+        <td>{{transport?.status === "A" ? "Active": transport?.status === "O" ? "Inactive": ""}}</td>
+      </tr>
+      }@empty {
+      <tr>
+        <td align="center" colspan="13">No Transporter Found</td>
+      </tr> }
+    </tbody>
+  </table>
+</div>

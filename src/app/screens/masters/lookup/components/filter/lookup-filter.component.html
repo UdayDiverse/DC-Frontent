@@ -1,0 +1,47 @@
+<div class="filters-box">
+    <div class="dynamic-form-row">
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Lookup Type</label>
+                <ng-select class="input-field" [(ngModel)]="type" placeholder="Select Lookup Type"
+                    [items]="filters?.LookUpType" bindLabel="name" bindValue="id" (change)="selectLookupCodes($event)">
+                </ng-select>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Lookup Code</label>
+                <ng-select class="input-field" [(ngModel)]="code" placeholder="Select Lookup Code">
+                    @for (code of codes(); track $index) {
+                    <ng-option [value]="code">{{code}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Status</label>
+                <ng-select class="input-field" [(ngModel)]="status" placeholder="Select Status">
+                    @for (status of filters?.Status; track $index) {
+                    <ng-option [value]="status">{{status}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+
+        <div class="col-lg-2 d-flex gap-3 align-items-center">
+            <div class="custom-form-input">
+                <label for="" class="d-block">&nbsp;</label>
+                <div class="d-flex">
+                    <button class="custom-button-filters" (click)="handleSearch()" type="button"
+                        [disabled]="status() === undefined && code() === undefined && type() === undefined">Search</button>
+                    <button class="custom-button-filters ms-2" (click)="onClearFilter()"
+                        [disabled]="status() === undefined && code() === undefined && type() === undefined">Clear</button>
+                    <button class="custom-button-export ms-2" (click)="exportData()">
+                        <img src="assets/images/icons/excel.svg" alt="export" /> Export
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

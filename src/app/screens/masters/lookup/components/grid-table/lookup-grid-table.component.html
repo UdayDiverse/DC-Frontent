@@ -1,0 +1,66 @@
+<div class="custom-table">
+  <table #table [ngClass]="sortDirection() === 'asc' ?  'asc' : 'dsc'">
+    <thead>
+      <tr>
+        <th (click)="sortData('lookUpType.code')">Type</th>
+        <th (click)="sortData('code')">Code</th>
+        <th (click)="sortData('value')">Value</th>
+        <th (click)="sortData('description')">Description</th>
+        <th (click)="sortData('attribute13')">Outstanding RGP Limit (Only For Item Category)</th>
+        <th (click)="sortData('status')">Status</th>
+        <th class="text-center">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (lookup of lookupsList; track lookup?.id) {
+      <tr>
+
+        <td>{{lookup?.lookUpType?.code}}</td>
+        <td class="pointer" container="body">
+          <span placement="end" tooltipClass="table-datetime-popover" [ngbTooltip]="tipContent">
+            <u>{{lookup?.code}}</u>
+          </span>
+          <ng-template #tipContent>
+            <div class="">
+              <div class="content-row">
+                <span>Creation Date</span>
+                <span>{{lookup?.creationDate | date: 'yyyy-MM-dd'}}</span>
+              </div>
+              <div class="content-row">
+                <span>Created By</span>
+                <span>{{lookup?.createdByDetails?.name}}</span>
+              </div>
+              <div class="content-row">
+                <span>Last Update Date</span>
+                <span>{{lookup?.lastUpdateDate | date: 'yyyy-MM-dd'}}</span>
+              </div>
+              <div class="content-row">
+                <span>Last Updated By</span>
+                <span>{{lookup?.lastUpdatedByDetails?.name}}</span>
+              </div>
+            </div>
+          </ng-template>
+        </td>
+        <td class="wrap-text">{{lookup?.value}}</td>
+        <td>{{lookup?.description}}</td>
+        <td>
+          @if(lookup?.lookUpType?.code === "ItemCategory"){
+          {{lookup?.attribute13}}
+          }@else {
+          N/A
+          }
+        </td>
+        <td>{{lookup?.status}}</td>
+        <td class="text-center">
+          <img src="assets/images/icons/editPencil.svg" class="pointer" alt="edit"
+            (click)="onGoToEditLookup(lookup?.id)">
+        </td>
+      </tr>
+      }@empty {
+      <tr>
+        <td align="center" colspan="13">No Lookup Found</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>

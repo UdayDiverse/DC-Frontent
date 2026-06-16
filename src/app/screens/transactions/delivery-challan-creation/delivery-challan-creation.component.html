@@ -1,0 +1,773 @@
+@if(!loading()) {
+<div class="main-content">
+    <div class="page-title">
+        <h1>@if (challanNumber() != null) {Edit}@else {Create} Delivery Challan</h1>
+        <div class="action-buttons">
+            <button class="custom-button-filters" (click)="onPressSubmit()">Save</button>
+            <button class="custom-button-secondary" [routerLink]='"/" + ROUTES.TRANSACTIONS.CHALLAN_VIEW'>Close</button>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <form [formGroup]="challanFormGroup">
+            <!-- Basic Information Section -->
+            <div class="accordion">
+                <div class="accordion-item">
+
+                    <!-- Header -->
+                    <div class="accordion-header" (click)="toggle(0)">
+                        <div class="accordion-title">
+                            <div class="title-row d-flex align-items-center">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <span>Basic Information</span>
+                            </div>
+                            <div class="accordion-subtitle">Enter the basic delivery details</div>
+                        </div>
+                        <button type="button" class="accordion-toggle" [class.expanded]="items[0].expanded">
+                            <span [innerHTML]="items[0].expanded ? 'Show Less' : 'Show More'"></span>
+                            <i class="bi" [class.bi-chevron-up]="items[0].expanded"
+                                [class.bi-chevron-down]="!items[0].expanded"></i>
+                        </button>
+                    </div>
+
+                    <!-- Body -->
+                    <div [@expandCollapse]="items[0].expanded ? 'expanded' : 'collapsed'" class="accordion-body">
+                        <div class="dynamic-form-row">
+                            @if (challanNumber() != null) {
+                            <div>
+
+                                <div class="custom-form-input">
+                                    <label for="">Challan Number <span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" readonly [value]="challanNumber()" />
+                                </div>
+                            </div>
+                            <div>
+
+                                <div class="custom-form-input">
+                                    <label for="">Challan Date <span class="text-danger">*</span></label>
+                                    <input style="field-sizing: content;" type="text" class="input-field" readonly
+                                        [value]="challanDate" />
+                                </div>
+
+                            </div>
+                            }
+
+                            <div>
+
+                                <div class="custom-form-input">
+                                    <label for="">Plant <span class="text-danger">*</span></label>
+                                    <ng-select class="" formControlName="plantCode" [readonly]="challanNumber() != null"
+                                        (change)="onSourcePlantSelection($event)">
+                                        @for (plant of sourcePlants(); track $index) {
+                                        <ng-option [value]="plant?.plantCode">{{plant?.plantCode}}
+                                            ({{plant?.plantName}})</ng-option>
+                                        }
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div>
+
+
+                                <div class="custom-form-input">
+                                    <label for="">Branch <span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" readonly formControlName="branchName" />
+                                </div>
+                            </div>
+
+                            <div>
+
+                                <div class="custom-form-input">
+                                    <label for="">Sub-Inventory <span class="text-danger">*</span></label>
+                                    <ng-select class="input-field" formControlName="subinventoryCode"
+                                        (change)="onSubInventorySelection($event)">
+                                        @for (suninventory of subInventories(); track $index) {
+                                        <ng-option
+                                            [value]="suninventory?.subInventoryCode">{{suninventory?.subInventoryCode}}
+                                            ({{suninventory?.subInventoryDesc}})</ng-option>
+                                        }
+                                    </ng-select>
+                                </div>
+                            </div>
+
+                            <div>
+
+                                <div class="custom-form-input">
+                                    <label for="">Challan Type <span class="text-danger">*</span></label>
+                                    <ng-select class="input-field" formControlName="challanType"
+                                        [readonly]="challanNumber() != null" (change)="onChallanTypeChange($event)">
+                                        @for (type of challanTypes(); track $index) {
+                                        <ng-option [value]="type?.value">
+                                            {{type?.value}}</ng-option>
+                                        }
+                                    </ng-select>
+                                </div>
+
+                            </div>
+                            <div>
+
+
+                                <div class="custom-form-input">
+                                    <label for="">Item Category <span class="text-danger">*</span></label>
+                                    <ng-select class="input-field" formControlName="itemCategory">
+                                        @for (type of itemCategories(); track $index) {
+                                        <ng-option [value]="type?.value">
+                                            {{type?.value}}</ng-option>
+                                        }
+                                    </ng-select>
+                                </div>
+                            </div>
+
+                            <div>
+
+                                <div class="custom-form-input">
+                                    <label for="">Challan Status <span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" readonly formControlName="status" />
+                                </div>
+                            </div>
+
+                            <div>
+
+                                <div class="custom-form-input">
+                                    <label for="">Department <span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" readonly formControlName="department" />
+                                </div>
+                            </div>
+
+
+                            @if (isRGP) {
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Expected Return Date <span class="text-danger">*</span></label>
+                                    <div class="input-group datepicker">
+                                        <input class="form-control" [formControl]="expectedDate" [minDate]="todayNgb"
+                                            (dateSelect)="onDateSelect($event, 'expectedDate')" placeholder="yyyy-mm-dd"
+                                            name="expectedDate" [autoClose]="true" ngbDatepicker
+                                            #expectedDt="ngbDatepicker" />
+
+                                        <button class="btn btn-outline-secondary bi bi-calendar3" type="button"
+                                            (click)="expectedDt.toggle()"></button>
+
+                                        <button class="btn btn-outline-danger bi bi-x-circle" type="button"
+                                            (click)="clearExpectedDate()"></button>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">User Remarks</label>
+                                    <input type="text" class="input-field" formControlName="userRemarks" />
+                                </div>
+                            </div>
+
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="" class="d-block">Attachments <small class="text-danger"> (Total upload
+                                            limit: 2MB or 4 files)</small></label>
+                                    <label for="file-upload" class="file-uploader pointer">
+                                        <img src="../../../assets/images/icons/cloud-arrow-up.svg" alt="" width="30px"
+                                            height="20px">
+                                        <span>Browse to Upload Files</span>
+                                    </label>
+                                    @if (selectedFilesBase64.length !== 0) {
+
+                                    <ul>
+                                        @for (file of selectedFilesBase64; track i; let i = $index) {
+                                        <li>
+                                            <a class="text-primary text-decoration-underline pointer" role="button"
+                                                (click)="downloadSingleAttachment(i)">{{file?.documentName}}</a>
+                                        </li>
+                                        }
+                                    </ul>
+                                    }
+                                    <input type="file" id="file-upload" (change)="onFileSelected($event)"
+                                        [hidden]="true" multiple />
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="accordion-item">
+
+                    <!-- Header -->
+                    <div class="accordion-header" (click)="toggle(1)">
+                        <div class="accordion-title">
+                            <div class="title-row d-flex align-items-center">
+                                <i class="bi bi-geo-alt me-2"></i>
+                                <span>Destination Details</span>
+                            </div>
+                            <div class="accordion-subtitle">Shipping and billing address details</div>
+                        </div>
+                        <button type="button" class="accordion-toggle" [class.expanded]="items[1].expanded">
+                            <span [innerHTML]="items[1].expanded ? 'Show Less' : 'Show More'"></span>
+                            <i class="bi" [class.bi-chevron-up]="items[1].expanded"
+                                [class.bi-chevron-down]="!items[1].expanded"></i>
+                        </button>
+                    </div>
+
+                    <!-- Body -->
+                    <div [@expandCollapse]="items[1].expanded ? 'expanded' : 'collapsed'" class="accordion-body">
+                        <div class="dynamic-form-row">
+                            <div class="custom-form-input full-width">
+                                <label for="">Where you want to ship your goods? <span
+                                        class="text-danger">*</span></label>
+                                <div class="d-flex gap-4">
+                                    <div class="destination-type">
+                                        <input type="radio" class="input-field" id="plant" value="Plant"
+                                            name="destinationType" formControlName="destinationType">
+                                        <label for="plant">Plant</label>
+                                    </div>
+                                    <div class="destination-type">
+                                        <input type="radio" class="input-field" id="vendor" value="Vendor"
+                                            name="destinationType" formControlName="destinationType">
+                                        <label for="vendor">Vendor</label>
+
+                                    </div>
+                                    <div class="destination-type">
+                                        <input type="radio" class="input-field" id="u-vendor"
+                                            value="Unregistered Vendor" name="destinationType"
+                                            formControlName="destinationType">
+                                        <label for="u-vendor">Unregistered Vendor</label>
+
+                                    </div>
+                                    <div class="destination-type">
+                                        <input type="radio" class="input-field" id="customer" value="Customer"
+                                            name="destinationType" formControlName="destinationType">
+                                        <label for="customer">Customer</label>
+
+                                    </div>
+                                    <div class="destination-type">
+                                        <input type="radio" class="input-field" id="u-customer"
+                                            value="Unregistered Customer" name="destinationType"
+                                            formControlName="destinationType">
+                                        <label for="u-customer">Unregistered Customer</label>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="dynamic-form-row column-layout">
+
+                                @switch (destinationType) {
+                                @case ('Plant') {
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Plant Code<span class="text-danger">*</span></label>
+                                        <ng-select class="input-field" bindLabel="plantCode" bindValue="plantCode"
+                                            formControlName="destinationCode" [items]="destinationPlants()"
+                                            (change)="onPlantSelection($event)">
+                                            <ng-template ng-option-tmp let-item="item">
+                                                {{item.plantCode}} ({{item.plantName}})
+                                            </ng-template>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Plant Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="input-field" [readonly]="isRegistered"
+                                            formControlName="destinationName" />
+                                    </div>
+                                </div>
+                                }
+                                @case ('Vendor') {
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Vendor Code<span class="text-danger">*</span></label>
+                                        <ng-select class="input-field" formControlName="destinationCode"
+                                            (change)="onVendorSelection($event)" bindLabel="code" bindValue="code"
+                                            [items]="vendors()">
+                                            <ng-template ng-option-tmp let-item="item">
+                                                {{item.code}} ({{item.name}})
+                                            </ng-template>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Vendor Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="input-field" [readonly]="isRegistered"
+                                            formControlName="destinationName" />
+                                    </div>
+                                </div>
+                                }
+                                @case ('Unregistered Vendor') {
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Vendor Code <span class="text-danger">*</span></label>
+                                        <input type="text" class="input-field" formControlName="destinationCode"
+                                            [maxlength]="20" />
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Vendor Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="input-field" [readonly]="isRegistered"
+                                            formControlName="destinationName" [maxlength]="50" />
+                                    </div>
+                                </div>
+                                }
+                                @case ('Customer') {
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Customer Code<span class="text-danger">*</span></label>
+                                        <ng-select class="input-field" formControlName="destinationCode"
+                                            (change)="onCustomerSelection($event)" bindLabel="customerCode"
+                                            bindValue="customerCode" [items]="customers">
+                                            <ng-template ng-option-tmp let-item="item">
+                                                {{item.customerCode}} ({{item.customerName}})
+                                            </ng-template>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Customer Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="input-field" [readonly]="isRegistered"
+                                            formControlName="destinationName" />
+                                    </div>
+                                </div>
+                                }
+                                @case ('Unregistered Customer') {
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Customer Code <span class="text-danger">*</span></label>
+                                        <input type="text" class="input-field" formControlName="destinationCode"
+                                            [maxlength]="20" />
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Customer Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="input-field" [readonly]="isRegistered"
+                                            formControlName="destinationName" [maxlength]="50" />
+                                    </div>
+                                </div>
+                                }
+                                }
+
+
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Address 1 <span class="text-danger">*</span></label>
+                                        <input type="text" class="input-field" [readonly]="isRegistered"
+                                            formControlName="destinationAddress1" [maxlength]="70" />
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Address 2</label>
+                                        <input type="text" class="input-field" [readonly]="isRegistered"
+                                            formControlName="destinationAddress2" [maxlength]="70" />
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">City <span class="text-danger">*</span></label>
+                                        <input type="text" class="input-field" [readonly]="isRegistered"
+                                            formControlName="destinationCity" [maxlength]="30" />
+                                    </div>
+                                </div>
+
+                                <div class="">
+                                    @if (isRegistered) {
+                                    <div class="custom-form-input">
+                                        <label for="">State <span class="text-danger">*</span></label>
+                                        <input type="text" class="input-field" [readonly]="isRegistered"
+                                            formControlName="destinationState" [maxlength]="20" />
+                                    </div>
+                                    }@else {
+                                    <div class="custom-form-input">
+                                        <label for="">State <span class="text-danger">*</span></label>
+                                        <ng-select class="input-field" formControlName="destinationState">
+                                            @for (state of states(); track $index) {
+                                            <ng-option [value]="state?.value">{{state?.description}}
+                                            </ng-option>
+                                            }
+                                        </ng-select>
+                                    </div>
+                                    }
+                                </div>
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Postal Code <span class="text-danger">*</span></label>
+                                        <input type="text" class="input-field" [readonly]="isRegistered"
+                                            (keypress)="allowNumeric($event)" [maxlength]="6"
+                                            formControlName="destinationPostalCode" />
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">GSTIN No. @if (isRegistered) {<span
+                                                class="text-danger">*</span>}</label>
+                                        <input type="text" class="input-field" [readonly]="isRegistered"
+                                            formControlName="destinationGstin" [maxlength]="15" />
+                                        @if (challanFormGroup.get("destinationGstin")?.value &&
+                                        challanFormGroup.get("destinationGstin")?.value.toString().length
+                                        < 15) { <small class="text-danger">GSTIN length must be 15</small>
+                                            }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="accordion-item">
+
+                    <!-- Header -->
+                    <div class="accordion-header" (click)="toggle(2)">
+                        <div class="accordion-title">
+                            <div class="title-row d-flex align-items-center">
+                                <i class="bi bi-truck me-2"></i>
+                                <span>Transporter Details</span>
+                            </div>
+                            <div class="accordion-subtitle">Transportation and freight information</div>
+                        </div>
+                        <button type="button" class="accordion-toggle" [class.expanded]="items[2].expanded">
+                            <span [innerHTML]="items[2].expanded ? 'Show Less' : 'Show More'"></span>
+                            <i class="bi" [class.bi-chevron-up]="items[2].expanded"
+                                [class.bi-chevron-down]="!items[2].expanded"></i>
+                        </button>
+                    </div>
+
+                    <!-- Body -->
+                    <div [@expandCollapse]="items[2].expanded ? 'expanded' : 'collapsed'" class="accordion-body">
+                        <div class="dynamic-form-row">
+                            <div class="custom-form-input full-width">
+                                <!-- <h4 class="fw-bold">Transporter Details</h4> -->
+                                <div class="d-flex gap-4">
+                                    <div class="transporter-type">
+                                        <input type="radio" class="input-field" id="registered" name="transporterType"
+                                            checked value="Registered" (change)="onTransporterChange($event)"
+                                            formControlName="transporterType">
+                                        <label for="registered">Registered Transport</label>
+                                    </div>
+                                    <div class="transporter-type">
+                                        <input type="radio" class="input-field" id="unregistered" name="transporterType"
+                                            value="Unregistered" (change)="onTransporterChange($event)"
+                                            formControlName="transporterType">
+                                        <label for="unregistered">Unregistered Transport</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="dynamic-form-row column-layout">
+                                @switch (transporterType) {
+                                @case ('Registered') {
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Transporter Code<span class="text-danger">*</span></label>
+                                        <ng-select class="input-field" formControlName="transporterCode"
+                                            (change)="onTransporterSelection($event)" bindLabel="code"
+                                            [items]="transporters()" bindValue="code">
+                                            <ng-template ng-option-tmp let-item="item">
+                                                {{item.code}} ({{item.name}})
+                                            </ng-template>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Transporter Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="input-field" readonly
+                                            formControlName="transporterName" />
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">GSTIN <span class="text-danger">*</span></label>
+                                        <input type="text" class="input-field" readonly
+                                            formControlName="transporterGstin" [maxlength]="15">
+                                    </div>
+                                </div>
+                                }
+                                @case ('Unregistered') {
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Transporter Code</label>
+                                        <input type="text" class="input-field" formControlName="transporterCode"
+                                            [maxlength]="30" />
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Transporter Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="input-field" formControlName="transporterName"
+                                            [maxlength]="50" />
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">GSTIN</label>
+                                        <input type="text" class="input-field" formControlName="transporterGstin"
+                                            [maxlength]="50" />
+                                    </div>
+                                </div>
+                                }
+                                }
+
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Vehicle No@switch (transporterType) {
+                                            @case ('Registered') {<span class="text-danger">*</span>}
+                                            }</label>
+                                        <input type="text" class="input-field" formControlName="vehicleNumber"
+                                            [maxlength]="10" (keypress)="allowAlphaNumeric($event)"
+                                            (input)="validateVehicleNumber($event)" />
+                                        @if (!isVehicleNumberValid) {
+                                        <small class="ms-2 text-danger">Enter a Valid Vehicle Number</small>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Vehicle Size@switch (transporterType) {
+                                            @case ('Registered') {<span class="text-danger">*</span>}
+                                            }</label>
+                                        <ng-select class="input-field" formControlName="vehicleSize">
+                                            @for (size of vehicleSizes(); track $index) {
+                                            <ng-option [value]="size?.value">{{size?.value}}
+                                            </ng-option>
+                                            }
+                                        </ng-select>
+                                    </div>
+                                </div>
+
+
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">FRLR No.
+                                            <!-- @switch (transporterType) {
+                                            @case ('Registered') {<span class="text-danger">*</span>}
+                                            } -->
+                                        </label>
+                                        <input type="text" class="input-field" formControlName="frlrNumber"
+                                            (keypress)="allowAlphaNumeric($event)" [maxlength]="25" />
+                                    </div>
+                                </div>
+
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">FRLR Date.
+                                            <!-- @switch (transporterType) {
+                                            @case ('Registered') {<span class="text-danger">*</span>}
+                                            } -->
+                                        </label>
+                                        <div class="input-group datepicker">
+                                            <input class="form-control" [formControl]="frlrDate"
+                                                (dateSelect)="onDateSelect($event, 'frlrDate')" placeholder="yyyy-mm-dd"
+                                                [maxDate]="todayNgb" name="frlrNumber" [autoClose]="true" ngbDatepicker
+                                                #frlrDt="ngbDatepicker" />
+                                            <button class="btn btn-outline-secondary bi bi-calendar3"
+                                                (click)="frlrDt.toggle()" type="button">
+                                            </button>
+                                            <button class="btn btn-outline-danger bi bi-x-circle" type="button"
+                                                (click)="clearFrlrDate()"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Trip Distance@switch (transporterType) {
+                                            @case ('Registered') {<span class="text-danger">*</span>}
+                                            }</label>
+                                        <input type="number" class="input-field" formControlName="travellingDistance"
+                                            (keypress)="allowNumeric($event)" [maxlength]="5" />
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label for="">Mode of Transport<span class="text-danger">*</span></label>
+                                        <ng-select class="input-field" formControlName="modeOfTransport">
+                                            @for (type of modeOfTransports(); track $index) {
+                                            <ng-option [value]="type?.code">
+                                                {{type?.value}}</ng-option>
+                                            }
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="accordion-item">
+
+                    <!-- Header -->
+                    <div class="accordion-header" (click)="toggle(3)">
+                        <div class="accordion-title">
+                            <div class="title-row d-flex align-items-center">
+                                <i class="bi bi-list-ul me-2"></i>
+                                <span>Item Details</span>
+                            </div>
+                            <div class="accordion-subtitle">Add items to the delivery challan</div>
+                        </div>
+                        <button type="button" class="accordion-toggle" [class.expanded]="items[3].expanded">
+                            <span [innerHTML]="items[3].expanded ? 'Show Less' : 'Show More'"></span>
+                            <i class="bi" [class.bi-chevron-up]="items[3].expanded"
+                                [class.bi-chevron-down]="!items[3].expanded"></i>
+                        </button>
+                    </div>
+
+                    <!-- Body -->
+                    <div [@expandCollapse]="items[3].expanded ? 'expanded' : 'collapsed'" class="accordion-body">
+                        <div class="mt-0">
+                            <!-- <div class="custom-form-input d-flex justify-content-between align-items-end">
+                                <div class="action-buttons">
+                                    <img class="add-item-button" src="../../../../assets/images/icons/plus.svg"
+                                        alt="plus icon" (click)="addRowToItemlist()" width="15">
+                                </div>
+                            </div> -->
+                            <div class="custom-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Model Number<span class="text-danger">*</span>
+                                            </th>
+                                            <th>HSN Code</th>
+                                            <th>UOM<span class="text-danger">*</span></th>
+                                            <th>Quantity<span class="text-danger">*</span></th>
+                                            <th>Unit Price<span class="text-danger">*</span></th>
+                                            <th>CGST(%)</th>
+                                            <th>CGST(INR)</th>
+                                            <th>SGST(%)</th>
+                                            <th>SGST(INR)</th>
+                                            <th>IGST(%)</th>
+                                            <th>IGST(INR)</th>
+                                            <th>Amount(INR)</th>
+                                            <th>
+                                                <div class="action-buttons">
+                                                    <img class="add-item-button"
+                                                        src="../../../../assets/images/icons/plus.svg" alt="plus icon"
+                                                        (click)="addRowToItemlist()" width="15">
+                                                    <!-- <button class="custom-button-secondary" >Add</button> -->
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody formArrayName="dcItemDetails" class="dc-items">
+                                        <tr *ngFor="let item of itemList.controls; let i = index;" [formGroupName]="i">
+                                            <td>
+                                                <div class="custom-form-input mb-0">
+                                                    <input type="text" class="input-field"
+                                                        formControlName="descriptionModelNumber"
+                                                        (keypress)="allowAlphaNumeric($event)" [maxlength]="100">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="custom-form-input mb-0">
+                                                    <input type="text" class="input-field text-end"
+                                                        formControlName="hsnCode" (keypress)="allowNumeric($event)"
+                                                        [minlength]="8" [maxlength]="8">
+
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class=" mb-0">
+                                                    <ng-select class="input-field" formControlName="uom">
+                                                        @for (type of uom(); track $index) {
+                                                        <ng-option [value]="type?.code">
+                                                            {{type?.code + ' - ' + type?.value}}</ng-option>
+                                                        }
+                                                    </ng-select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="custom-form-input mb-0">
+                                                    <input type="text" class="input-field text-end"
+                                                        formControlName="quantity" (keypress)="allowNumeric($event)"
+                                                        [maxlength]="5">
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <div class="custom-form-input mb-0">
+                                                    <input type="text" class="input-field text-end"
+                                                        formControlName="unitPrice" (keypress)="allowNumeric($event)"
+                                                        [maxlength]="10">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="custom-form-input mb-0">
+                                                    <input type="text" class="input-field text-end"
+                                                        formControlName="cgstPercentage"
+                                                        (keypress)="allowNumeric($event)" [maxlength]="2">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="custom-form-input mb-0">
+                                                    <input type="number" class="input-field text-end"
+                                                        formControlName="cgstAmount" readonly>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="custom-form-input mb-0">
+                                                    <input type="text" class="input-field text-end"
+                                                        formControlName="sgstPercentage"
+                                                        (keypress)="allowNumeric($event)" [maxlength]="2">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="custom-form-input mb-0">
+                                                    <input type="text" class="input-field text-end"
+                                                        formControlName="sgstAmount" readonly>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="custom-form-input mb-0">
+                                                    <input type="text" class="input-field text-end"
+                                                        formControlName="igstPercentage"
+                                                        (keypress)="allowNumeric($event)" [maxlength]="2">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="custom-form-input mb-0">
+                                                    <input type="text" class="input-field text-end"
+                                                        formControlName="igstAmount" readonly>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="custom-form-input mb-0">
+                                                    <input type="text" class="input-field text-end"
+                                                        formControlName="totalAmount" readonly>
+                                                </div>
+                                            </td>
+
+                                            <td class="text-center">
+                                                <div class="custom-form-input mb-0 pointer">
+
+                                                    <img src="../../../assets/images/icons/trash.svg" alt=""
+                                                        (click)="removeItem(i)" width="25px" height="25px">
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+}
+@else {
+<div class="progress-bar-wrapper">
+    <div class="progress-bar-indeterminate"></div>
+</div>
+}

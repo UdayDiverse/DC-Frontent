@@ -1,0 +1,18 @@
+.main-wrapper {
+  header {
+    height: 80px;
+    background-color: var(--primaryColor);
+  }
+
+  .main-article-wrapper {
+    display: flex;
+    padding: 0px 15px;
+    height: calc(100vh - 115px);
+    column-gap: 20px;
+
+    .right-article-section {
+      padding: 20px 0px;
+      width: calc(100% - 260px);
+    }
+  }
+}

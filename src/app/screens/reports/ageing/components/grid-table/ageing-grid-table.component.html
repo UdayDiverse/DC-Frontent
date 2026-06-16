@@ -1,0 +1,72 @@
+<div class="custom-table">
+    <table #table [ngClass]="sortDirection() === 'asc' ?  'asc' : 'dsc'">
+        <thead>
+            <tr>
+                <th (click)="sortData('challanType')">Challan Type</th>
+                <th (click)="sortData('challanNumber')">Challan No</th>
+                <th (click)="sortData('description')">Item Desc</th>
+                <th (click)="sortData('challanDate')">Challan Date</th>
+                <th (click)="sortData('branchName')">Branch</th>
+                <th (click)="sortData('department')">Department</th>
+                <th (click)="sortData('plantCode')">Plant Code</th>
+                <th (click)="sortData('username')">User EmpCode</th>
+                <th (click)="sortData('userDesc')">User Name</th>
+                <th (click)="sortData('approvername')">Approver EmpCode</th>
+                <th (click)="sortData('approverDesc')">Approver Name</th>
+                <th (click)="sortData('expectedDate')">Expected Date</th>
+                <th (click)="sortData('receivedDate')">Received Date</th>
+                <th (click)="sortData('ageing')">Ageing</th>
+                <th (click)="sortData('destinationName')">Destination Name</th>
+                <th (click)="sortData('destinationAddress')">Destination Address</th>
+                <th (click)="sortData('destinationCity')">Destination City</th>
+                <th (click)="sortData('destinationState')">Destination State</th>
+                <th (click)="sortData('amount')">Amount</th>
+                <th (click)="sortData('challanQty')">Total Quantity</th>
+                <th (click)="sortData('receivedQty')">Received Quantity</th>
+                <th (click)="sortData('balancedQty')">Balance Quantity</th>
+                <th (click)="sortData('status')">Challan Status</th>
+                <th (click)="sortData('itemCategory')">Item Category</th>
+                <th (click)="sortData('userRemarks')">User Remarks</th>
+                <th (click)="sortData('approverRemarks')">Approver Remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (report of ageingReportsList; track report.id) {
+
+            <tr>
+                <td>{{report?.challanType}}</td>
+                <td class="pointer" container="body">{{report?.challanNumber}}</td>
+
+                <td>{{report?.challanDate | date: 'yyyy-MM-dd'}}</td>
+                <td>{{report?.branchName}}</td>
+                <td>{{report?.department}}</td>
+                <td>{{report?.plantCode}}</td>
+                <td>{{report?.username}}</td>
+                <td>{{report?.userDesc}}</td>
+                <td>{{report?.approvername}}</td>
+                <td>{{report?.approverDesc}}</td>
+                <td>{{report?.expectedDate | date:'yyyy-MM-dd'}}</td>
+                <td>{{report?.receivedDate | date:'yyyy-MM-dd'}}</td>
+                <td>{{report?.ageing}}</td>
+                <td>{{report?.destinationName}}</td>
+                <td>{{report?.destinationAddress}}</td>
+                <td>{{report?.destinationCity}}</td>
+                <td>{{report?.destinationState}}</td>
+                <td>{{report?.description}}</td>
+                <td>{{report?.challanQty}}</td>
+                <td>{{report?.amount}}</td>
+                <td>{{report?.balancedQty}}</td>
+                <td>{{report?.receivedQty}}</td>
+                <td>{{report?.status?.split("_").join(" ")}}</td>
+                <td>{{report?.itemCategory}}</td>
+                <td>{{report?.userRemarks}}</td>
+                <td>{{report?.approverRemarks}}</td>
+            </tr>
+            }@empty {
+            <tr>
+                <td align="center" colspan="13">No Data Found</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

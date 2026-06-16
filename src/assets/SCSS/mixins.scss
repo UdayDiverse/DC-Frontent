@@ -1,0 +1,152 @@
+@use "./colors";
+
+@mixin inputFields($height, $fontSize) {
+  height: $height;
+  border: 1px solid var(--border-color);
+  border-radius: var(--spacer-30);
+  font-size: $fontSize;
+
+  &:focus {
+    box-shadow: none;
+    border-color: var(--secondaryColor);
+  }
+}
+
+@mixin inputFieldLogin($height) {
+  height: $height;
+  border: 1px solid #848484;
+  border-radius: 6px;
+  padding-left: var(--spacer-40);
+
+  &:focus {
+    box-shadow: none;
+    border-color: var(--secondaryColor);
+  }
+}
+
+@mixin buttonLogin() {
+  background-color: var(--primaryColor);
+  color: var(--white);
+  padding: var(--spacer-12) var(--spacer-80);
+  font-size: 15px;
+  border: none;
+  border-radius: 30px;
+}
+
+// @mixin buttonsPrimary($fontSize, $paddingTopBottom, $paddingLeftRight) {
+//     font-size: $fontSize;
+//     padding: $paddingTopBottom $paddingLeftRight;
+//     background-color: var(--primaryColor);
+//     border: none;
+//     border-radius: 30px;
+//     color: var(--white);
+// }
+
+// @mixin buttonsPrimaryOutline($fontSize, $paddingTopBottom, $paddingLeftRight) {
+//     font-size: $fontSize;
+//     padding: $paddingTopBottom $paddingLeftRight;
+//     background-color: transparent;
+//     border: 1px solid var(--primaryColor);
+//     border-radius: 30px;
+//     color: var(--primaryColor);
+//     font-weight: 600;
+// }
+
+// @mixin buttonsSecondaryOutline($fontSize, $paddingTopBottom, $paddingLeftRight) {
+//     font-size: $fontSize;
+//     padding: $paddingTopBottom $paddingLeftRight;
+//     background-color: transparent;
+//     border: 1px solid var(--inputBorder);
+//     border-radius: 30px;
+//     color: var(--inputBorder);
+//     font-weight: 600;
+// }
+
+// @mixin buttonsExportOutline($fontSize, $paddingTopBottom, $paddingLeftRight) {
+//     font-size: $fontSize;
+//     padding: $paddingTopBottom $paddingLeftRight;
+//     background-color: transparent;
+//     border: 1px solid var(--exportGreen);
+//     border-radius: 30px;
+//     color: var(--exportGreen);
+//     display: flex;
+//     align-items: center;
+//     column-gap: 6px;
+//     font-weight: 600;
+// }
+
+@mixin buttonsPrimary($fontSize, $paddingTopBottom, $paddingLeftRight) {
+  font-size: $fontSize;
+  padding: $paddingTopBottom $paddingLeftRight;
+  background-color: var(--primaryColor);
+  border: none;
+  border-radius: 30px;
+  color: var(--white);
+}
+
+@mixin buttonsPrimaryOutline($fontSize, $paddingTopBottom, $paddingLeftRight) {
+  font-size: $fontSize;
+  padding: $paddingTopBottom $paddingLeftRight;
+  background-color: transparent;
+  border: 1px solid var(--primaryColor);
+  border-radius: 30px;
+  color: var(--primaryColor);
+  font-weight: 600;
+}
+
+@mixin buttonsSecondaryOutline(
+  $fontSize,
+  $paddingTopBottom,
+  $paddingLeftRight,
+  $color
+) {
+  font-size: $fontSize;
+  padding: $paddingTopBottom $paddingLeftRight;
+  background-color: transparent;
+  border: 1px solid $color;
+  border-radius: 30px;
+  color: $color;
+  font-weight: 600;
+}
+
+@mixin buttonsExportOutline($fontSize, $paddingTopBottom, $paddingLeftRight) {
+  font-size: $fontSize;
+  padding: $paddingTopBottom $paddingLeftRight;
+  background-color: var(--primaryColor);
+  border: 1px solid var(--primaryColor);
+  border-radius: 30px;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  column-gap: 6px;
+  font-weight: 600;
+}
+
+@mixin gridTableRowBorder() {
+  border-bottom: 1px solid var(--tableBorderColor);
+}
+
+@mixin gridTableHeading() {
+  font-size: var(--spacer-12);
+  font-weight: 600;
+  padding: var(--spacer-13) var(--spacer-10);
+  border-bottom: 1px solid var(--tableBorderColor);
+  cursor: pointer;
+  top: 0;
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+  position: sticky;
+  z-index: 5 !important;
+  background-color: var(--gray4);
+}
+
+@mixin gridTableBody() {
+  font-size: var(--spacer-12);
+  padding: var(--spacer-12) var(--spacer-10);
+  white-space: nowrap;
+}
+
+@mixin input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,60 @@
+<div class="page-title">
+    <h1>Ageing Reports</h1>
+    <div class="action-buttons">
+        <div container="body">
+            <img src="assets/images/icons/fullScreen.svg" alt="" class="pointer" width="14px"
+                (click)="toggleFullScreen()" placement="start" [ngbTooltip]="tipContent" />
+            <ng-template #tipContent> Full Screen </ng-template>
+        </div>
+    </div>
+</div>
+
+<div class="filter-section">
+    <app-ageing-filters [filters]="filters()" (getData)="getData($event)"
+        (exportEvent)="exportData('Ageing Report')"></app-ageing-filters>
+</div>
+
+@if (!loading()) {
+<div class="main-content">
+    <div class="content-section" [ngClass]="{ isFilters: isFilters(), fullScreen : fullScreen() }">
+        @if (fullScreen()) {
+        <img src="assets/images/icons/fullScreenCollapse.svg" alt="" class="me-3 pointer float-end" width="14px"
+            (click)="toggleFullScreen()" />
+        }
+        <div class="grid-table">
+            <div class="table-container">
+                <app-ageing-grid-table [filterKeyword]="filterKeyword()" [ageingReportsList]="ageingReportsList()"
+                    [ageingListOrg]="ageingReportsList()"
+                    (exportHeader)="onExportHeader($event)"></app-ageing-grid-table>
+            </div>
+
+            <div class="table-footer d-flex justify-content-center mt-3 align-items-center" style="gap: 5em">
+                @if (ageingReportsList().length > 0) {
+
+                <div class="d-flex justify-content-center mt-3">
+                    <ngb-pagination [collectionSize]="totalAgeinglist()" [page]="currentPage()" [pageSize]="count()"
+                        (pageChange)="onPageChange($event)" [boundaryLinks]="true" [maxSize]="5"
+                        [rotate]="true"></ngb-pagination>
+                    <p class="mt-2 ms-3"> Items per page:</p>
+                    <select class="custom-select ms-3" [(ngModel)]="count" (ngModelChange)="onPageSizeChange(count())">
+                        <option [ngValue]="10">10</option>
+                        <option [ngValue]="20">20</option>
+                        <option [ngValue]="50">50</option>
+                        <option [ngValue]="100">100</option>
+                        <option [ngValue]="500">500</option>
+                    </select>
+                </div>
+                }
+                @if (totalAgeinglist() && totalAgeinglist() > 0) {
+                <div class="total-rows ml-10 fw-bold">Total Records: {{totalAgeinglist()}}</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+}@else {
+<div class="progress-bar-wrapper">
+    <div class="progress-bar-indeterminate"></div>
+</div>
+
+}

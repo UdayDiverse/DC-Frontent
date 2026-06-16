@@ -1,0 +1,42 @@
+<div class="custom-table">
+  <table #table [ngClass]="sortDirection() === 'asc' ?  'asc' : 'dsc'">
+    <thead>
+      <tr>
+        <th (click)="sortData('plantCode')">Plant Code</th>
+        <th (click)="sortData('subInventoryCode')">Sub Inventory Code</th>
+        <th (click)="sortData('subInventoryDesc')">Sub Inventory Description</th>
+        <th (click)="sortData('grade')">Grade</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (subInventory of subInventories; track subInventory.id) {
+      <tr>
+        <td class="pointer" container="body">
+          <span placement="end" tooltipClass="table-datetime-popover" [ngbTooltip]="tipContent">
+            <u>{{subInventory?.plantCode || '-'}}</u>
+          </span>
+          <ng-template #tipContent>
+            <div class="">
+              <div class="content-row">
+                <span>Creation Date</span>
+                <span>{{subInventory.creationDate | date: 'yyyy-MM-dd'}}</span>
+              </div>
+              <div class="content-row">
+                <span>Last Update Date</span>
+                <span>{{subInventory.lastUpdateDate | date: 'yyyy-MM-dd'}}</span>
+              </div>
+            </div>
+          </ng-template>
+        </td>
+        <td>{{subInventory?.subInventoryCode || '-'}}</td>
+        <td>{{subInventory?.subInventoryDesc || '-'}}</td>
+        <td>{{subInventory?.grade || '-'}}</td>
+      </tr>
+      }@empty {
+      <tr>
+        <td align="center" colspan="13">No Subinventory Found</td>
+      </tr> }
+
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,40 @@
+<div class="filters-box">
+    <div class="dynamic-form-row">
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Plant Code</label>
+                <ng-select class="input-field" [(ngModel)]="plantCodes" placeholder="Select Plant Code"
+                    [multiple]="true">
+                    @for (code of filters?.PlantCodes; track $index) {
+                    <ng-option [value]="code">{{code}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Sub-Inventory Code</label>
+                <ng-select class="input-field" [(ngModel)]="codes" placeholder="Select Sub Inventory Code"
+                    [items]="filters?.SubInventoryCode">
+
+                </ng-select>
+
+            </div>
+        </div>
+
+        <div class="col-lg-2 d-flex gap-3 align-items-center">
+            <div class="custom-form-input">
+                <label for="" class="d-block">&nbsp;</label>
+                <div class="d-flex">
+                    <button class="custom-button-filters" (click)="handleSearch()" type="button"
+                        [disabled]="plantCodes() === undefined || plantCodes().length === 0">Search</button>
+                    <button class="custom-button-filters ms-2" (click)="onClearFilter()"
+                        [disabled]="codes() === undefined && plantCodes() === undefined">Clear</button>
+                    <button class="custom-button-export ms-2" (click)="exportData()">
+                        <img src="assets/images/icons/excel.svg" alt="export" /> Export
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

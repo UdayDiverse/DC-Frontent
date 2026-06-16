@@ -1,0 +1,56 @@
+<div class="filters-box">
+
+
+    <div class="dynamic-form-row">
+
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Vendor Code</label>
+                <ng-select class="input-field" [(ngModel)]="vendorCode" placeholder="Select Vendor Code"
+                    [items]="filters?.VendorCode" bindLabel="name" bindValue="id">
+                </ng-select>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Vendor Name</label>
+                <ng-select class="input-field" [(ngModel)]="vendorName" placeholder="Select Vendor Name"
+                    [items]="filters?.vendorNames" bindLabel="name" bindValue="id">
+                </ng-select>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">BP Group</label>
+                <ng-select class="input-field" [(ngModel)]="bpGroup" placeholder="Select BP Group" [items]="filters?.bpGroup"
+                    bindLabel="name" bindValue="id">
+                </ng-select>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Status</label>
+                <ng-select class="input-field" [(ngModel)]="status" placeholder="Select Status">
+                    @for (item of filters?.Status; track $index) {
+                    <ng-option [value]="item">{{item === "A"? "Active" : item === "O" ? "Inactive": item}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+
+        <div class="d-flex gap-3 align-items-center">
+            <div class="custom-form-input">
+                <label for="" class="d-block">&nbsp;</label>
+                <div class="d-flex">
+                    <button class="custom-button-filters" (click)="handleSearch()" type="button"
+                        [disabled]="vendorCode() === undefined && vendorName() === undefined && bpGroup() === undefined && status() === undefined">Search</button>
+                    <button class="custom-button-filters ms-2" (click)="onClearFilter()"
+                        [disabled]="vendorCode() === undefined && vendorName() === undefined && bpGroup() === undefined && status() === undefined">Clear</button>
+                    <button class="custom-button-export ms-2" (click)="exportData()">
+                        <img src="assets/images/icons/excel.svg" alt="export" /> Export
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="page-title">
+    <h1>Lookup Type Master</h1>
+    <div class="action-buttons">
+        <button class="custom-button-export" (click)="exportData()">
+            <img src="assets/images/icons/excel.svg" alt="export" /> Export
+        </button>
+
+        <button class="custom-button-filters" (click)="onCreateLookpType()">Create Lookup
+            Type</button>
+        <div container="body">
+            <img src="assets/images/icons/fullScreen.svg" alt="" class="pointer" width="14px"
+                (click)="toggleFullScreen()" placement="start" [ngbTooltip]="tipContent" />
+            <ng-template #tipContent> Full Screen </ng-template>
+        </div>
+    </div>
+</div>
+
+<div class="filter-section">
+    <app-lookup-type-filters [filters]="filters()" (getData)="getData($event)"></app-lookup-type-filters>
+</div>
+
+@if (!loading()) {
+
+
+<div class="main-content">
+    <div class="content-section" [ngClass]="{ isFilters: isFilters, fullScreen : fullScreen() }">
+        @if (fullScreen()) {
+        <img src="assets/images/icons/fullScreenCollapse.svg" alt="" class="me-3 pointer float-end" width="14px"
+            (click)="toggleFullScreen()" />
+        }
+        <div class="grid-table">
+            <div class="table-container">
+                <app-lookup-type-grid-table [lookupTypesList]="lookupTypeList()"
+                    (exportHeader)="onExportHeader($event)"></app-lookup-type-grid-table>
+            </div>
+
+            <div class="table-footer d-flex justify-content-center mt-3 align-items-center" style="gap: 5em">
+                <div *ngIf="lookupTypeList().length > 0" class="d-flex justify-content-center mt-3">
+                    <ngb-pagination [collectionSize]="totalLookups()" [page]="currentPage()" [pageSize]="count()"
+                        (pageChange)="onPageChange($event)" [boundaryLinks]="true" [maxSize]="5"
+                        [rotate]="true"></ngb-pagination>
+                    <p class="mt-2 ms-3"> Items per page:</p>
+                    <select class="custom-select ms-3" [ngModel]="count()" (ngModelChange)="onPageSizeChange(count())">
+                        <option [ngValue]="10">10</option>
+                        <option [ngValue]="20">20</option>
+                        <option [ngValue]="50">50</option>
+                        <option [ngValue]="100">100</option>
+                        <option [ngValue]="500">500</option>
+                    </select>
+                </div>
+                <div *ngIf="totalLookups() && totalLookups() > 0" class="total-rows ml-10 fw-bold">Total Records:
+                    {{totalLookups()}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+}

@@ -1,0 +1,55 @@
+<div class="custom-table">
+    <table #table [ngClass]="sortDirection() === 'asc' ? 'asc' : 'dsc'">
+        <thead>
+            <tr>
+                <th (click)="rowSelectionService.isVehicleFilterApplied() &&
+                   rowSelectionService.toggleSelectAllFromText(gateOutList)" class="select-all-header"
+                    [class.disabled-header]="!rowSelectionService.isVehicleFilterApplied()">
+                    {{ rowSelectionService.isVehicleFilterApplied() ? 'Select All' : 'Select' }}
+                </th>
+                <th (click)="sortData('documentType')">Document Type</th>
+                <th (click)="sortData('documentNo')">Document Number</th>
+                <th (click)="sortData('documentDate')">Document Date</th>
+                <th (click)="sortData('plantCode')">Plant Code</th>
+                <th (click)="sortData('destinationType')">Destination Type</th>
+                <th (click)="sortData('transporterType')">Transporter Type</th>
+                <th (click)="sortData('transporterCode')">Transporter Code</th>
+                <th (click)="sortData('transporterName')">Transporter N ame</th>
+                <th (click)="sortData('vehicleNumber')">Vehicle Number</th>
+                <th (click)="sortData('vehicleSize')">Vehicle Size</th>
+                <th (click)="sortData('frlrNumber')">FRLR Number</th>
+                <th (click)="sortData('frlrDate')">FRLR Date</th>
+                <!-- <th (click)="sortData('')">Remarks</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            @for (document of gateOutList; track document?.interfaceId; let i = $index) {
+            <tr>
+                <td>
+                    <input type="checkbox"
+                        (change)="rowSelectionService.toggleSelection(document?.interfaceId, $event, document?.documentType)"
+                        [disabled]="!rowSelectionService.isRowSelectable(document)" [checked]="(document?.documentType === 'RGP' || document?.documentType === 'NRGP') ?
+                          rowSelectionService.selectedDCIds.has(document?.interfaceId) :
+                          rowSelectionService.selectedNERPIds.has(document?.interfaceId)">
+                </td>
+                <td>{{document?.documentType}}</td>
+                <td>{{document?.documentNo}}</td>
+                <td>{{document?.documentDate | date: 'yyyy-MM-dd'}}</td>
+                <td>{{document?.plantCode}}</td>
+                <td>{{document?.destinationType}}</td>
+                <td>{{document?.transporterType}}</td>
+                <td>{{document?.transporterCode}}</td>
+                <td>{{document?.transporterName}}</td>
+                <td>{{document?.vehicleNumber}}</td>
+                <td>{{document?.vehicleSize}}</td>
+                <td>{{document?.frlrNumber}}</td>
+                <td>{{document?.frlrDate | date: 'yyyy-MM-dd'}}</td>
+            </tr>
+            } @empty {
+            <tr>
+                <td align="center" colspan="13">No Gate Out Documents Found</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

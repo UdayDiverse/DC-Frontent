@@ -1,0 +1,48 @@
+.left-sidebar {
+    padding: var(--spacer-20) var(--spacer-10);
+    width: 250px;
+    min-width: 250px;
+    margin-top: -55px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 1px 4px #00000024;
+    min-height: calc(100vh - 36px);
+
+    .brand-logo {
+        text-align: center;
+        margin-bottom: var(--spacer-20);
+    }
+
+    .left-sidebar-inner {
+        .accordion{
+            .accordion-item{
+                border:none;
+                .accordion-header{
+                    button{
+                        background-color: transparent;
+                        padding:var(--spacer-15) 0;
+                        box-shadow: none;
+                        font-weight: 600;
+                    }
+                }
+                .accordion-body{
+                    padding:0 var(--spacer-10);
+                    ul {
+                        padding: 0;
+                        margin: 0;
+            
+                        li {
+                            list-style: none;
+                            padding: 7px 0px;
+                            cursor: pointer;
+
+                            &:first-child{
+                                padding-top: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,66 @@
+<div class="custom-table">
+    <table #table [ngClass]="sortDirection() === 'asc' ?  'asc' : 'dsc'">
+        <thead>
+            <tr>
+                <th (click)="sortData('transferDate')">Transfer Date</th>
+                <th (click)="sortData('transporterCode')">Transporter Code</th>
+                <th (click)="sortData('transporterName')">Transporter Name</th>
+                <th (click)="sortData('transporterType')">Transporter Type</th>
+                <th (click)="sortData('plantCode')">Plant Code</th>
+                <th (click)="sortData('frlrNumber')">FRLR Number</th>
+                <th (click)="sortData('frlrDate')">FRLR Date</th>
+                <th (click)="sortData('travellingDistance')">Travelling Distance</th>
+                <th (click)="sortData('vehicleNumber')">Vehicle Number</th>
+                <th (click)="sortData('vehicleSize')">Vehicle Size</th>
+                <th (click)="sortData('status')">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (freightOut of freightOutBoundReportList; track freightOut.id) {
+            <tr>
+                <td class="pointer" container="body">
+                    {{freightOut.transferDate | date: 'yyyy-MM-dd hh:mm a'}}</td>
+                <td>
+                    <span placement="end" tooltipClass="table-datetime-popover" [ngbTooltip]="tipContent">
+                        <u>{{freightOut.transporterCode}}</u>
+                    </span>
+                    <ng-template #tipContent>
+                        <div class="">
+                            <div class="content-row">
+                                <span>Created By</span>
+                                <span>{{freightOut.createdByDetails.name}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>Creation Date</span>
+                                <span>{{freightOut.creationDate | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>Last Updated By</span>
+                                <span>{{freightOut.lastUpdatedByDetails.name}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>Last Update Date</span>
+                                <span>{{freightOut.lastUpdateDate | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                        </div>
+                    </ng-template>
+                </td>
+                <!-- <td>{{freightOut.transporterCode}}</td> -->
+                <td>{{freightOut.transporterName}}</td>
+                <td>{{freightOut.transporterType}}</td>
+                <td>{{freightOut.plantCode}}</td>
+                <td>{{freightOut.frlrNumber}}</td>
+                <td>{{freightOut.frlrDate| date: 'yyyy-MM-dd'}}</td>
+                <td>{{freightOut.travellingDistance}}</td>
+                <td>{{freightOut.vehicleNumber}}</td>
+                <td>{{freightOut.vehicleSize}}</td>
+                <td>{{freightOut.status?.split('_').join(' ')}}</td>
+            </tr>
+            }@empty {
+            <tr>
+                <td align="center" colspan="13">No Data Found</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

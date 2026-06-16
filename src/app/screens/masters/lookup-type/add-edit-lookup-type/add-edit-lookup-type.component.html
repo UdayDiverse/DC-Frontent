@@ -1,0 +1,46 @@
+@if (!loading()) {
+<div class="main-content">
+    <div class="page-title">
+        <h1>Create Lookup Type</h1>
+        <div class="action-buttons">
+            <button class="custom-button-filters" [disabled]="!isFormValid()" (click)="onPressSubmit()">Save</button>
+            <button class="custom-button-secondary" [routerLink]='"/" + ROUTES.MASTERS.LOOKUP_TYPE.VIEW'>Close</button>
+        </div>
+    </div>
+
+    <div class="content-section p-3">
+        <form [formGroup]="lookupForm">
+            <div class="row">
+                <div class="col-lg-2 col-md-2">
+                    <div class="custom-form-input">
+                        <label for="">Type <span class="text-danger">*</span></label>
+                        <input type="text" class="input-field" formControlName="type" />
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-2">
+                    <div class="custom-form-input">
+                        <label for="">Description <span class="text-danger">*</span></label>
+                        <input type="text" class="input-field" formControlName="description" />
+                    </div>
+                </div>
+                @if (lookupTypeId() > 0) {
+
+                <div class="col-lg-3">
+                    <div class="custom-form-input">
+                        <label for="">Status</label>
+                        <ng-select class="input-field" placeholder="Select Status" formControlName="status">
+                            <ng-option value="Active">Active</ng-option>
+                            <ng-option value="Inactive">Inactive</ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+}@else {
+<div class="progress-bar-wrapper">
+    <div class="progress-bar-indeterminate"></div>
+</div>
+}

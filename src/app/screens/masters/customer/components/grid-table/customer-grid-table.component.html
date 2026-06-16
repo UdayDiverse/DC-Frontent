@@ -1,0 +1,69 @@
+<div class="custom-table">
+    <table #table [ngClass]="sortDirection() === 'asc' ?  'asc' : 'dsc'">
+        <thead>
+            <tr>
+                <th (click)="sortData('customerCode')">Customer Code</th>
+                <th (click)="sortData('customerName')">Customer Name</th>
+                <th (click)="sortData('customerAddress1')">Address</th>
+                <th (click)="sortData('city')">City</th>
+                <th (click)="sortData('state')">State</th>
+                <th (click)="sortData('country')">Country</th>
+                <th (click)="sortData('postal')">Postal</th>
+                <th (click)="sortData('customerContactNo')">Phone</th>
+                <th (click)="sortData('emailId')">Email</th>
+                <th (click)="sortData('auCode')">Business Area</th>
+                <th (click)="sortData('gstnNo')">GSTIN</th>
+                <th (click)="sortData('')">PAN</th>
+                <th (click)="sortData('status')">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (customer of customerList; track customer.id) {
+            <tr>
+                <td class="pointer" container="body">
+                    <span placement="end" tooltipClass="table-datetime-popover" [ngbTooltip]="tipContent">
+                        <u>{{customer?.customerCode}}</u>
+                    </span>
+                    <ng-template #tipContent>
+                        <div class="">
+                            <div class="content-row">
+                                <span>Creation Date</span>
+                                <span>{{customer.creationDate | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>Last Update Date</span>
+                                <span>{{customer.lastUpdateDate | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                        </div>
+                    </ng-template>
+                </td>
+                <td>{{customer?.customerName}}</td>
+                <td
+                    style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-decoration: underline;">
+                    <span placement="top-left" [ngbTooltip]="fullAddress">
+                        {{customer?.customerAddress1}}{{customer?.customerAddress2}}{{customer?.customerAddress3}}{{customer?.customerAddress4}}
+                    </span>
+                    <ng-template #fullAddress>
+                        <div>
+                            {{customer?.customerAddress1}}{{customer?.customerAddress2}}{{customer?.customerAddress3}}{{customer?.customerAddress4}}
+                        </div>
+                    </ng-template>
+                </td>
+                <td>{{customer?.city}}</td>
+                <td>{{customer?.state}}</td>
+                <td>{{customer?.country}}</td>
+                <td>{{customer?.postal}}</td>
+                <td>{{customer?.customerContactNo}}</td>
+                <td>{{customer?.emailId}}</td>
+                <td>{{customer?.auCode}}</td>
+                <td>{{customer?.gstnNo}}</td>
+                <td>{{customer?.gstnNo ? customer?.gstnNo?.slice(2, 12) : customer?.gstnNo}}</td>
+                <td>{{customer?.status === "A" ? "Active": customer?.status === "I" ? "Inactive": ""}}</td>
+            </tr>
+            }@empty {
+            <tr>
+                <td align="center" colspan="13">No Customer Found</td>
+            </tr> }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,116 @@
+.content-section {
+  height: calc(100vh - 255px);
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 1px 4px #00000024;
+  overflow: auto;
+  padding-left: 8px;
+  padding-right: 8px;
+
+  .challan-info {
+    .row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 15px;
+      text-align: left;
+
+      .col {
+        font-size: 14px;
+
+        strong {
+          display: block;
+          font-size: 13px;
+          font-weight: 600;
+          margin-bottom: 30px;
+        }
+      }
+    }
+  }
+
+  .challan-no {
+    font-weight: 500;
+    font-size: x-large;
+  }
+}
+
+input {
+  padding: var(--spacer-4) var(--spacer-10);
+  border-radius: var(--spacer-4);
+  border: 1px solid var(--inputBorder);
+
+  &:disabled {
+    background-color: var(--gray2);
+  }
+
+  &:focus {
+    border-color: var(--secondaryColor);
+    outline: none;
+  }
+}
+
+input {
+  &:read-only {
+    background-color: var(--gray2);
+  }
+}
+
+input[type="number"] {
+  text-align: right;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-field2 {
+  width: 100%;
+  min-width: 40px;
+  // max-width: 80px;
+}
+
+.page-title h1 {
+  font-size: 1.75rem;
+}
+
+.table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table th {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.table td input {
+  text-align: center;
+}
+
+input[readonly] {
+  background-color: #f9fafb;
+  border: 1px solid #dee2e6;
+}
+
+textarea {
+  resize: none;
+}
+
+.card {
+  border-radius: 12px;
+  background-color: #fff;
+}
+
+.btn-success:disabled {
+  opacity: 0.7;
+}
+
+.invalid-feedback {
+  font-size: 0.75rem;
+}
+
+.bi {
+  vertical-align: middle;
+}

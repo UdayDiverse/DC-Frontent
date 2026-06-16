@@ -1,0 +1,611 @@
+// /* You can add global styles to this file, and also use other style files */
+@use "./assets/SCSS/colors.scss";
+@use "./assets/SCSS/fonts.scss";
+@use "./assets/SCSS/variables.scss";
+@use "./assets/SCSS/mixins.scss";
+
+@use "@ng-select/ng-select/themes/default.theme.css";
+// // @use url('https://unpkg.com/ngx-bootstrap/datepicker/bs-datepicker.css');
+
+// @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600&family=Roboto:wght@300;400;500;700&display=swap");
+
+// font-family: 'Inter', sans-serif;
+// font-family: 'Roboto', sans-serif;
+
+@import "./assets/SCSS/fonts.scss";
+// @import "~ngx-toastr/toastr.css";
+
+* {
+  margin: 0;
+  padding: 0;
+  font-size: var(--spacer-13);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+span,
+ul,
+li,
+div,
+header,
+nav,
+button {
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background-color: var(--themeBg) !important;
+}
+
+input {
+  field-sizing: content;
+  min-width: 100px;
+}
+.dc-items{
+  input {
+    field-sizing: content;
+    min-width: 10px;
+  }
+
+}
+
+// .custom-button-filters {
+//   @include buttonsPrimaryOutline(13px, 7px, 20px);
+
+//   &:disabled {
+//     opacity: 0.5;
+//     cursor: not-allowed;
+//   }
+// }
+
+// .custom-button-filters-small {
+//   @include buttonsPrimaryOutline(11px, 7px, 10px);
+
+//   &:disabled {
+//     opacity: 0.5;
+//     cursor: not-allowed;
+//   }
+// }
+
+// .custom-button-filters {
+//   @include buttonsPrimaryOutline(13px, 4px, 20px);
+
+//   &:disabled {
+//     opacity: 0.5;
+//     cursor: not-allowed;
+//   }
+// }
+
+// .custom-button-export {
+//   @include buttonsExportOutline(13px, 7px, 20px);
+
+//   &:disabled {
+//     opacity: 0.5;
+//     cursor: not-allowed;
+//   }
+// }
+
+// .custom-button-secondary {
+//   @include buttonsSecondaryOutline(13px, 7px, 20px);
+
+//   &:disabled {
+//     opacity: 0.5;
+//     cursor: not-allowed;
+//   }
+// }
+
+// .custom-button-secondary-small {
+//   @include buttonsSecondaryOutline(11px, 7px, 10px);
+
+//   &:disabled {
+//     opacity: 0.5;
+//     cursor: not-allowed;
+//   }
+// }
+
+/* global styles (styles.css / styles.scss) */
+.ng-dropdown-panel {
+  white-space: nowrap !important;
+  width: auto !important;
+  min-width: max-content !important;
+  z-index: 9999;
+}
+
+.ng-dropdown-panel .ng-option {
+  white-space: nowrap;
+}
+
+.custom-button-filters {
+  @include mixins.buttonsPrimaryOutline(13px, 7px, 20px);
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.custom-button-filters-small {
+  @include mixins.buttonsPrimaryOutline(11px, 7px, 10px);
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.custom-button-filters {
+  @include mixins.buttonsPrimary(13px, 7px, 20px);
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.custom-button-export {
+  @include mixins.buttonsExportOutline(12px, 7px, 18px);
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.custom-button-secondary {
+  @include mixins.buttonsSecondaryOutline(13px, 7px, 20px, var(--primaryColor));
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.custom-button-secondary-green {
+  @include mixins.buttonsSecondaryOutline(13px, 7px, 20px, var(--exportGreen));
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.custom-button-secondary-green-small {
+  @include mixins.buttonsSecondaryOutline(11px, 7px, 10px, var(--exportGreen));
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.custom-button-secondary-small {
+  @include mixins.buttonsSecondaryOutline(11px, 7px, 10px, var(--primaryColor));
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.custom-form-input {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--spacer-10);
+
+  label {
+    margin-bottom: 1px;
+  }
+
+  input,
+  select,
+  textarea {
+    // min-height: 35px;
+    padding: var(--spacer-4) var(--spacer-10);
+    border-radius: var(--spacer-4);
+    border: 1px solid var(--inputBorder);
+    width: 100%;
+    // max-width: 120px;
+
+    &:disabled {
+      background-color: var(--gray2);
+    }
+
+    &:focus {
+      border-color: var(--secondaryColor);
+      outline: none;
+    }
+  }
+
+  input,
+  textarea {
+    &:read-only {
+      background-color: var(--gray2);
+    }
+  }
+
+  input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    appearance: auto;
+    /* Reset to default browser look */
+    -webkit-appearance: radio;
+    -moz-appearance: radio;
+    cursor: pointer;
+  }
+
+  ng-select {
+    display: inline-block;
+    width: fit-content !important;
+    min-width: 100px; /* fallback */
+    max-width: 100%; /* avoid overflowing */
+  }
+  
+  
+
+  input[ngbDatePicker] {
+    text-align: center;
+  }
+
+  input[type="number"] {
+    text-align: right;
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+}
+
+.dynamic-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  row-gap: 0px;
+  align-items: flex-start;
+}
+
+.input-field {
+  width: 100%;
+  // min-width: 50px;
+  max-width: 300px;
+}
+
+.filter-section {
+  padding: var(--spacer-10) var(--spacer-15);
+  background-color: var(--white);
+  border-radius: var(--spacer-10);
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1411764706);
+  margin-bottom: var(--spacer-10);
+}
+
+.page-title {
+  margin-bottom: var(--spacer-15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    font-size: var(--spacer-26);
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+
+  .action-buttons {
+    display: flex;
+    align-items: center;
+    column-gap: var(--spacer-10);
+
+    .search-field {
+      position: relative;
+      display: inline-block;
+
+      input {
+        padding: 7px 28px 7px 18px;
+        border-radius: var(--spacer-20);
+        border: 1px solid var(--inputBorder);
+        field-sizing: content;
+
+        &:disabled {
+          background-color: var(--gray2);
+        }
+
+        &:focus {
+          outline: none;
+          border-color: var(--secondaryColor);
+        }
+      }
+
+      span {
+        position: absolute;
+        right: 16px;
+        top: 9px;
+
+        img {
+          width: 14px;
+        }
+      }
+    }
+  }
+}
+
+.common-modal {
+  padding: var(--spacer-30);
+
+  .ngmodal-header {
+    h3 {
+      font-size: var(--spacer-26);
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: var(--spacer-20);
+      position: relative;
+
+      span {
+        position: absolute;
+        right: -10px;
+        top: -15px;
+      }
+    }
+  }
+
+  // .ngmodal-body {
+
+  // }
+}
+
+.custom-table {
+  background-color: var(--white);
+  border-radius: 10px;
+
+  table {
+    min-width: 100%;
+    overflow-x: scroll;
+
+    thead {
+      tr {
+        th {
+          @include mixins.gridTableHeading;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        @include mixins.gridTableRowBorder;
+
+        td {
+          @include mixins.gridTableBody;
+        }
+
+        &:nth-child(even) {
+          td {
+            background-color: var(--themeBg);
+          }
+        }
+
+        &:last-child {
+          border: none;
+        }
+      }
+    }
+  }
+}
+
+.p-autocomplete-items {
+  padding: var(--spacer-5) 0;
+  margin: 0;
+
+  li {
+    padding: var(--spacer-5) var(--spacer-10);
+  }
+}
+
+.table-datetime-popover {
+  .tooltip-inner {
+    background-color: var(--white);
+    color: #000;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1411764706);
+    padding: var(--spacer-10) var(--spacer-10);
+    min-width: 200px;
+    max-width: none;
+
+    .content-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 3px;
+      column-gap: 20px;
+      padding: 5px 0px;
+      border-bottom: 1px solid var(--gray2);
+
+      span {
+        font-size: var(--spacer-12);
+        white-space: nowrap;
+
+        &:first-child {
+          font-weight: 600;
+        }
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      &:first-child {
+        padding-top: 0;
+      }
+    }
+  }
+
+  .tooltip-arrow {
+    &::before {
+      border-right-color: var(--gray1) !important;
+    }
+  }
+
+  &.show {
+    opacity: 1 !important;
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.edit-screen-subTable {
+  margin-top: var(--spacer-70);
+
+  h4 {
+    font-size: var(--spacer-16) !important;
+    font-weight: 600 !important;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacer-15);
+  }
+}
+
+.input-with-icon {
+  @include mixins.input-with-icon;
+
+  .search-icon {
+    position: absolute;
+    right: var(--spacer-10);
+    width: 13px;
+  }
+}
+
+//NG SELECT GLOBAL CSS
+.ng-select {
+  .ng-select-container {
+    padding-left: 5px;
+    min-height: 30px;
+    height: 30px !important;
+    border: 1px solid var(--inputBorder);
+  }
+
+  &.ng-select-opened {
+    .ng-select-container {
+      border-color: var(--inputBorder);
+    }
+  }
+
+  &.ng-select-disabled {
+    .ng-select-container {
+      background-color: var(--gray2);
+    }
+  }
+}
+
+//loader css
+.spinner {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: #00000055;
+  color: #fff;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  max-height: 7px;
+  border-radius: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.grid-table {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .table-container {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  ngb-pagination ul > li.active > a {
+    background-color: var(--gray1) !important;
+    border-color: var(--gray1) !important;
+  }
+
+  .custom-select {
+    height: 30px;
+    cursor: pointer;
+  }
+}
+
+.progress-bar-wrapper {
+  position: relative;
+  height: 4px;
+  /* Height similar to Angular Material's default */
+  background-color: #e0e0e0;
+  /* Light gray background */
+  overflow: hidden;
+  border-radius: 4px;
+  margin-top: 40vh;
+}
+
+.progress-bar-indeterminate {
+  position: absolute;
+  background-color: #007bff;
+  /* Bootstrap's primary color */
+  height: 100%;
+  width: 50%;
+  /* Full width initially */
+  transform: translateX(-100%);
+  /* Start hidden */
+  animation: loading-indeterminate 1.2s infinite linear;
+  border-radius: 4px;
+}
+
+@keyframes loading-indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  50% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}

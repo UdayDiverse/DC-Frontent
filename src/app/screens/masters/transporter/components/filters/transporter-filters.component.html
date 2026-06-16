@@ -1,0 +1,57 @@
+<div class="filters-box">
+
+
+    <div class="dynamic-form-row">
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Transporter Code</label>
+                <ng-select class="input-field" [(ngModel)]="transporterCode" placeholder="Select Transporter Code" bindLabel="name"
+                    bindValue="id" [items]="filters?.TransporterCode">
+                </ng-select>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Transporter Name</label>
+                <ng-select class="input-field" [(ngModel)]="transporterName" placeholder="Select Transporter Name" bindLabel="name"
+                    bindValue="id" [items]="filters?.transporterNames">
+                </ng-select>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">BP Group</label>
+                <ng-select class="input-field" [(ngModel)]="bpGroup" placeholder="Select BP Group" bindLabel="name"
+                    bindValue="id" [items]="filters?.bpGroups">
+                </ng-select>
+            </div>
+        </div>
+
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Status</label>
+                <ng-select class="input-field" [(ngModel)]="status" placeholder="Select Status">
+                    @for (item of filters?.Status; track $index) {
+                    <ng-option [value]="item">{{item === "A"? "Active" : item === "O" ? "Inactive": item}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+
+
+        <div class="d-flex gap-3 align-items-center">
+            <div class="custom-form-input">
+                <label for="" class="d-block">&nbsp;</label>
+                <div class="d-flex">
+                    <button class="custom-button-filters" (click)="handleSearch()" type="button"
+                        [disabled]="transporterCode() === undefined && bpGroup() === undefined && transporterName() === undefined && status() === undefined">Search</button>
+                    <button class="custom-button-filters ms-2" (click)="onClearFilter()"
+                        [disabled]="transporterCode() === undefined && bpGroup() === undefined && transporterName() === undefined && status() === undefined">Clear</button>
+                    <button class="custom-button-export ms-2" (click)="exportData()">
+                        <img src="assets/images/icons/excel.svg" alt="export" /> Export
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

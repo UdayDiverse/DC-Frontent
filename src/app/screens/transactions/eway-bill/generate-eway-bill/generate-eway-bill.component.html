@@ -1,0 +1,740 @@
+@if(!loading()) {
+<div class="main-content">
+    <div class="page-title">
+        <h1> Generate e-Way Bill</h1>
+        <div class="action-buttons">
+            <button [disabled]="false" class="custom-button-filters" (click)="openModal()">Cancel E-way Bill</button>
+
+            <!-- Modal -->
+            <ng-template #confirmModal let-modal>
+                <div class="modal-header">
+                    <h3 class="modal-title fw-bold">Cancel E-way Bill</h3>
+                    <button type="button" class="btn-close" aria-label="Close"
+                        (click)="modal.dismiss('cancel')"></button>
+                </div>
+                <div class="modal-body mx-auto">
+                    <div class="custom-form-input">
+                        <label for="">Cancel Reason<span class="text-danger">*</span></label>
+                        <ng-select class="input-field" (change)="onReasonSelection($event)">
+                            @for (reason of reasons; track $index) {
+                            <ng-option [value]="reason">{{reason.reason}}
+                            </ng-option>
+                            }
+                        </ng-select>
+                    </div>
+                    @if (selectedReason === 4) {
+
+                    <div class="custom-form-input">
+                        <label for="">Remarks<span class="text-danger">*</span></label>
+                        <textarea (change)="onRemarksChange($event)"></textarea>
+                    </div>
+                    }
+                </div>
+                <div class="modal-footer border-0 d-flex justify-content-center gap-3 pt-3 pb-4">
+                    <!-- <button type="button" class="btn btn-outline-secondary px-4 py-2 rounded-pill shadow-sm"
+                        (click)="modal.dismiss('no')">
+                        <i class="bi bi-x-circle me-1"></i> No, Cancel
+                    </button> -->
+
+                    <button type="button" class="btn btn-danger px-4 py-2 rounded-pill shadow-sm"
+                        (click)="modal.close('yes')">
+                        <i class="bi bi-check-circle me-1"></i> Confirm
+                    </button>
+                </div>
+            </ng-template>
+
+            <button [disabled]="isApiButtonDisabled" class="custom-button-filters" (click)="generateViaApi()">Generate
+                via API</button>
+            <button [disabled]="ewaybillForm.invalid" class="custom-button-filters"
+                (click)="onPressSubmit()">Save</button>
+            <button class="custom-button-secondary"
+                [routerLink]='"/" + ROUTES.TRANSACTIONS.EWAY_BILL_GENERATION'>Close</button>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <form [formGroup]="challanFormGroup">
+            <!-- Basic Information Section -->
+            <div class="accordion-section">
+                <div class="accordion-header" (click)="toggleSection('basicInfo')">
+                    <div class="accordion-title">
+                        <div class="title-row d-flex align-items-center">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <span>Basic Information</span>
+                        </div>
+                        <div class="accordion-subtitle">Enter the basic delivery details</div>
+                    </div>
+                    <button type="button" class="accordion-toggle" [class.expanded]="expandedSections().basicInfo">
+                        <span [innerHTML]="expandedSections().basicInfo ? 'Show Less' : 'Show More'"></span>
+                        <i class="bi" [class.bi-chevron-up]="expandedSections().basicInfo"
+                            [class.bi-chevron-down]="!expandedSections().basicInfo"></i>
+                    </button>
+                </div>
+                @if (expandedSections().basicInfo) {
+                <div class="accordion-content" [class.expanded]="expandedSections().basicInfo">
+                    <div class="dynamic-form-row">
+                        <div class="">
+                            <div class="custom-form-input">
+                                <label for="">Challan Number <span class="text-danger">*</span></label>
+                                <input type="text" class="input-field" readonly [value]="challanNumber()" />
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="custom-form-input">
+                                <label for="">Challan Date <span class="text-danger">*</span></label>
+                                <input type="text" class="input-field" readonly [value]="challanDate" />
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="custom-form-input">
+                                <label for="">Plant <span class="text-danger">*</span></label>
+                                <input type="text" class="input-field" readonly formControlName="plantName" />
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="custom-form-input">
+                                <label for="">Branch <span class="text-danger">*</span></label>
+                                <input type="text" class="input-field" readonly formControlName="branchName" />
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="custom-form-input">
+                                <label for="">Sub-Inventory <span class="text-danger">*</span></label>
+                                <input type="text" class="input-field" readonly formControlName="subinventoryCode" />
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="custom-form-input">
+                                <label for="">Challan Type <span class="text-danger">*</span></label>
+                                <input type="text" class="input-field" readonly formControlName="challanType" />
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="custom-form-input">
+                                <label for="">Item Category <span class="text-danger">*</span></label>
+                                <input type="text" class="input-field" readonly formControlName="itemCategory" />
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <div class="custom-form-input">
+                                <label for="">Challan Status <span class="text-danger">*</span></label>
+                                <input type="text" class="input-field" readonly formControlName="status" />
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="custom-form-input">
+                                <label for="">Department <span class="text-danger">*</span></label>
+                                <input type="text" class="input-field" readonly formControlName="department" />
+                            </div>
+                        </div>
+
+                        @if (isRGP) {
+                        <div class="">
+                            <div class="custom-form-input">
+                                <label for="">Expected Return Date <span class="text-danger">*</span></label>
+                                <div class="input-group datepicker">
+                                    <input class="form-control" [formControl]="expectedDate" placeholder="yyyy-mm-dd"
+                                        name="expectedDate" [autoClose]="true" ngbDatepicker
+                                        #expectedDt="ngbDatepicker" />
+                                    <button class="btn btn-outline-secondary bi bi-calendar3" type="button">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        }
+
+                        <div class="">
+                            <div class="custom-form-input">
+                                <label for="">User Remarks<span class="text-danger">*</span></label>
+                                <input type="text" class="input-field" readonly formControlName="userRemarks" />
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <div class="custom-form-input">
+                                <label for="">Approver Remarks</label>
+                                <input type="text" class="input-field" readonly formControlName="approverRemarks" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <div class="custom-form-input">
+                                <label for="" class="d-block">Attachments</label>
+                                <label for="file-upload" class="file-uploader bg-secondary bg-opacity-25">
+                                    <img src="../../../assets/images/icons/cloud-arrow-up.svg" alt="" width="30px"
+                                        height="20px">
+                                    <span>Uploaded Attachments</span>
+                                </label>
+                                @if (selectedFilesBase64.length !== 0) {
+                                <ul>
+                                    @for (file of selectedFilesBase64; track i; let i = $index) {
+                                    <li>
+                                        <a class="text-primary text-decoration-underline pointer" role="button"
+                                            (click)="downloadSingleAttachment(i)">{{file?.documentName}}</a>
+                                    </li>
+                                    }
+                                </ul>
+                                }
+                                <input disabled type="file" id="file-upload" [hidden]="true" multiple />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+
+            <!-- Replace your address information section with this -->
+            <div class="accordion-section">
+                <div class="accordion-header" (click)="toggleSection('addressInfo')">
+                    <div class="accordion-title">
+                        <div class="title-row d-flex align-items-center">
+                            <i class="bi bi-geo-alt me-2"></i>
+                            <span>Destination Details</span>
+                        </div>
+                        <div class="accordion-subtitle">Shipping and billing address details</div>
+                    </div>
+                    <button type="button" class="accordion-toggle" [class.expanded]="expandedSections().addressInfo">
+                        <span [innerHTML]="expandedSections().addressInfo ? 'Show Less' : 'Show More'"></span>
+                        <i class="bi" [class.bi-chevron-up]="expandedSections().addressInfo"
+                            [class.bi-chevron-down]="!expandedSections().addressInfo"></i>
+                    </button>
+                </div>
+                @if (expandedSections().addressInfo) {
+                <div class="accordion-content" [class.expanded]="expandedSections().addressInfo">
+                    <!-- <app-address-information [formGroup]="challanFormGroup" [destinationType]="destinationType"
+                        [isRegistered]="isRegistered" [destinationPlants]="destinationPlants()" [vendors]="vendors()"
+                        [customers]="customers()" (plantSelected)="onPlantSelection($event)"
+                        (vendorSelected)="onVendorSelection($event)" (customerSelected)="onCustomerSelection($event)">
+                    </app-address-information> -->
+                    <div class="row">
+                        <div class="custom-form-input">
+                            <label for="">Where you want to ship your goods? <span class="text-danger">*</span></label>
+                            <div class="d-flex gap-4">
+                                <div class="destination-type">
+                                    <input type="radio" class="input-field" id="plant" value="Plant"
+                                        name="destinationType" formControlName="destinationType">
+                                    <label for="plant">Plant</label>
+                                </div>
+                                <div class="destination-type">
+                                    <input type="radio" class="input-field" id="vendor" value="Vendor"
+                                        name="destinationType" formControlName="destinationType">
+                                    <label for="vendor">Vendor</label>
+
+                                </div>
+                                <div class="destination-type">
+                                    <input type="radio" class="input-field" id="u-vendor" value="Unregistered Vendor"
+                                        name="destinationType" formControlName="destinationType">
+                                    <label for="u-vendor">Unregistered Vendor</label>
+
+                                </div>
+                                <div class="destination-type">
+                                    <input type="radio" class="input-field" id="customer" value="Customer"
+                                        name="destinationType" formControlName="destinationType">
+                                    <label for="customer">Customer</label>
+
+                                </div>
+                                <div class="destination-type">
+                                    <input type="radio" class="input-field" id="u-customer"
+                                        value="Unregistered Customer" name="destinationType"
+                                        formControlName="destinationType">
+                                    <label for="u-customer">Unregistered Customer</label>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="dynamic-form-row">
+
+
+                            @switch (destinationType) {
+                            @case ('Plant') {
+
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Plant Code<span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" formControlName="destinationCode" readonly />
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Plant Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" readonly formControlName="destinationName" />
+                                </div>
+                            </div>
+                            }
+                            @case ('Vendor') {
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Vendor Code<span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" formControlName="destinationCode" readonly />
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Vendor Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" readonly formControlName="destinationName" />
+                                </div>
+                            </div>
+                            }
+                            @case ('Unregistered Vendor') {
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Vendor Code<span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" formControlName="destinationCode" />
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Vendor Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" readonly formControlName="destinationName" />
+                                </div>
+                            </div>
+                            }
+                            @case ('Customer') {
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Customer Code<span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" formControlName="destinationCode" readonly />
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Customer Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" readonly formControlName="destinationName" />
+                                </div>
+                            </div>
+                            }
+                            @case ('Unregistered Customer') {
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Customer Code<span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" formControlName="destinationCode" readonly />
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Customer Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" readonly formControlName="destinationName" />
+                                </div>
+                            </div>
+                            }
+                            }
+
+
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Address 1 <span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" readonly
+                                        formControlName="destinationAddress1" />
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Adress 2 <span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" readonly
+                                        formControlName="destinationAddress2" />
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">City @if (!isRegistered) {<span class="text-danger">*</span>}</label>
+                                    <input type="text" class="input-field" readonly formControlName="destinationCity" />
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">State @if (!isRegistered) {<span class="text-danger">*</span>}</label>
+                                    <input type="text" class="input-field" readonly
+                                        formControlName="destinationState" />
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Postal Code @if (!isRegistered) {<span
+                                            class="text-danger">*</span>}</label>
+                                    <input type="text" class="input-field" readonly
+                                        formControlName="destinationPostalCode" />
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">GSTIN No.@if (!isRegistered) {<span
+                                            class="text-danger">*</span>}</label>
+                                    <input type="text" class="input-field" readonly
+                                        formControlName="destinationGstin" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                }
+            </div>
+
+            <div class="accordion-section">
+                <div class="accordion-header" (click)="toggleSection('transporterDetails')">
+                    <div class="accordion-title">
+                        <div class="title-row d-flex align-items-center">
+                            <i class="bi bi-truck me-2"></i>
+                            <span>Transporter Details</span>
+                        </div>
+                        <div class="accordion-subtitle">Transportation and freight information</div>
+                    </div>
+                    <button type="button" class="accordion-toggle"
+                        [class.expanded]="expandedSections().transporterDetails">
+                        <span [innerHTML]="expandedSections().transporterDetails ? 'Show Less' : 'Show More'"></span>
+                        <i class="bi" [class.bi-chevron-up]="expandedSections().transporterDetails"
+                            [class.bi-chevron-down]="!expandedSections().transporterDetails"></i>
+                    </button>
+                </div>
+                @if (expandedSections().transporterDetails) {
+                <div class="accordion-content" [class.expanded]="expandedSections().transporterDetails">
+                    <!-- <app-transporter-details [formGroup]="challanFormGroup" [transporterType]="transporterType"
+                        [isVehicleNumberValid]="isVehicleNumberValid" [transporters]="transporters()"
+                        [vehicleSizes]="vehicleSizes()" [modeOfTransports]="modeOfTransports()"
+                        (transporterTypeChange)="onTransporterChange($event)"
+                        (vehicleNumberValidation)="validateVehicleNumber($event)"
+                        (transporterSelected)="onTransporterSelection($event)">
+                    </app-transporter-details> -->
+                    <div class="row">
+                        <div class="custom-form-input">
+                            <!-- <h4 class="fw-bold">Transporter Details</h4> -->
+                            <div class="d-flex gap-4">
+                                <div class="transporter-type">
+                                    <input type="radio" class="input-field" id="registered" name="transporterType"
+                                        checked value="Registered" formControlName="transporterType">
+                                    <label for="registered">Registered Transport</label>
+                                </div>
+                                <div class="destination-type">
+                                    <input type="radio" class="input-field" id="unregistered" name="transporterType"
+                                        value="Unregistered" formControlName="transporterType">
+                                    <label for="unregistered">Unregistered Transport</label>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="dynamic-form-row">
+
+
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Transporter Code<span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" formControlName="transporterCode" readonly />
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Transporter Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" formControlName="transporterName" readonly />
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">GSTIN</label>
+                                    <input type="text" class="input-field" formControlName="transporterGstin"
+                                        readonly />
+                                </div>
+                            </div>
+
+
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Vehicle No.<span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" formControlName="vehicleNumber" readonly />
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Vehicle Size<span class="text-danger">*</span></label>
+                                    <input type="text" class="input-field" formControlName="vehicleSize" readonly />
+                                </div>
+                            </div>
+
+
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">FRLR No.@switch (transporterType) {
+                                        @case ('Registered') {<span class="text-danger">*</span>}
+                                        }</label>
+                                    <input type="text" class="input-field" formControlName="frlrNumber" readonly />
+                                </div>
+                            </div>
+
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">FRLR Date.@switch (transporterType) {
+                                        @case ('Registered') {<span class="text-danger">*</span>}
+                                        }</label>
+                                    <div class="input-group datepicker">
+                                        <input class="form-control" [formControl]="frlrDate" placeholder="yyyy-mm-dd"
+                                            name="frlrNumber" [autoClose]="true" ngbDatepicker
+                                            #frlrDt="ngbDatepicker" />
+                                        <button class="btn btn-outline-secondary bi bi-calendar3" type="button">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="">
+                                <div class="custom-form-input">
+                                    <label for="">Trip distance</label>
+                                    <input type="number" class="input-field" formControlName="travellingDistance"
+                                        readonly />
+                                </div>
+                            </div>
+                            <div>
+                                <div class="custom-form-input">
+                                    <label for="">Mode of Transport<span class="text-danger">*</span></label>
+                                    <ng-select class="input-field" formControlName="modeOfTransport" [readonly]="true">
+                                        @for (type of modeOfTransports(); track $index) {
+                                        <ng-option [value]="type?.code">
+                                            {{type?.value}}</ng-option>
+                                        }
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+
+
+
+            <div class="accordion-section">
+                <div class="accordion-header" (click)="toggleSection('ewayBillDetails')">
+                    <div class="accordion-title">
+                        <div class="title-row d-flex align-items-center">
+                            <i class="bi bi-truck me-2"></i>
+                            <span>Eway Bill Details</span>
+                        </div>
+                        <div class="accordion-subtitle">Storing eWay Bill details manually in the system</div>
+                    </div>
+                    <button type="button" class="accordion-toggle"
+                        [class.expanded]="expandedSections().ewayBillDetails">
+                        <span [innerHTML]="expandedSections().ewayBillDetails ? 'Show Less' : 'Show More'"></span>
+                        <i class="bi" [class.bi-chevron-up]="expandedSections().ewayBillDetails"
+                            [class.bi-chevron-down]="!expandedSections().ewayBillDetails"></i>
+                    </button>
+                </div>
+                @if (expandedSections().ewayBillDetails) {
+                <div class="accordion-content" [class.expanded]="expandedSections().ewayBillDetails">
+                    <div class="dynamic-form-row" formGroupName="ewayBillFormGroup">
+
+                        <div class="">
+                            <div class="custom-form-input">
+                                <label for="">e-Way Bill No.<span class="text-danger">*</span></label>
+                                <input [readonly]="eWayBillCreationFlag === 'API'" type="number" class="input-field"
+                                    formControlName="eWayBillNumber" [maxlength]="12" (input)="onNumberInput($event)"
+                                    (keydown)="blockInvalid($event)">
+                                @if (ewaybillForm.get("eWayBillNumber")?.value &&
+                                ewaybillForm.get("eWayBillNumber")?.value.toString().length
+                                < 12) { <small class="text-danger">Eway bill length must be 12</small>
+                                    }
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="custom-form-input">
+                                <label for="">e-Way Bill Type<span class="text-danger">*</span></label>
+                                <input type="text" class="input-field" formControlName="eWayBillType" [disabled]="true"
+                                    readonly style="field-sizing: content;" />
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="custom-form-input">
+                                <label for="">Total Amount<span class="text-danger">*</span></label>
+                                <input type="number" class="input-field" formControlName="eWayBillAmount" readonly />
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <div class="custom-form-input">
+                                <label for="">eWay Bill Generation Date <span class="text-danger">*</span></label>
+                                <div class="input-group datepicker">
+                                    <input [readonly]="eWayBillCreationFlag === 'API'" class="form-control"
+                                        [formControl]="ewayBillDate" [maxDate]="todayNgb"
+                                        (dateSelect)="onDateSelect($event, 'ewayBillDate')" placeholder="yyyy-mm-dd"
+                                        name="ewayBillDate" [autoClose]="true" ngbDatepicker
+                                        #ewayBillDt="ngbDatepicker" />
+
+                                    @if (eWayBillCreationFlag !== 'API') {
+
+                                    <button class="btn btn-outline-secondary bi bi-calendar3"
+                                        (click)="ewayBillDt.toggle()" type="button">
+                                    </button>
+                                    <button class="btn btn-outline-danger bi bi-x-circle" type="button"
+                                        (click)="clearDate()"></button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+
+                            <div class="custom-form-input">
+                                <label for="" class="d-block">e-Way Bill Document <small class="text-danger"> (Upload
+                                        limit: 1MB)</small><span class="text-danger">*</span></label>
+                                <label for="ewaybill-upload" class="file-uploader">
+                                    <img src="../../../assets/images/icons/cloud-arrow-up.svg" alt="" width="30px"
+                                        height="20px">
+                                    <span>Browse to Upload Files</span>
+                                </label>
+                                @if (uploadedEwayBillDocument) {
+
+                                <ul>
+                                    <li>
+                                        <a class="text-primary text-decoration-underline pointer" role="button"
+                                            (click)="downloadUploadedEwayBill()">{{uploadedEwayBillDocument?.eWayBillDocumentName}}</a>
+                                    </li>
+
+                                </ul>
+                                }
+                                <input type="file" id="ewaybill-upload" (change)="onEwayBillDocumentUpload($event)"
+                                    [hidden]="true" [disabled]="eWayBillCreationFlag === 'API'" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                }
+            </div>
+
+            <div class="accordion-section">
+                <div class="accordion-header" (click)="toggleSection('itemDetails')">
+                    <div class="accordion-title">
+                        <div class="title-row d-flex align-items-center">
+                            <i class="bi bi-list-ul me-2"></i>
+                            <span>Item Details</span>
+                        </div>
+                        <div class="accordion-subtitle">Add items to the delivery challan</div>
+                    </div>
+                    <button type="button" class="accordion-toggle" [class.expanded]="expandedSections().itemDetails">
+                        <span [innerHTML]="expandedSections().itemDetails ? 'Show Less' : 'Show More'"></span>
+                        <i class="bi" [class.bi-chevron-up]="expandedSections().itemDetails"
+                            [class.bi-chevron-down]="!expandedSections().itemDetails"></i>
+                    </button>
+                </div>
+                @if (expandedSections().itemDetails) {
+                <div class="accordion-content" [class.expanded]="expandedSections().itemDetails">
+                    <!-- <app-item-details [formGroup]="challanFormGroup" [itemList]="itemList"
+                        (addItem)="addRowToItemlist()" (removeItem)="removeItem($event)">
+                    </app-item-details> -->
+                    <div class="">
+                        <div class="custom-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Model Number</th>
+                                        <th>HSN Code</th>
+                                        <th>UOM</th>
+                                        <th>Quantity</th>
+                                        <th>Unit Price</th>
+                                        <th>CGST(%)</th>
+                                        <th>CGST(INR)</th>
+                                        <th>SGST(%)</th>
+                                        <th>SGST(INR)</th>
+                                        <th>IGST(%)</th>
+                                        <th>IGST(INR)</th>
+                                        <th>Amount(INR)</th>
+                                    </tr>
+                                </thead>
+                                <tbody formArrayName="dcItemDetails" class="dc-items">
+                                    <tr *ngFor="let item of itemList.controls; let i = index;" [formGroupName]="i">
+                                        <td>
+                                            <div class="custom-form-input mb-0">
+                                                <input type="text" class="input-field"
+                                                    formControlName="descriptionModelNumber" readonly>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="custom-form-input mb-0">
+                                                <input type="text" class="input-field text-end"
+                                                    formControlName="hsnCode" readonly>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="custom-form-input mb-0">
+                                                <input type="text" class="input-field" formControlName="uom" readonly>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="custom-form-input mb-0">
+                                                <input type="text" class="input-field text-end"
+                                                    formControlName="quantity" readonly>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="custom-form-input mb-0">
+                                                <input type="text" class="input-field text-end"
+                                                    formControlName="unitPrice" readonly>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="custom-form-input mb-0">
+                                                <input type="text" class="input-field text-end"
+                                                    formControlName="cgstPercentage" readonly>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="custom-form-input mb-0">
+                                                <input type="text" class="input-field text-end"
+                                                    formControlName="cgstAmount" readonly>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="custom-form-input mb-0">
+                                                <input type="text" class="input-field text-end"
+                                                    formControlName="sgstPercentage" readonly>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="custom-form-input mb-0">
+                                                <input type="text" class="input-field text-end"
+                                                    formControlName="sgstAmount" readonly>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="custom-form-input mb-0">
+                                                <input type="text" class="input-field text-end"
+                                                    formControlName="igstPercentage" readonly>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="custom-form-input mb-0">
+                                                <input type="text" class="input-field text-end"
+                                                    formControlName="igstAmount" readonly>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="custom-form-input mb-0">
+                                                <input type="text" class="input-field text-end"
+                                                    formControlName="totalAmount" readonly>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                }
+            </div>
+
+        </form>
+    </div>
+</div>
+}
+@else {
+<div class="progress-bar-wrapper">
+    <div class="progress-bar-indeterminate"></div>
+</div>
+}

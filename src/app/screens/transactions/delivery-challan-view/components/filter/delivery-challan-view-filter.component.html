@@ -1,0 +1,74 @@
+<div class="filters-box">
+    <div class="dynamic-form-row row-gap-0">
+        <div class="">
+            <div class="custom-form-input" style="width: 150px;">
+                <label for="">From Date</label>
+                <div class="input-group datepicker">
+                    <input class="form-control " [(ngModel)]="fromDate" placeholder="yyyy-mm-dd" name="fromDt"
+                        [autoClose]="true" ngbDatepicker #fromDt="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="fromDt.toggle()" type="button">
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="">
+            <div class="custom-form-input" style="width: 150px;">
+                <label for="">To Date</label>
+                <div class="input-group datepicker">
+                    <input class="form-control" [(ngModel)]="toDate" placeholder="yyyy-mm-dd" name="toDate"
+                        [autoClose]="true" ngbDatepicker #toDt="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="toDt.toggle()" type="button">
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Plant Code</label>
+                <ng-select class="input-field" [(ngModel)]="plantCodes" placeholder="Select Plant Code"
+                    [multiple]="true">
+                    @for (code of plantCodesFromUMS; track $index) {
+                    <ng-option [value]="code">{{code}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Challan Number</label>
+                <!-- <input type="text" class="input-field" /> -->
+                <ng-select class="input-field" [(ngModel)]="challanNumber" placeholder="">
+                    @for (code of filters?.ChallanNumber; track $index) {
+                    <ng-option [value]="code">{{code}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Challan Status</label>
+                <ng-select class="input-field" [(ngModel)]="challanStatus" placeholder="" [multiple]="true">
+                    @for (code of filters?.ChallanStatus; track $index) {
+                    <ng-option [value]="code">{{code?.split("_").join(" ")}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+        <div class=" d-flex gap-3 align-items-center">
+            <div class="custom-form-input">
+                <label for="" class="d-block">&nbsp;</label>
+                <div class="d-flex">
+                    <button class="custom-button-filters" (click)="handleSearch()" type="button"
+                        [disabled]="plantCodes() === undefined || plantCodes().length === 0">Search</button>
+                    <button class="custom-button-filters ms-2" (click)="onClearFilter()"
+                        [disabled]="fromDate() === undefined && toDate() === undefined && plantCodes() === undefined && challanStatus() === undefined && challanNumber() === undefined">Clear</button>
+                    <button class="custom-button-export ms-2" (click)="exportData()">
+                        <img src="assets/images/icons/excel.svg" alt="export" /> Export
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="modal-header text-center">
+    <h5 class="modal-title">Audit Logs - ({{ challanNumber }})</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+</div>
+
+<div class="modal-body">
+    <div *ngIf="!loadSpinner() && auditDetails().length > 0">
+        <table class="table">
+            <thead>
+                <tr>
+                    <!-- <th>ID</th> -->
+                    <th>Action By</th>
+                    <th>Transaction Type</th>
+                    <th>Action Type</th>
+                    <!-- <th>Action By</th> -->
+                    <th>Action On</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let audit of auditDetails()">
+                    <!-- <td>{{ audit.id }}</td> -->
+                    <td> {{ audit.auditUserDetails?.name || audit.actionBy }} </td>
+                    <td>{{ audit.transactionType }}</td>
+                    <td>{{ audit.actionType }}</td>
+                    <!-- <td>{{ audit.actionBy }}</td> -->
+                    <td>{{ audit.actionOn | date: 'yyyy-MM-dd hh:mm a'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="!loadSpinner() && auditDetails().length === 0" class="text-center">
+        No audit logs found.
+    </div>
+</div>

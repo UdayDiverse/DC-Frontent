@@ -1,0 +1,6 @@
+.wrap-text {
+  max-width: 500px; /* Set your max width */
+  white-space: normal; /* Allows text to wrap normally */
+  word-wrap: break-word; /* Breaks long words if needed */
+  overflow-wrap: break-word; /* Modern equivalent for breaking long words */
+}
