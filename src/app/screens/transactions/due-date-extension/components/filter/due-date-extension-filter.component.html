@@ -50,7 +50,7 @@
         <div class="">
             <div class="custom-form-input">
                 <label for="">Challan Status</label>
-                <ng-select class="input-field" [(ngModel)]="challanStatus" placeholder="Select Challan Status"
+                <ng-select class="input-field" [(ngModel)]="challanStatus" placeholder="Challan Status"
                     [multiple]="true">
                     @for (code of filters?.ChallanStatus; track $index) {
                     <ng-option [value]="code">{{code?.split("_").join(" ")}}</ng-option>
