@@ -19,6 +19,7 @@
                 <th (click)="sortData('vehicleSize')">Vehicle Size</th>
                 <th (click)="sortData('')">FRLR Number</th>
                 <th (click)="sortData('')">FRLR Date</th>
+                <th (click)="sortData('controlOutgoingRemarks')">Remarks</th>
                 <th class="text-center">Action</th>
             </tr>
         </thead>
@@ -66,9 +67,9 @@
                 </td>
                 <td>
                     <div class="custom-form-input">
-                        <input type="text" class="custom-input-field" style="width: 100px;" (input)="onFieldEdit(i)"
-                            [(ngModel)]="editableArray[i].vehicleNumber" [maxlength]="10"
-                            (keypress)="allowAlphaNumeric($event)" />
+                        <input type="text" class="custom-input-field" style="width: 100px; text-transform: uppercase;"
+                            (input)="onFieldEdit(i)" [(ngModel)]="editableArray[i].vehicleNumber" [minlength]="8"
+                            [maxlength]="10" (keypress)="allowAlphaNumeric($event)" />
                     </div>
                 </td>
                 <td>
@@ -100,6 +101,11 @@
                                 type="button">
                             </button>
                         </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="custom-form-input">
+                        <textarea type="text" class="custom-input-field" [(ngModel)]="editableArray[i].controlOutgoingRemarks" style="width: 200px; height: 31px;"></textarea>
                     </div>
                 </td>
                 <td class="text-center">

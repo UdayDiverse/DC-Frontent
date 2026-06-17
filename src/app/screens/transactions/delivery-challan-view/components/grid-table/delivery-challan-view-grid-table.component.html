@@ -89,7 +89,24 @@
         </td>
         <td>{{challan?.status?.split("_").join(" ")}}</td>
         <td>{{challan?.approverByDetails?.name}}</td>
-        <td>{{challan?.approverRemarks}}</td>
+        
+        <td class="pointer" container="body">
+          <span placement="top" [ngbTooltip]="approverRemarksTooltip" tooltipClass="table-datetime-popover">
+            <u
+              style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block;">
+              {{ challan?.approverRemarks }}
+            </u>
+          </span>
+          <ng-template #approverRemarksTooltip>
+            <div class="">
+              <div class="content-row">
+                <span>Approver Remarks</span>
+                <span>{{ challan?.approverRemarks }}</span>
+              </div>
+            </div>
+          </ng-template>
+        </td>
+
         <td class="text-center ">
           <img class="pointer" src="../../../assets/images/icons/cloud-arrow-down.svg" alt="" width="15px" height="20px"
             (click)="openPopup(attachmentPopup, challan?.id)">

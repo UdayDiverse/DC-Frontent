@@ -95,7 +95,7 @@ export class ControlOutgoingGridTableComponent {
   }
 
   allowAlphaNumeric(event: KeyboardEvent) {
-    const pattern = /^[a-zA-Z0-9]*$/;
+    const pattern = /^[a-zA-Z0-9]$/;
     const inputChar = String.fromCharCode(event.charCode);
     if (!pattern.test(inputChar)) {
       event.preventDefault();
@@ -140,6 +140,7 @@ export class ControlOutgoingGridTableComponent {
     this.editableArray[i].vehicleSize = '';
     this.editableArray[i].frlrNumber = '';
     this.editableArray[i].frlrDate = null;
+    this.editableArray[i].controlOutgoingRemarks = '';
   }
 
   onTransporterCodeChange(transporter: any, i: number) {
@@ -179,7 +180,8 @@ export class ControlOutgoingGridTableComponent {
         row?.vehicleNumber === '' ||
         row?.vehicleSize === '' ||
         row?.frlrNumber === '' ||
-        row?.frlrDate === null)
+        row?.frlrDate === null ||
+        row?.controlOutgoingRemarks === '')
     ) {
       this.toastr.error(
         'All fields are required in case of Registered Transporter'
@@ -194,9 +196,9 @@ export class ControlOutgoingGridTableComponent {
       transporterCode: row?.transporterCode,
       transporterType: row?.transporterType,
       transporterName: row?.transporterName,
-      vehicleNumber: row?.vehicleNumber,
+      vehicleNumber: row?.vehicleNumber.toUpperCase(),
       vehicleSize: row?.vehicleSize,
-      controlOutgoingRemarks: '',
+      controlOutgoingRemarks: row?.controlOutgoingRemarks,
       actionBy: this.userService.getUserId(),
     };
 
