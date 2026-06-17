@@ -9,6 +9,7 @@
                     {{ rowSelectionService.isVehicleFilterApplied() ? 'Select All' : 'Select' }}
                 </th>
                 <th (click)="sortData('documentType')">Document Type</th>
+                <th (click)="sortData('documentDate')">Document Date</th>
                 <th (click)="sortData('documentNo')">Document Number</th>
                 <th (click)="sortData('plantCode')">Plant Code</th>
                 <th (click)="sortData('transporterCode')">Transporter Type <span class="text-danger">*</span></th>
@@ -32,6 +33,7 @@
                         [disabled]="!rowSelectionService.isRowSelectable(controlOutGoing)" />
                 </td>
                 <td>{{controlOutGoing?.documentType}}</td>
+                <td>{{dateTimeSplit(controlOutGoing?.documentDate)}}</td>
                 <td>{{controlOutGoing?.documentNo}}</td>
                 <td>{{controlOutGoing?.plantCode}}</td>
                 <td>

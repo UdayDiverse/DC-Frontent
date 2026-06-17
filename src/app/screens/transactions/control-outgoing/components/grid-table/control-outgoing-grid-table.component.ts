@@ -101,6 +101,10 @@ export class ControlOutgoingGridTableComponent {
       event.preventDefault();
     }
   }
+  dateTimeSplit(date: any) {
+    let res = date.split('T');
+    return res[0];
+  }
 
   private getVehicleSizes() {
     this.lookupService
@@ -203,9 +207,9 @@ export class ControlOutgoingGridTableComponent {
       row.documentType === 'RGP' || row.documentType === 'NRGP'
         ? this.controlOutgoingService.dcControlOutgoing(row.documentNo, payload)
         : this.controlOutgoingService.updateControlOutgoing(
-            row.interfaceId,
-            payload
-          );
+          row.interfaceId,
+          payload
+        );
 
     request$.subscribe({
       next: (res: any) => {

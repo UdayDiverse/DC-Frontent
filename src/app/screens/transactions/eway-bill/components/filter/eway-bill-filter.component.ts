@@ -6,6 +6,7 @@ import {
   Input,
   Output,
   signal,
+  OnInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -32,7 +33,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './eway-bill-filter.component.html',
   styleUrl: './eway-bill-filter.component.scss',
 })
-export class EwayBillFilterComponent {
+export class EwayBillFilterComponent implements OnInit {
   @Input() filters: any = [];
   @Output() getData: EventEmitter<any> = new EventEmitter();
   @Output() exportEvent: EventEmitter<any> = new EventEmitter();
@@ -45,15 +46,12 @@ export class EwayBillFilterComponent {
   toastr = inject(ToastrService);
   calendar = inject(NgbCalendar);
   todayNgb = this.calendar.getToday();
-  yesterdayNgb = this.calendar.getPrev(this.todayNgb, 'd', 1);
-  tomorrowNgb = this.calendar.getNext(this.todayNgb, 'd', 1);
-  firstOfMonth = new Date().toISOString().slice(0, 8) + '01';
-  fromDate = signal<NgbDate>(
-    this.firstOfMonth
-      ? this.convertToNgbDate(this.firstOfMonth)
-      : this.yesterdayNgb
-  );
-  toDate = signal<NgbDate>(this.tomorrowNgb);
+  fifteenDaysAgo = this.calendar.getPrev(this.todayNgb, 'd', 15);
+  fromDate = signal<NgbDate>(this.fifteenDaysAgo);
+  toDate = signal<NgbDate>(this.todayNgb);
+  ngOnInit() {
+    this.handleSearch();
+  }
 
   convertNgbToDate(date: NgbDate) {
     const month = Number(date.month) < 10 ? '0' + date.month : date.month;
@@ -99,17 +97,17 @@ export class EwayBillFilterComponent {
   }
 
   onClearFilter() {
-    this.fromDate.set(this.convertToNgbDate(this.firstOfMonth));
-    this.toDate.set(this.tomorrowNgb);
+    this.fromDate.set(this.fifteenDaysAgo);
+    this.toDate.set(this.todayNgb);
     this.plantCodes.set(this.plantCodesFromUMS);
     this.challanStatus.set(undefined);
     this.challanNumber.set(undefined);
     let obj = {
-      fromDate: '',
-      toDate: '',
+      fromDate: this.convertNgbToDate(this.fromDate()),
+      toDate: this.convertNgbToDate(this.toDate()),
       plantCode: '',
       challanStatus: '',
-      challannumber: '',
+      challanNumber: '',
     };
     this.getData.emit(obj);
   }
