@@ -16,15 +16,36 @@
 
 // For DIPL Server
 
+//old
+// export const environment = {
+//   production: false,
+//   apiPath: '',
+//   commonAPI: 'http://111.93.61.251:8086/',
+//   dcURL: 'http://111.93.61.253:9097/',
+//   dcAPIURL: 'http://111.93.61.253:8091/api/v1/',
+//   umsURL: 'http://111.93.61.253:3252',
+//   umsAPIURL: 'http://111.93.61.253:8087/api/',
+// };
+
+//New
 export const environment = {
   production: false,
   apiPath: '',
-  commonAPI: 'http://111.93.61.251:8086/',
-  dcURL: 'http://111.93.61.253:9097/',
-  dcAPIURL: 'http://111.93.61.253:8091/api/v1/',
-  umsURL: 'http://111.93.61.253:3252',
-  umsAPIURL: 'http://111.93.61.253:8087/api/',
+  commonAPI: 'https://ilnerpqas.lge.com:8086/',
+  dcURL: 'http://10.101.0.235:9097/',
+  dcAPIURL: 'http://10.101.0.235:8098/api/v1/',
+  umsURL:  'https://10.101.0.235:3252',
+  umsAPIURL: 'https://ilnerpqas.lge.com:8087/api/',
 };
+
+//OLD
+// {
+//   "commonAPI": "http://111.93.61.253:8086/",
+//   "dcURL": "http://111.93.61.253:9097/",
+//   "dcAPIURL": "http://111.93.61.253:8091/api/v1/",
+//   "umsURL": "http://111.93.61.253:3252",
+//   "umsAPIURL": "http://111.93.61.253:8087/api/"
+//  }
 
 /*
  * For easier debugging in development mode, you can import the following file
