@@ -1,0 +1,92 @@
+<div class="filters-box">
+    <div class="dynamic-form-row row-gap-0">
+        <div class="">
+            <div class="custom-form-input" style="width: 150px;">
+                <label for="">From Date</label>
+                <div class="input-group datepicker">
+                    <input class="form-control" [(ngModel)]="fromDate" placeholder="yyyy-mm-dd" name="fromDt"
+                        [autoClose]="true" ngbDatepicker #fromDt="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="fromDt.toggle()" type="button">
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="">
+            <div class="custom-form-input"  style="width: 150px;">
+                <label for="">To Date</label>
+                <div class="input-group datepicker">
+                    <input class="form-control" [(ngModel)]="toDate" placeholder="yyyy-mm-dd" name="toDate"
+                        [autoClose]="true" ngbDatepicker #toDt="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="toDt.toggle()" type="button">
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Plant Code</label>
+                <ng-select class="input-field" [(ngModel)]="plantCodes" placeholder="Select Plant Code"
+                    [multiple]="true">
+                    @for (code of plantCodesFromUMS; track $index) {
+                    <ng-option [value]="code">{{code}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Document Type</label>
+                <ng-select class="input-field" [(ngModel)]="documentType" placeholder="Select Doucument Type">
+                    @for (code of filters?.DocumentType; track $index) {
+                    <ng-option [value]="code">{{code}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Document Number</label>
+                <ng-select class="input-field" [(ngModel)]="documentNo" placeholder="Select Document Number">
+                    @for (code of filters?.DocumentNo; track $index) {
+                    <ng-option [value]="code">{{code}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Transporter Code</label>
+                <ng-select class="input-field" [(ngModel)]="transporterCode" placeholder="Select Transporter Code">
+                    @for (code of filters?.TransporterCode; track $index) {
+                    <ng-option [value]="code">{{code}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Vehicle Number</label>
+                <ng-select class="input-field" [(ngModel)]="vehicleNumber" placeholder="Select Vehicle Number">
+                    @for (code of filters?.VehicleNumber; track $index) {
+                    <ng-option [value]="code">{{code}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+
+
+        <div class="col-lg-2 d-flex gap-3 align-items-center">
+            <div class="custom-form-input">
+                <label for="" class="d-block">&nbsp;</label>
+                <div class="d-flex">
+                    <button class="custom-button-filters" (click)="handleSearch()" type="button"
+                        [disabled]="plantCodes() === undefined || plantCodes().length === 0">Search</button>
+                    <button class="custom-button-filters ms-2" (click)="onClearFilter()"
+                        [disabled]="!fromDate() && !toDate() && !documentType() && !documentNo() && !transporterCode() && !plantCodes() && !vehicleNumber()">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

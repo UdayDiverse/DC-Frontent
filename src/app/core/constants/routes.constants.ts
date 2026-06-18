@@ -39,5 +39,6 @@ export const ROUTEPATHS = {
     FREIGHT_OUTBOUND: 'reports/freight-outbound',
     ERROR_LOGGING: 'reports/error-logging',
     EMAIL: 'reports/email',
-  },
+    GATE_OUT_REPORT: 'reports/gate-out-report'
+  }
 };

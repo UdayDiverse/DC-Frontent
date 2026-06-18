@@ -33,6 +33,7 @@ import { UserBlockedComponent } from './layout/user-blocked/user-blocked.compone
 import { FreightOutboundComponent } from './screens/reports/freight-outbound/freight-outbound.component';
 import { EmailReportComponent } from './screens/reports/email/email.component';
 import { GateInActionComponent } from './screens/transactions/gate-in/gate-in-action/gate-in-action.component';
+import { GateOutReportComponent } from './screens/reports/gate-out-report/gate-out-report.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: ROUTES.MASTERS.HOME, pathMatch: 'full' },
@@ -135,6 +136,11 @@ export const routes: Routes = [
   {
     path: ROUTES.REPORTS.EMAIL,
     component: EmailReportComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: ROUTES.REPORTS.GATE_OUT_REPORT,
+    component: GateOutReportComponent,
     canActivate: [AuthGuard],
   },
   {

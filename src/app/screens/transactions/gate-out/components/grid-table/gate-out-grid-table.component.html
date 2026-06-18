@@ -19,7 +19,7 @@
                 <th (click)="sortData('vehicleSize')">Vehicle Size</th>
                 <th (click)="sortData('frlrNumber')">FRLR Number</th>
                 <th (click)="sortData('frlrDate')">FRLR Date</th>
-                <!-- <th (click)="sortData('')">Remarks</th> -->
+                <th >Status</th>  
             </tr>
         </thead>
         <tbody>
@@ -44,6 +44,7 @@
                 <td>{{document?.vehicleSize}}</td>
                 <td>{{document?.frlrNumber}}</td>
                 <td>{{document?.frlrDate | date: 'yyyy-MM-dd'}}</td>
+                <td>{{document?.status}}</td>
             </tr>
             } @empty {
             <tr>
