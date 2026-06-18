@@ -7,6 +7,7 @@ import {
   Output,
   signal,
   SimpleChanges,
+  OnInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -14,7 +15,6 @@ import { LoggedInUserService } from '../../../../../core/service/user.service';
 import {
   NgbCalendar,
   NgbDate,
-  NgbDatepicker,
   NgbDatepickerModule,
   NgbDateStruct,
   NgbModule,
@@ -35,7 +35,7 @@ import { GateOutService } from '../../../../../core/service/gate-out.service';
   templateUrl: './gate-out-filter.component.html',
   styleUrl: './gate-out-filter.component.scss',
 })
-export class GateOutFilterComponent {
+export class GateOutFilterComponent implements OnInit {
   @Input() filters: any = [];
   @Output() getData: EventEmitter<any> = new EventEmitter();
   documentTypeFilters: any[] = [];
@@ -53,11 +53,13 @@ export class GateOutFilterComponent {
   toastr = inject(ToastrService);
   calendar = inject(NgbCalendar);
   todayNgb = this.calendar.getToday();
-  tomorrorwNgb = this.calendar.getNext(this.todayNgb, 'd', 1);
-  firstOfMonth = new Date().toISOString().slice(0, 8) + '01';
-  fromDate = signal<NgbDate | null>(null);
-  toDate = signal<NgbDate | null>(null);
+  fifteenDaysAgo = this.calendar.getPrev(this.todayNgb, 'd', 15);
+  fromDate = signal<NgbDate | null>(this.fifteenDaysAgo);
+  toDate = signal<NgbDate | null>(this.todayNgb);
   gateOutService = inject(GateOutService);
+  ngOnInit() {
+    this.handleSearch();
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['filters']) {
@@ -90,15 +92,12 @@ export class GateOutFilterComponent {
     this.documentNo.set(undefined);
 
     this.gateOutService.getGateOutFilters(payload).subscribe((res: any) => {
-      console.log(res);
       this.transporterCodeFilters = res?.filters?.TransporterCode;
       this.vehicleNumberFilters = res?.filters?.VehicleNumber;
       this.documentNumberFilters = res?.filters?.challanNumbers;
     });
   }
   onTransporterCodeSelection(code: any) {
-    // console.log(do);
-
     const payload = {
       challanType: this.documentType(),
       transporterCode: this.transporterCode(),
@@ -112,7 +111,6 @@ export class GateOutFilterComponent {
     this.documentNo.set(undefined);
 
     this.gateOutService.getGateOutFilters(payload).subscribe((res: any) => {
-      console.log(res);
       this.vehicleNumberFilters = res?.filters?.VehicleNumber;
       this.documentNumberFilters = res?.filters?.challanNumbers;
     });
@@ -130,8 +128,6 @@ export class GateOutFilterComponent {
     this.documentNo.set(undefined);
 
     this.gateOutService.getGateOutFilters(payload).subscribe((res: any) => {
-      console.log(res);
-      // this.transporterCodeFilters = res?.TransporterCode;
       this.documentNumberFilters = res?.filters?.challanNumbers;
     });
   }
@@ -210,8 +206,8 @@ export class GateOutFilterComponent {
     this.vehicleNumber.set(undefined);
     this.status.set(undefined);
     this.plantCodes.set(this.plantCodesFromUMS);
-    this.fromDate.set(null);
-    this.toDate.set(null);
+    this.fromDate.set(this.fifteenDaysAgo);
+    this.toDate.set(this.todayNgb);
     let obj = {
       documentType: '',
       documentNo: '',
@@ -219,8 +215,8 @@ export class GateOutFilterComponent {
       vehicleNumber: '',
       status: '',
       plantCode: '',
-      fromDate: '',
-      toDate: '',
+      fromDate: this.convertNgbToDate(this.fromDate()),
+      toDate: this.convertNgbToDate(this.toDate()),
     };
     this.getData.emit(obj);
   }

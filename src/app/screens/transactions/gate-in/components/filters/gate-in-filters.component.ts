@@ -6,6 +6,7 @@ import {
   Input,
   Output,
   signal,
+  OnInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -31,18 +32,19 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './gate-in-filters.component.html',
   styleUrl: './gate-in-filters.component.scss',
 })
-export class GateInFiltersComponent {
+export class GateInFiltersComponent implements OnInit {
   @Input() filters: any = [];
   @Output() getData: EventEmitter<any> = new EventEmitter();
   challanNumber = signal(undefined);
   toastr = inject(ToastrService);
   calendar = inject(NgbCalendar);
   todayNgb = this.calendar.getToday();
-  yesterdayNgb = this.calendar.getPrev(this.todayNgb, 'd', 1);
-  tomorrowNgb = this.calendar.getNext(this.todayNgb, 'd', 1);
-  firstOfMonth = new Date().toISOString().slice(0, 8) + '01';
-  fromDate = signal<NgbDate>(this.todayNgb);
-  toDate = signal<NgbDate>(this.tomorrowNgb);
+  fifteenDaysAgo = this.calendar.getPrev(this.todayNgb, 'd', 15);
+  fromDate = signal<NgbDate>(this.fifteenDaysAgo);
+  toDate = signal<NgbDate>(this.todayNgb);
+  ngOnInit() {
+    this.handleSearch();
+  }
 
   convertNgbToDate(date: NgbDate) {
     const month = Number(date.month) < 10 ? '0' + date.month : date.month;
@@ -87,12 +89,12 @@ export class GateInFiltersComponent {
 
   onClearFilter() {
     this.challanNumber.set(undefined);
-    this.fromDate.set(this.todayNgb);
-    this.toDate.set(this.tomorrowNgb);
+    this.fromDate.set(this.fifteenDaysAgo);
+    this.toDate.set(this.todayNgb);
     let obj = {
       challannumber: '',
-      fromDate: '',
-      toDate: '',
+      fromDate: this.convertNgbToDate(this.fromDate()),
+      toDate: this.convertNgbToDate(this.toDate()),
     };
     this.getData.emit(obj);
   }

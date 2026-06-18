@@ -95,11 +95,15 @@ export class ControlOutgoingGridTableComponent {
   }
 
   allowAlphaNumeric(event: KeyboardEvent) {
-    const pattern = /^[a-zA-Z0-9]*$/;
+    const pattern = /^[a-zA-Z0-9]$/;
     const inputChar = String.fromCharCode(event.charCode);
     if (!pattern.test(inputChar)) {
       event.preventDefault();
     }
+  }
+  dateTimeSplit(date: any) {
+    let res = date.split('T');
+    return res[0];
   }
 
   private getVehicleSizes() {
@@ -136,6 +140,7 @@ export class ControlOutgoingGridTableComponent {
     this.editableArray[i].vehicleSize = '';
     this.editableArray[i].frlrNumber = '';
     this.editableArray[i].frlrDate = null;
+    this.editableArray[i].controlOutgoingRemarks = null;
   }
 
   onTransporterCodeChange(transporter: any, i: number) {
@@ -149,11 +154,21 @@ export class ControlOutgoingGridTableComponent {
     });
   }
 
+  // protected hasDataChanged(index: number): boolean {
+  //   return (
+  //     JSON.stringify(this.editableArray[index]) !==
+  //     JSON.stringify(this.controlOutgoingList[index])
+  //   );
+  // }
+
+
   protected hasDataChanged(index: number): boolean {
-    return (
-      JSON.stringify(this.editableArray[index]) !==
-      JSON.stringify(this.controlOutgoingList[index])
-    );
+    const original = { ...this.controlOutgoingList[index] };
+    const edited = { ...this.editableArray[index] };
+    if (original.controlOutgoingRemarks === null && edited.controlOutgoingRemarks === '') {
+      edited.controlOutgoingRemarks = null;
+    }
+    return JSON.stringify(original) !== JSON.stringify(edited);
   }
 
   protected onFieldEdit(controlOutGoing: any) {
@@ -175,7 +190,8 @@ export class ControlOutgoingGridTableComponent {
         row?.vehicleNumber === '' ||
         row?.vehicleSize === '' ||
         row?.frlrNumber === '' ||
-        row?.frlrDate === null)
+        row?.frlrDate === null ||
+        row?.controlOutgoingRemarks === null)
     ) {
       this.toastr.error(
         'All fields are required in case of Registered Transporter'
@@ -190,9 +206,9 @@ export class ControlOutgoingGridTableComponent {
       transporterCode: row?.transporterCode,
       transporterType: row?.transporterType,
       transporterName: row?.transporterName,
-      vehicleNumber: row?.vehicleNumber,
+      vehicleNumber: row?.vehicleNumber.toUpperCase(),
       vehicleSize: row?.vehicleSize,
-      controlOutgoingRemarks: '',
+      controlOutgoingRemarks: row?.controlOutgoingRemarks,
       actionBy: this.userService.getUserId(),
     };
 
@@ -203,9 +219,9 @@ export class ControlOutgoingGridTableComponent {
       row.documentType === 'RGP' || row.documentType === 'NRGP'
         ? this.controlOutgoingService.dcControlOutgoing(row.documentNo, payload)
         : this.controlOutgoingService.updateControlOutgoing(
-            row.interfaceId,
-            payload
-          );
+          row.interfaceId,
+          payload
+        );
 
     request$.subscribe({
       next: (res: any) => {
