@@ -23,8 +23,7 @@ export class SideBarComponent {
   ) {}
 
   securityGroups(permission: string): boolean {
-    //return this.authGuard.securityGroups(permission);
-    return true;
+    return this.authGuard.securityGroups(permission);
   }
 
   ngOnInit() {

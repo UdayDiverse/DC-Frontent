@@ -139,7 +139,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: ROUTES.REPORTS.GATE_OUT,
+    path: ROUTES.REPORTS.GATE_OUT_REPORT,
     component: GateOutReportComponent,
     canActivate: [AuthGuard],
   },
