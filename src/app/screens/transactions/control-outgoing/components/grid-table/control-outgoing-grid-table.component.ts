@@ -140,7 +140,7 @@ export class ControlOutgoingGridTableComponent {
     this.editableArray[i].vehicleSize = '';
     this.editableArray[i].frlrNumber = '';
     this.editableArray[i].frlrDate = null;
-    this.editableArray[i].controlOutgoingRemarks = '';
+    this.editableArray[i].controlOutgoingRemarks = null;
   }
 
   onTransporterCodeChange(transporter: any, i: number) {
@@ -154,11 +154,21 @@ export class ControlOutgoingGridTableComponent {
     });
   }
 
+  // protected hasDataChanged(index: number): boolean {
+  //   return (
+  //     JSON.stringify(this.editableArray[index]) !==
+  //     JSON.stringify(this.controlOutgoingList[index])
+  //   );
+  // }
+
+
   protected hasDataChanged(index: number): boolean {
-    return (
-      JSON.stringify(this.editableArray[index]) !==
-      JSON.stringify(this.controlOutgoingList[index])
-    );
+    const original = { ...this.controlOutgoingList[index] };
+    const edited = { ...this.editableArray[index] };
+    if (original.controlOutgoingRemarks === null && edited.controlOutgoingRemarks === '') {
+      edited.controlOutgoingRemarks = null;
+    }
+    return JSON.stringify(original) !== JSON.stringify(edited);
   }
 
   protected onFieldEdit(controlOutGoing: any) {
@@ -181,7 +191,7 @@ export class ControlOutgoingGridTableComponent {
         row?.vehicleSize === '' ||
         row?.frlrNumber === '' ||
         row?.frlrDate === null ||
-        row?.controlOutgoingRemarks === '')
+        row?.controlOutgoingRemarks === null)
     ) {
       this.toastr.error(
         'All fields are required in case of Registered Transporter'
