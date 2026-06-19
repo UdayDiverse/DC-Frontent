@@ -6,6 +6,7 @@ import {
   Input,
   Output,
   signal,
+  OnInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -32,7 +33,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './gate-out-report-filter.component.html',
   styleUrl: './gate-out-report-filter.component.scss',
 })
-export class GateOutReportFilterComponent {
+export class GateOutReportFilterComponent implements OnInit {
   @Input() filters: any = [];
   @Output() getData: EventEmitter<any> = new EventEmitter();
   documentType = signal(undefined);
@@ -46,10 +47,16 @@ export class GateOutReportFilterComponent {
   toastr = inject(ToastrService);
   calendar = inject(NgbCalendar);
   todayNgb = this.calendar.getToday();
-  tomorrorwNgb = this.calendar.getNext(this.todayNgb, 'd', 1);
-  firstOfMonth = new Date().toISOString().slice(0, 8) + '01';
   fromDate = signal<NgbDate | null>(null);
   toDate = signal<NgbDate | null>(null);
+
+  ngOnInit(): void {
+    const today = this.calendar.getToday();
+    const fifteenDaysAgo = this.calendar.getPrev(today, 'd', 15);
+    this.fromDate.set(fifteenDaysAgo);
+    this.toDate.set(today);
+    this.handleSearch();
+  }
 
   convertNgbToDate(date: NgbDate | null) {
     if (date == null) return;

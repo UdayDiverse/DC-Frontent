@@ -510,7 +510,7 @@ export class DeliveryChallanCreationComponent {
         igstCtrl?.disable({ emitEvent: false });
         igstCtrl?.setValue('0', { emitEvent: false });
       }
-      sgstCtrl?.setValue(val);
+      sgstCtrl?.setValue(val, { emitEvent: false });
     });
 
     // Watch SGST
@@ -526,7 +526,7 @@ export class DeliveryChallanCreationComponent {
         igstCtrl?.disable({ emitEvent: false });
         igstCtrl?.setValue('0', { emitEvent: false });
       }
-      cgstCtrl?.setValue(val);
+      cgstCtrl?.setValue(val, { emitEvent: false });
     });
 
     // Watch IGST
@@ -673,7 +673,11 @@ export class DeliveryChallanCreationComponent {
     this.lookupService
       .getLookupSearchByType(LOOKUPS.modeOfTransport)
       .subscribe((res: any) => {
-        this.modeOfTransports.set(res?.lookUps);
+        this.modeOfTransports.set(
+          res?.lookUps
+            .filter((item: any) => item.code)
+            .sort((a: any, b: any) => a.code.localeCompare(b.code))
+        );
       });
   }
   private getUOM() {
