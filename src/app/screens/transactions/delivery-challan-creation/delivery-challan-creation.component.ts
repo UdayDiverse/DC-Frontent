@@ -492,6 +492,7 @@ export class DeliveryChallanCreationComponent {
       });
   }
 
+  
   subscribeToGSTs(group: FormGroup) {
     const cgstCtrl = group.get('cgstPercentage');
     const sgstCtrl = group.get('sgstPercentage');
@@ -510,7 +511,7 @@ export class DeliveryChallanCreationComponent {
         igstCtrl?.disable({ emitEvent: false });
         igstCtrl?.setValue('0', { emitEvent: false });
       }
-      sgstCtrl?.setValue(val, { emitEvent: false });
+      sgstCtrl?.setValue(val);
     });
 
     // Watch SGST
@@ -526,7 +527,7 @@ export class DeliveryChallanCreationComponent {
         igstCtrl?.disable({ emitEvent: false });
         igstCtrl?.setValue('0', { emitEvent: false });
       }
-      cgstCtrl?.setValue(val, { emitEvent: false });
+      cgstCtrl?.setValue(val);
     });
 
     // Watch IGST
