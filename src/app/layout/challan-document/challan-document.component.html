@@ -17,25 +17,29 @@
                 <div class="col-md-6 section-border" style="border-right: none;">
                     <strong>Supplier Name: LG Electronics India Ltd.</strong><br />
 
-                    <strong>Address:</strong>
+                    <strong>Address: </strong>
                     <span>
                         {{deliveryChallan?.plantResponse?.plantAddress1}}
                         {{deliveryChallan?.plantResponse?.plantAddress2}}
                         ({{deliveryChallan?.plantResponse?.plantName}}-{{deliveryChallan?.plantResponse?.businessArea}})
                     </span><br />
 
-                    <strong>State Code:</strong>
+                    <strong>State Code: </strong>
                     <span>{{deliveryChallan?.plantResponse?.state}} &nbsp;&nbsp;</span>
-                    <strong>Country:</strong>
+
+                    <strong>Country: </strong>
                     <span>{{deliveryChallan?.plantResponse?.country}}</span><br />
 
-                    <strong>GST No:</strong>
+                    <strong>Postal Code: </strong>
+                    <span>{{deliveryChallan?.plantResponse?.postal}}</span><br />
+
+                    <strong>GST No: </strong>
                     <span>{{deliveryChallan?.plantResponse?.gstNo}}</span><br />
 
-                    <strong>PAN:</strong>
+                    <strong>PAN: </strong>
                     <span>{{deliveryChallan?.plantResponse?.panNo}}</span><br />
 
-                    <strong>Organization:</strong>
+                    <strong>Organization: </strong>
                     <span>A02QL, Refrigerator Division(Noida)</span><br />
 
                     <strong>CIN:</strong>
@@ -58,19 +62,19 @@
                     </div>
 
                     <div>
-                        <strong>Challan No:</strong>
+                        <strong>Challan No: </strong>
                         <span>{{deliveryChallan?.challanNumber}} &nbsp;&nbsp;</span>
 
-                        <strong>Challan Date:</strong>
+                        <strong>Challan Date: </strong>
                         <span>{{deliveryChallan?.creationDate | date: 'yyyy-MM-dd'}}</span><br />
 
-                        <strong>Expected Return Date:</strong>
+                        <strong>Expected Return Date: </strong>
                         <span>{{deliveryChallan?.expectedDate | date: 'yyyy-MM-dd'}}</span><br />
 
-                        <strong>Requested Dept:</strong>
+                        <strong>Requested Dept: </strong>
                         <span>{{deliveryChallan?.department}}</span><br />
 
-                        <strong>Status:</strong>
+                        <strong>Status: </strong>
                         <span>CONFIRM</span>
                     </div>
                 </div>
@@ -79,45 +83,45 @@
             <!-- Receiver Details -->
             <div class="row" style="padding-block: 1px; margin-top: 2px;">
                 <div class="col-md-6 section-border" style="border-right: none;">
-                    <strong>Details of Receiver:</strong>
+                    <strong>Details of Receiver: </strong>
                     <span>{{deliveryChallan?.destinationCode}} / {{deliveryChallan?.destinationName}}</span><br />
 
-                    <strong>Address:</strong>
+                    <strong>Address: </strong>
                     <span>
                         {{deliveryChallan?.destinationAddress1}}
                         {{deliveryChallan?.destinationAddress2}}
                     </span><br />
 
-                    <strong>Country:</strong>
+                    <strong>Country: </strong>
                     <span>IN &nbsp;&nbsp;</span>
 
-                    <strong>Pin No:</strong>
+                    <strong>Pin No: </strong>
                     <span>{{deliveryChallan?.destinationPostalCode}}</span><br />
 
-                    <strong>GST No/UIN:</strong>
+                    <strong>GST No/UIN: </strong>
                     <span>{{deliveryChallan?.destinationGstin}} &nbsp;&nbsp;</span>
 
-                    <strong>State:</strong>
+                    <strong>State: </strong>
                     <span>{{deliveryChallan?.destinationState}}</span><br />
 
-                    <strong>PAN:</strong>
+                    <strong>PAN: </strong>
                     <span>{{deliveryChallan?.destinationGstin?.slice(2, 12)}} &nbsp;&nbsp;</span><br />
 
-                    <strong>From:</strong>
-                    <span>{{deliveryChallan?.plantResponse?.postal}}</span>
+                    <strong>Postal Code: </strong>
+                    <span>{{deliveryChallan?.destinationPostalCode}}</span>
                     &nbsp;&nbsp;
 
-                    <strong>To:</strong>
-                    <span>{{deliveryChallan?.destinationPostalCode}}</span>
+                    <!-- <strong>To: </strong>
+                    <span>{{deliveryChallan?.destinationPostalCode}}</span> -->
                 </div>
 
                 <div class="col-md-6 section-border">
-                    <strong>Prepared By:</strong>
+                    <strong>Prepared By: </strong>
                     <span>{{deliveryChallan?.createdByDetails?.empCode}}</span><br /><br /><br />
 
-                    <strong>Checked By:</strong><br /><br /><br />
+                    <strong>Checked By: </strong><br /><br /><br />
 
-                    <strong>Authorized:</strong>
+                    <strong>Authorized: </strong>
                     <span>
                         {{deliveryChallan?.approverByDetails?.empCode}} /
                         {{deliveryChallan?.approverByDetails?.name}}
@@ -242,13 +246,13 @@
                                 <div class="left-info-row">
                                     <div class="left-info-block">
                                         <strong>Truck No</strong>
-                                        <span class="info-colon">:</span>
+                                        <span class="info-colon">: </span>
                                         <span>{{deliveryChallan?.vehicleNumber || '.'}}</span>
                                     </div>
 
                                     <div class="left-info-block">
                                         <strong>LR No</strong>
-                                        <span class="info-colon">:</span>
+                                        <span class="info-colon">: </span>
                                         <span>{{deliveryChallan?.frlrNumber || '.'}}</span>
                                     </div>
                                 </div>
@@ -293,7 +297,7 @@
                                 <div class="left-info-row single-info-row">
                                     <div class="left-info-block">
                                         <strong>eWay Bill Type</strong>
-                                        <span class="info-colon">:</span>
+                                        <span class="info-colon">: </span>
                                         <span>{{deliveryChallan?.eWayBillType}}</span>
                                     </div>
                                 </div>
@@ -306,13 +310,13 @@
                                 <div class="left-info-row">
                                     <div class="left-info-block">
                                         <strong>Carrier Name</strong>
-                                        <span class="info-colon">:</span>
+                                        <span class="info-colon">: </span>
                                         <span>{{deliveryChallan?.modeOfTransport || '.'}}</span>
                                     </div>
 
                                     <div class="left-info-block eway-no-block">
                                         <strong>eWay Bill No</strong>
-                                        <span class="info-colon">:</span>
+                                        <span class="info-colon">: </span>
                                         <span>{{deliveryChallan?.eWayBillNumber}}</span>
                                     </div>
                                 </div>
@@ -322,7 +326,7 @@
                         <!-- Rupees in Words and Signatory -->
                         <tr class="no-break">
                             <td colspan="8" class="rupees-cell">
-                                <strong>Rupees in Word :</strong>
+                                <strong>Rupees in Word : </strong>
                                 {{itemDetailsSummary?.amountInWords}}
                             </td>
 
