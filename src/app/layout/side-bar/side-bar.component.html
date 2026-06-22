@@ -56,7 +56,7 @@
                 Delivery Challan Creation</li>
               } -->
               @if (securityGroups('DC_TXN_DC_TXN_VIEW')) {
-              <li [routerLink]='ROUTES.TRANSACTIONS.CHALLAN_VIEW'>Delivery Challan View</li>
+              <li [routerLink]='ROUTES.TRANSACTIONS.CHALLAN_VIEW'>Delivery Challan View/Create</li>
               }
               @if (securityGroups('DC_TXN_APPROVAL_TXN_VIEW')) {
               <li [routerLink]='ROUTES.TRANSACTIONS.CHALLAN_APPROVAL'>Delivery Challan Approval</li>
@@ -91,6 +91,9 @@
             data-bs-parent="#sidebarAccordion">
             <div class="accordion-body">
               <ul>
+                @if (securityGroups('DC_REPORTS_GATE_OUT_VIEW')) {
+                <li [routerLink]="ROUTES.REPORTS.GATE_OUT_REPORT">Gate Out Report</li>
+                }
                 @if (securityGroups('DC_REPORTS_AGEING_REPORT_VIEW')) {
                 <li [routerLink]="ROUTES.REPORTS.AGEING">Ageing Report</li>
                 }

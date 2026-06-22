@@ -510,7 +510,7 @@
                                     <div class="custom-form-input">
                                         <label for="">GSTIN</label>
                                         <input type="text" class="input-field" formControlName="transporterGstin"
-                                            [maxlength]="50" />
+                                            [maxlength]="15" style="text-transform: uppercase;" />
                                     </div>
                                 </div>
                                 }
@@ -522,8 +522,8 @@
                                             @case ('Registered') {<span class="text-danger">*</span>}
                                             }</label>
                                         <input type="text" class="input-field" formControlName="vehicleNumber"
-                                            [maxlength]="10" (keypress)="allowAlphaNumeric($event)"
-                                            (input)="validateVehicleNumber($event)" />
+                                            [minlength]="8" [maxlength]="10" (keypress)="allowAlphaNumeric($event)"
+                                            (input)="validateVehicleNumber($event)" style="text-transform: uppercase" />
                                         @if (!isVehicleNumberValid) {
                                         <small class="ms-2 text-danger">Enter a Valid Vehicle Number</small>
                                         }

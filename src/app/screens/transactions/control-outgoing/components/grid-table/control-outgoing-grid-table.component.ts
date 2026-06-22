@@ -84,9 +84,8 @@ export class ControlOutgoingGridTableComponent {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['controlOutgoingList'] && this.controlOutgoingList) {
-      this.editableArray = this.controlOutgoingList.map((item) => ({
-        ...item,
-      }));
+      this.editableArray = this.controlOutgoingList.map((item) => ({ ...item }));
+      this.patchTransporterNames();
     }
     if (changes['activeFilters']) {
       this.rowSelectionService.clearSelections();
@@ -94,12 +93,32 @@ export class ControlOutgoingGridTableComponent {
     }
   }
 
+  private patchTransporterNames() {
+    if (!this.transporters?.length || !this.editableArray?.length) return;
+
+    this.editableArray.forEach((item, index) => {
+      if (!item.transporterName && item.transporterCode && item.documentType === "SAL") {
+        const transporter = this.transporters.find(
+          (t) => t.code === item.transporterCode
+        );
+        if (transporter) {
+          item.transporterName = transporter.name;
+          this.saveRow(index, false);
+        }
+      }
+    });
+  }
+
   allowAlphaNumeric(event: KeyboardEvent) {
-    const pattern = /^[a-zA-Z0-9]*$/;
+    const pattern = /^[a-zA-Z0-9]$/;
     const inputChar = String.fromCharCode(event.charCode);
     if (!pattern.test(inputChar)) {
       event.preventDefault();
     }
+  }
+  dateTimeSplit(date: any) {
+    let res = date.split('T');
+    return res[0];
   }
 
   private getVehicleSizes() {
@@ -136,6 +155,7 @@ export class ControlOutgoingGridTableComponent {
     this.editableArray[i].vehicleSize = '';
     this.editableArray[i].frlrNumber = '';
     this.editableArray[i].frlrDate = null;
+    this.editableArray[i].controlOutgoingRemarks = null;
   }
 
   onTransporterCodeChange(transporter: any, i: number) {
@@ -145,22 +165,25 @@ export class ControlOutgoingGridTableComponent {
 
   private getTransporters() {
     this.transporterService.getTransporters({}, 0, 0).subscribe((res: any) => {
-      this.transporters = res?.transporters;
+      this.transporters = res?.transporters || [];
+      this.patchTransporterNames();
     });
   }
 
   protected hasDataChanged(index: number): boolean {
-    return (
-      JSON.stringify(this.editableArray[index]) !==
-      JSON.stringify(this.controlOutgoingList[index])
-    );
+    const original = { ...this.controlOutgoingList[index] };
+    const edited = { ...this.editableArray[index] };
+    if (original.controlOutgoingRemarks === null && edited.controlOutgoingRemarks === '') {
+      edited.controlOutgoingRemarks = null;
+    }
+    return JSON.stringify(original) !== JSON.stringify(edited);
   }
 
   protected onFieldEdit(controlOutGoing: any) {
     this.editedRows.add(controlOutGoing.id);
   }
 
-  protected saveRow(index: number) {
+  protected saveRow(index: number, showMessage: boolean) {
     const row = this.editableArray[index];
     if (row?.transporterCode === '' || row?.transporterName === '') {
       this.toastr.error(
@@ -172,17 +195,13 @@ export class ControlOutgoingGridTableComponent {
     if (
       row?.transporterType === 'Registered' &&
       (row?.transporterName === '' ||
-        row?.vehicleNumber === '' ||
-        row?.vehicleSize === '' ||
-        row?.frlrNumber === '' ||
-        row?.frlrDate === null)
+        row?.vehicleNumber === '')
     ) {
       this.toastr.error(
         'All fields are required in case of Registered Transporter'
       );
       return;
     }
-
     let payload: any = {
       frlrDate: row?.frlrDate ? this.convertNgbToDate(row?.frlrDate) : null,
       frlrNumber: row?.frlrNumber,
@@ -190,9 +209,9 @@ export class ControlOutgoingGridTableComponent {
       transporterCode: row?.transporterCode,
       transporterType: row?.transporterType,
       transporterName: row?.transporterName,
-      vehicleNumber: row?.vehicleNumber,
+      vehicleNumber: row?.vehicleNumber.toUpperCase(),
       vehicleSize: row?.vehicleSize,
-      controlOutgoingRemarks: '',
+      controlOutgoingRemarks: row?.controlOutgoingRemarks,
       actionBy: this.userService.getUserId(),
     };
 
@@ -203,9 +222,9 @@ export class ControlOutgoingGridTableComponent {
       row.documentType === 'RGP' || row.documentType === 'NRGP'
         ? this.controlOutgoingService.dcControlOutgoing(row.documentNo, payload)
         : this.controlOutgoingService.updateControlOutgoing(
-            row.interfaceId,
-            payload
-          );
+          row.interfaceId,
+          payload
+        );
 
     request$.subscribe({
       next: (res: any) => {
@@ -214,9 +233,11 @@ export class ControlOutgoingGridTableComponent {
             `Transportation details updated successfully for challan number: ${res?.challanNumber}`
           );
         } else {
-          this.toastr.success(
-            `Transportation details updated successfully for document number: ${res?.documentNumber}`
-          );
+          if (showMessage === true) {
+            this.toastr.success(
+              `Transportation details updated successfully for document number: ${res?.documentNumber}`
+            );
+          }
         }
         this.refreshControlList.emit();
         this.loadSpinner.set(false);
