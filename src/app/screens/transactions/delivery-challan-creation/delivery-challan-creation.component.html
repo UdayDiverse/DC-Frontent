@@ -577,10 +577,19 @@
                                     </div>
                                 </div>
                                 <div class="">
-                                    <div class="custom-form-input">
+                                    <!-- <div class="custom-form-input">
                                         <label for="">Trip Distance@switch (transporterType) {
                                             @case ('Registered') {<span class="text-danger">*</span>}
                                             }</label>
+                                        <input type="number" class="input-field" formControlName="travellingDistance"
+                                            (keypress)="allowNumeric($event)" [maxlength]="5" />
+                                    </div> -->
+
+                                    <div class="custom-form-input">
+                                        <label for="">
+                                            Trip Distance
+                                            <span *ngIf="isTripDistanceRequired" class="text-danger">*</span>
+                                        </label>
                                         <input type="number" class="input-field" formControlName="travellingDistance"
                                             (keypress)="allowNumeric($event)" [maxlength]="5" />
                                     </div>

@@ -8,6 +8,7 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -492,7 +493,7 @@ export class DeliveryChallanCreationComponent {
       });
   }
 
-  
+
   subscribeToGSTs(group: FormGroup) {
     const cgstCtrl = group.get('cgstPercentage');
     const sgstCtrl = group.get('sgstPercentage');
@@ -690,36 +691,79 @@ export class DeliveryChallanCreationComponent {
       });
   }
 
+  // protected onSourcePlantSelection(plantCode: string) {
+
+  //   const plant = this.sourcePlants().find(
+  //     (item: any) => item?.plantCode === plantCode,
+  //   );
+
+
+  //   console.log(plant.postal);
+
+
+  //   const destType = this.challanFormGroup.get('destinationType')?.value;
+  //   const destCode = this.challanFormGroup.get('destinationCode')?.value;
+
+  //   this.challanFormGroup.patchValue({
+  //     branchName: plant?.businessArea,
+  //     plantName: plant?.plantName,
+  //   });
+
+  //   if (destType === 'Plant' && destCode === plantCode) {
+  //     this.challanFormGroup.patchValue({
+  //       destinationCode: '',
+  //       destinationName: '',
+  //       destinationCity: '',
+  //       destinationAddress1: '',
+  //       destinationAddress2: '',
+  //       destinationState: '',
+  //       destinationPostalCode: '',
+  //       destinationGstin: '',
+  //     });
+  //   }
+
+  //   this.getSubinventories(plantCode);
+
+  //   this.getFilteredDestinationPlants(plantCode);
+  // }
+
+
   protected onSourcePlantSelection(plantCode: string) {
     const plant = this.sourcePlants().find(
       (item: any) => item?.plantCode === plantCode,
     );
 
-    const destType = this.challanFormGroup.get('destinationType')?.value;
-    const destCode = this.challanFormGroup.get('destinationCode')?.value;
-
     this.challanFormGroup.patchValue({
       branchName: plant?.businessArea,
       plantName: plant?.plantName,
+      sourcePostalCode: plant?.postal,
     });
 
-    if (destType === 'Plant' && destCode === plantCode) {
-      this.challanFormGroup.patchValue({
-        destinationCode: '',
-        destinationName: '',
-        destinationCity: '',
-        destinationAddress1: '',
-        destinationAddress2: '',
-        destinationState: '',
-        destinationPostalCode: '',
-        destinationGstin: '',
-      });
-    }
+    const destPostal = this.challanFormGroup.get('destinationPostalCode')?.value;
+    this.challanFormGroup.get('travellingDistance')?.setValidators(
+      this.tripDistanceValidator(plant?.postal, destPostal)
+    );
+    this.challanFormGroup.get('travellingDistance')?.updateValueAndValidity();
 
     this.getSubinventories(plantCode);
-
     this.getFilteredDestinationPlants(plantCode);
   }
+
+
+  get isTripDistanceRequired(): boolean {
+    const control = this.challanFormGroup.get('travellingDistance');
+    return control?.hasValidator?.(Validators.required) ?? false;
+  }
+
+  tripDistanceValidator(sourcePostal: string, destPostal: string): ValidatorFn {
+    return (control: AbstractControl) => {
+      if (sourcePostal && destPostal && sourcePostal === destPostal) {
+        return null; // not required if postal codes match
+      }
+      return control.value ? null : { required: true };
+    };
+  }
+
 
   protected onSubInventorySelection(subinventoryCode: number) {
     const subinventory = this.subInventories().find(
@@ -729,6 +773,20 @@ export class DeliveryChallanCreationComponent {
       subinventoryName: subinventory?.subInventoryDesc,
     });
   }
+
+  // protected onPlantSelection(plant: any) {
+  //   this.challanFormGroup.patchValue({
+  //     destinationCode: plant?.plantCode,
+  //     destinationName: plant?.plantName,
+  //     destinationAddress1: plant?.plantAddress1,
+  //     destinationAddress2: plant?.plantAddress2,
+  //     destinationCity: plant?.plantAddress3,
+  //     destinationState: plant?.state,
+  //     destinationPostalCode: plant?.postal,
+  //     destinationGstin: plant?.gstNo,
+  //   });
+  // }
+
 
   protected onPlantSelection(plant: any) {
     this.challanFormGroup.patchValue({
@@ -741,7 +799,14 @@ export class DeliveryChallanCreationComponent {
       destinationPostalCode: plant?.postal,
       destinationGstin: plant?.gstNo,
     });
+
+    const sourcePostal = this.challanFormGroup.get('sourcePostalCode')?.value;
+    this.challanFormGroup.get('travellingDistance')?.setValidators(
+      this.tripDistanceValidator(sourcePostal, plant?.postal)
+    );
+    this.challanFormGroup.get('travellingDistance')?.updateValueAndValidity();
   }
+  
   protected onVendorSelection(vendorCode: any) {
     const vendor = this.vendors().find(
       (item: any) => item?.code === vendorCode?.code,
@@ -772,8 +837,6 @@ export class DeliveryChallanCreationComponent {
   }
 
   protected onTransporterSelection(transporterCode: any) {
-    console.log(transporterCode);
-
     const transporter = this.transporters().find(
       (item: any) => item?.code === transporterCode?.code,
     );
