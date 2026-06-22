@@ -18,6 +18,7 @@
         <th (click)="sortData('approverRemarks')">Approver Remarks</th>
         <th>Attachments</th>
         <th>Print Challan</th>
+        <th>View Challan</th>
         <th>Approve/Reject</th>
         <th>Cancel Challan</th>
       </tr>
@@ -127,6 +128,10 @@
         <td class="text-center">
           <img class="pointer" src="../../../assets/images/icons/print-solid-full.svg" alt="" width="15px" height="20px"
             (click)="printDeliveryChallan(challan?.challanNumber, challan?.status, challan?.transporterType, challan?.totalItemSum)">
+        </td>
+        <td class="text-center">
+          <img class="pointer" src="../../../assets/images/icons/viewPassword.svg" alt="" width="15px" height="18px"
+            (click)="openViewScreen(challan?.challanNumber)">
         </td>
         <td class="text-center">
           @if (challan?.status === 'OPEN') {
