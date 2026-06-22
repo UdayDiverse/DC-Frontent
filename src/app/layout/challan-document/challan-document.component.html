@@ -1,10 +1,9 @@
 <div #challanDocument class="pdf-page">
     @for (i of [0, 1, 2]; track $index) {
 
-    <!-- REMOVED fixed height (height: 1123px). min-height is now in SCSS so content can grow freely -->
-    <div class="print-page bg-white" style="width: 794px;">
-        <!-- Challan content block here -->
+    <div class="print-page bg-white">
         <div class="container bg-white">
+
             <!-- Header -->
             <div class="d-flex gap-3 align-items-stretch">
                 <img src="assets/images/logo.png" alt="" width="68.7" height="30" />
@@ -13,45 +12,66 @@
                 </h4>
             </div>
 
-
             <!-- Supplier Details -->
             <div class="row" style="padding-block: 1px;">
                 <div class="col-md-6 section-border" style="border-right: none;">
                     <strong>Supplier Name: LG Electronics India Ltd.</strong><br />
 
                     <strong>Address:</strong>
-                    <span> {{deliveryChallan?.plantResponse?.plantAddress1}}
+                    <span>
+                        {{deliveryChallan?.plantResponse?.plantAddress1}}
                         {{deliveryChallan?.plantResponse?.plantAddress2}}
-                        ({{deliveryChallan?.plantResponse?.plantName}}-{{deliveryChallan?.plantResponse?.businessArea}})</span><br />
+                        ({{deliveryChallan?.plantResponse?.plantName}}-{{deliveryChallan?.plantResponse?.businessArea}})
+                    </span><br />
+
                     <strong>State Code:</strong>
-                    <span> {{deliveryChallan?.plantResponse?.state}} &nbsp;&nbsp;</span> <strong>Country:</strong>
+                    <span>{{deliveryChallan?.plantResponse?.state}} &nbsp;&nbsp;</span>
+                    <strong>Country:</strong>
                     <span>{{deliveryChallan?.plantResponse?.country}}</span><br />
-                    <strong>Consignee GST No:</strong>
-                    <span> {{deliveryChallan?.plantResponse?.gstNo}}</span><br />
+
+                    <strong>GST No:</strong>
+                    <span>{{deliveryChallan?.plantResponse?.gstNo}}</span><br />
+
                     <strong>PAN:</strong>
-                    <span> {{deliveryChallan?.plantResponse?.panNo}}</span><br />
+                    <span>{{deliveryChallan?.plantResponse?.panNo}}</span><br />
+
                     <strong>Organization:</strong>
-                    <span> A02QL, Refrigerator Division(Noida)</span><br />
+                    <span>A02QL, Refrigerator Division(Noida)</span><br />
+
                     <strong>CIN:</strong>
-                    <span> {{lookupValues?.CinNumber}}</span>
+                    <span>
+                        {{
+                        cinNumber || lookupValues?.CIN_Number || ''
+                        }}
+                    </span>
                 </div>
+
                 <div class="col-md-6 section-border">
                     <div class="text-center mb-3">
-                        <strong>RETURNABLE CHALLAN </strong><br /><strong>(NOT FOR SALE)</strong><br />
+                        <strong>RETURNABLE CHALLAN</strong><br />
+                        <strong>(NOT FOR SALE)</strong><br />
                         <strong>
-                            {{i === 0? "ORIGINAL FOR RECIPIENT"
-                            : i=== 1 ? "DUPLICATE FOR TRANSPORTER":
-                            "TRIPLICATE FOR ASSESSEE"}}
+                            {{i === 0 ? "ORIGINAL FOR RECIPIENT"
+                            : i === 1 ? "DUPLICATE FOR TRANSPORTER"
+                            : "TRIPLICATE FOR ASSESSEE"}}
                         </strong>
                     </div>
+
                     <div>
-                        <strong>Challan No:</strong><span> {{deliveryChallan?.challanNumber}} &nbsp;&nbsp;</span>
-                        <strong>Challan
-                            Date:</strong><span>{{deliveryChallan?.creationDate| date: 'yyyy-MM-dd'}}</span><br />
-                        <strong>Expected Return Date:</strong> <span> {{deliveryChallan?.expectedDate | date:
-                            'yyyy-MM-dd'}}</span><br />
-                        <strong>Requested Dept:</strong> <span> {{deliveryChallan?.department}}</span><br />
-                        <strong>Status:</strong> <span> CONFIRM</span>
+                        <strong>Challan No:</strong>
+                        <span>{{deliveryChallan?.challanNumber}} &nbsp;&nbsp;</span>
+
+                        <strong>Challan Date:</strong>
+                        <span>{{deliveryChallan?.creationDate | date: 'yyyy-MM-dd'}}</span><br />
+
+                        <strong>Expected Return Date:</strong>
+                        <span>{{deliveryChallan?.expectedDate | date: 'yyyy-MM-dd'}}</span><br />
+
+                        <strong>Requested Dept:</strong>
+                        <span>{{deliveryChallan?.department}}</span><br />
+
+                        <strong>Status:</strong>
+                        <span>CONFIRM</span>
                     </div>
                 </div>
             </div>
@@ -59,55 +79,100 @@
             <!-- Receiver Details -->
             <div class="row" style="padding-block: 1px; margin-top: 2px;">
                 <div class="col-md-6 section-border" style="border-right: none;">
-                    <strong>Details of Receiver:</strong><span> {{deliveryChallan?.destinationCode}} /
-                        {{deliveryChallan?.destinationName}}</span><br />
-                    <strong>Address:</strong><span> {{deliveryChallan?.destinationAddress1 }}
-                        {{deliveryChallan?.destinationAddress2 }}</span><br />
-                    <strong>Country:</strong><span> IN &nbsp;&nbsp; </span><strong>Pin No:</strong>
+                    <strong>Details of Receiver:</strong>
+                    <span>{{deliveryChallan?.destinationCode}} / {{deliveryChallan?.destinationName}}</span><br />
+
+                    <strong>Address:</strong>
+                    <span>
+                        {{deliveryChallan?.destinationAddress1}}
+                        {{deliveryChallan?.destinationAddress2}}
+                    </span><br />
+
+                    <strong>Country:</strong>
+                    <span>IN &nbsp;&nbsp;</span>
+
+                    <strong>Pin No:</strong>
                     <span>{{deliveryChallan?.destinationPostalCode}}</span><br />
-                    <strong>GST No/UIN:</strong><span> {{deliveryChallan?.destinationGstin}}
-                        &nbsp;&nbsp;</span>
+
+                    <strong>GST No/UIN:</strong>
+                    <span>{{deliveryChallan?.destinationGstin}} &nbsp;&nbsp;</span>
+
                     <strong>State:</strong>
                     <span>{{deliveryChallan?.destinationState}}</span><br />
-                    <strong>PAN:</strong><span> {{deliveryChallan?.destinationGstin?.slice(2, 12)}} &nbsp;&nbsp;</span>
+
+                    <strong>PAN:</strong>
+                    <span>{{deliveryChallan?.destinationGstin?.slice(2, 12)}} &nbsp;&nbsp;</span><br />
+
+                    <strong>From:</strong>
+                    <span>{{deliveryChallan?.plantResponse?.postal}}</span>
+                    &nbsp;&nbsp;
+
+                    <strong>To:</strong>
+                    <span>{{deliveryChallan?.destinationPostalCode}}</span>
                 </div>
+
                 <div class="col-md-6 section-border">
-                    <strong>Prepared By:</strong><span>
-                        {{deliveryChallan?.createdByDetails?.empCode}}</span><br /><br /><br />
+                    <strong>Prepared By:</strong>
+                    <span>{{deliveryChallan?.createdByDetails?.empCode}}</span><br /><br /><br />
+
                     <strong>Checked By:</strong><br /><br /><br />
-                    <strong>Authorized:</strong><span> {{deliveryChallan?.approverByDetails?.empCode}} /
-                        {{deliveryChallan?.approverByDetails?.name}}</span>
+
+                    <strong>Authorized:</strong>
+                    <span>
+                        {{deliveryChallan?.approverByDetails?.empCode}} /
+                        {{deliveryChallan?.approverByDetails?.name}}
+                    </span>
                 </div>
             </div>
 
             <!-- Items Table -->
             <div class="items-table-wrapper">
                 <table class="invoice-table">
-                    <thead class="thead-light">
-                        <tr class="bg-secondary">
-                            <th>S. No.</th>
+
+                    <colgroup>
+                        <col style="width: 5%">
+                        <col style="width: 19%">
+                        <col style="width: 8%">
+                        <col style="width: 7%">
+                        <col style="width: 9%">
+                        <col style="width: 8%">
+                        <col style="width: 5%">
+                        <col style="width: 7%">
+                        <col style="width: 8%">
+                        <col style="width: 7%">
+                        <col style="width: 5%">
+                        <col style="width: 6%">
+                        <col style="width: 8%">
+                    </colgroup>
+
+                    <thead>
+                        <tr>
+                            <th>S.<br />No.</th>
                             <th>Item/Description</th>
                             <th>HS Code</th>
                             <th>Qty</th>
-                            <th>Other Account</th>
-                            <th>Ref. Id/ Date</th>
+                            <th>Other<br />Account</th>
+                            <th>Ref. Id/<br />Date</th>
                             <th>UOM</th>
                             <th>Rate</th>
-                            <th>Taxable Value</th>
-                            <th>GST Type</th>
-                            <th>GST(%)</th>
-                            <th>GST Amt</th>
-                            <th>Total Amount</th>
+                            <th>Taxable<br />Value</th>
+                            <th>GST<br />Type</th>
+                            <th>GST<br />(%)</th>
+                            <th>GST<br />Amt</th>
+                            <th>Total<br />Amount</th>
                         </tr>
                     </thead>
+
                     <tbody>
-                        <!-- Item Rows — allowed to flow across pages -->
+                        <!-- Item Rows -->
                         @for (item of deliveryChallan?.dcItemDetails; track i; let i = $index) {
-                        <tr>
-                            <td>{{i+1}}</td>
+                        <tr class="item-row">
+                            <td>{{i + 1}}</td>
+
                             <td class="description-cell">
                                 {{item?.descriptionModelNumber}}
                             </td>
+
                             <td>{{item?.hsnCode}}</td>
                             <td>{{item?.quantity}}</td>
                             <td></td>
@@ -122,153 +187,183 @@
                         </tr>
                         }
 
-                        <!-- Remarks + Totals row — keep together, never split -->
-                        <tr class="no-break">
+                        <!-- User Remarks -->
+                        <tr class="no-break remarks-row">
                             <td></td>
-                            <td colspan="2" class="text-left">
-                                User Remarks : {{deliveryChallan?.userRemarks}}
+
+                            <td class="description-cell remarks-cell">
+                                <strong>User Remarks :</strong>
+                                {{deliveryChallan?.userRemarks}}
                             </td>
-                            <td rowspan="2">Total: {{itemDetailsSummary?.totalQuantity}}</td>
-                            <td rowspan="2"></td>
-                            <td rowspan="2"></td>
-                            <td rowspan="2"></td>
-                            <td rowspan="2"></td>
-                            <td rowspan="2">{{itemDetailsSummary?.totalTaxableValue}}</td>
-                            <td rowspan="2"></td>
-                            <td rowspan="2"></td>
-                            <td rowspan="2">{{itemDetailsSummary?.totalTax}}</td>
-                            <td rowspan="2">{{itemDetailsSummary?.totalInvoiceAmount}}</td>
-                        </tr>
-                        <tr class="no-break">
+
                             <td></td>
-                            <td colspan="2" class="text-left">
-                                Authorized Remarks : {{deliveryChallan?.approverRemarks}}
+
+                            <td rowspan="2" class="qty-total-cell">
+                                <div>Total</div>
+                                <div>{{itemDetailsSummary?.totalQuantity}}</div>
+                            </td>
+
+                            <td rowspan="2"></td>
+                            <td rowspan="2"></td>
+                            <td rowspan="2"></td>
+                            <td rowspan="2"></td>
+
+                            <td rowspan="2">
+                                {{itemDetailsSummary?.totalTaxableValue}}
+                            </td>
+
+                            <td rowspan="2"></td>
+                            <td rowspan="2"></td>
+
+                            <td rowspan="2">
+                                {{itemDetailsSummary?.totalTax}}
+                            </td>
+
+                            <td rowspan="2">
+                                {{itemDetailsSummary?.totalInvoiceAmount}}
                             </td>
                         </tr>
 
-                        <!-- Truck/LR and Totals — keep together -->
-                        <tr class="no-break">
-                            <td colspan="8" class="p-2">
-                                <table class="w-100 border-0 inner-table">
-                                    <tr>
-                                        <td class="border-0 text-start">
-                                            <strong>Truck No</strong> :
-                                            {{deliveryChallan?.vehicleNumber}}
-                                        </td>
+                        <!-- Authorized Remarks -->
+                        <tr class="no-break remarks-row authorized-remarks-row">
+                            <td></td>
 
-                                        <td class="border-0 text-start">
-                                            <strong>LR No</strong> :
-                                            {{deliveryChallan?.frlrNumber}}
-                                        </td>
-                                    </tr>
-                                </table>
+                            <td class="description-cell remarks-cell">
+                                <strong>Authorized Remarks :</strong>
+                                {{deliveryChallan?.approverRemarks}}
                             </td>
-                            <td rowspan="3" colspan="5">
-                                <div class="text-start d-flex flex-column align-items-left">
-                                    <div class="d-flex justify-content-between w-75">
-                                        <p><strong>Sub Total:</strong></p>
-                                        <span>{{itemDetailsSummary?.totalTaxableValue}}</span>
+
+                            <td></td>
+                        </tr>
+
+                        <!-- Truck / LR + Tax Summary -->
+                        <tr class="no-break transport-tax-row">
+                            <td colspan="8" class="transport-cell">
+                                <div class="left-info-row">
+                                    <div class="left-info-block">
+                                        <strong>Truck No</strong>
+                                        <span class="info-colon">:</span>
+                                        <span>{{deliveryChallan?.vehicleNumber || '.'}}</span>
                                     </div>
-                                    <div class="d-flex justify-content-between w-75">
-                                        <p><strong>CGST:</strong></p>
-                                        <span>{{itemDetailsSummary?.totalCGST}}</span>
+
+                                    <div class="left-info-block">
+                                        <strong>LR No</strong>
+                                        <span class="info-colon">:</span>
+                                        <span>{{deliveryChallan?.frlrNumber || '.'}}</span>
                                     </div>
-                                    <div class="d-flex justify-content-between w-75">
-                                        <p><strong>SGST/UTGST:</strong></p>
-                                        <span>{{itemDetailsSummary?.totalSGST}}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between w-75">
-                                        <p><strong>IGST:</strong></p>
-                                        <span>{{itemDetailsSummary?.totalIGST}}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between w-75">
-                                        <p><strong>Total Tax:</strong></p>
-                                        <span>{{itemDetailsSummary?.totalTax}}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between w-75">
-                                        <p><strong>Total Invoice Amt:</strong></p>
-                                        <span>{{itemDetailsSummary?.totalInvoiceAmount}}</span>
-                                    </div>
+                                </div>
+                            </td>
+
+                            <td colspan="5" rowspan="3" class="tax-summary-cell">
+                                <div class="tax-line">
+                                    <strong>Sub Total :</strong>
+                                    <span>{{itemDetailsSummary?.totalTaxableValue}}</span>
+                                </div>
+
+                                <div class="tax-line">
+                                    <strong>IGST :</strong>
+                                    <span>{{itemDetailsSummary?.totalIGST || 0}}</span>
+                                </div>
+
+                                <div class="tax-line">
+                                    <strong>CGST :</strong>
+                                    <span>{{itemDetailsSummary?.totalCGST || 0}}</span>
+                                </div>
+
+                                <div class="tax-line">
+                                    <strong>SGST/UTGST :</strong>
+                                    <span>{{itemDetailsSummary?.totalSGST || 0}}</span>
+                                </div>
+
+                                <div class="tax-line">
+                                    <strong>Total Tax :</strong>
+                                    <span>{{itemDetailsSummary?.totalTax || 0}}</span>
+                                </div>
+
+                                <div class="tax-line">
+                                    <strong>Total Invoice Amt :</strong>
+                                    <span>{{itemDetailsSummary?.totalInvoiceAmount}}</span>
                                 </div>
                             </td>
                         </tr>
 
                         <!-- eWay Bill Type -->
-                        <tr class="no-break">
-                            <td colspan="8" class="text-start ps-2">
-                                <strong>eWay Bill Type</strong>
-                                &nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;
-                                {{deliveryChallan?.eWayBillType}}
-                            </td>
-                        </tr>
-
-                        <!-- Carrier Name and eWay Bill No -->
-                        <tr class="no-break">
-                            <td colspan="8" class="p-2">
-                                <table class="w-100 border-0 inner-table">
-                                    <tr>
-                                        <td class="border-0 text-start">
-                                            <strong>Carrier Name</strong> :
-                                            {{deliveryChallan?.modeOfTransport}}
-                                        </td>
-
-                                        <td class="border-0 text-start">
-                                            <strong>eWay Bill No</strong> :
-                                            {{deliveryChallan?.eWayBillNumber}}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-
-                        <!-- Rupees in Words and Signatory — never split -->
-                        <tr class="no-break">
-                            <td colspan="8"><strong>Rupees in Words:</strong>
-                                {{itemDetailsSummary?.amountInWords}}
-                            </td>
-                            <td colspan="5" class="text-center">
-                                <div class="d-flex flex-column justify-content-between">
-                                    <strong>For LG ELECTRONICS INDIA LTD.</strong><br /><br />
-                                    <strong>AUTHORIZED SIGNATORY</strong>
+                        <tr class="no-break transport-tax-row">
+                            <td colspan="8" class="transport-cell">
+                                <div class="left-info-row single-info-row">
+                                    <div class="left-info-block">
+                                        <strong>eWay Bill Type</strong>
+                                        <span class="info-colon">:</span>
+                                        <span>{{deliveryChallan?.eWayBillType}}</span>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
+
+                        <!-- Carrier Name / eWay Bill No -->
+                        <tr class="no-break transport-tax-row">
+                            <td colspan="8" class="transport-cell">
+                                <div class="left-info-row">
+                                    <div class="left-info-block">
+                                        <strong>Carrier Name</strong>
+                                        <span class="info-colon">:</span>
+                                        <span>{{deliveryChallan?.modeOfTransport || '.'}}</span>
+                                    </div>
+
+                                    <div class="left-info-block eway-no-block">
+                                        <strong>eWay Bill No</strong>
+                                        <span class="info-colon">:</span>
+                                        <span>{{deliveryChallan?.eWayBillNumber}}</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Rupees in Words and Signatory -->
+                        <tr class="no-break">
+                            <td colspan="8" class="rupees-cell">
+                                <strong>Rupees in Word :</strong>
+                                {{itemDetailsSummary?.amountInWords}}
+                            </td>
+
+                            <td colspan="5" class="signatory-cell">
+                                <strong>For LG ELECTRONICS INDIA LTD.</strong>
+                                <br /><br /><br />
+                                <strong>AUTHORISED SIGNATORY</strong>
+                            </td>
+                        </tr>
+
+                        <!-- Footer -->
+                        <tr class="no-break">
+                            <td colspan="13" class="footer-cell">
+                                <small>
+                                    Regd. Office Address :
+                                    {{lookupValues?.RegisteredOfficeAddress}}
+                                    <br />
+
+                                    Insurance Policy :
+                                    {{lookupValues?.InsurancePolicyNo}}
+                                    Effective From
+                                    {{lookupValues?.InsuranceEffectiveFrom}}
+                                    <br />
+
+                                    {{lookupValues?.Jusrisdiction}}
+                                    <br />
+
+                                    Subject to Delhi Jurisdiction
+                                    <br />
+
+                                    This Supply is not covered under Reverse Charge
+                                    <br />
+
+                                    Receive the goods as per Challan No:
+                                    {{deliveryChallan?.challanNumber}}
+                                    /
+                                    {{deliveryChallan?.creationDate | date:'dd-MMM-yyyy'}}
+                                </small>
+                            </td>
+                        </tr>
                     </tbody>
-
-                    <tr class="no-break">
-                        <td colspan="13" class="text-start p-2">
-
-                            <small>
-
-                                Regd. Office Address :
-                                {{lookupValues?.RegisteredOfficeAddress}}
-                                <br>
-
-                                Insurance Policy :
-                                {{lookupValues?.InsurancePolicyNo}}
-                                Effective From
-                                {{lookupValues?.InsuranceEffectiveFrom}}
-
-                                <br>
-
-                                {{lookupValues?.Jusrisdiction}}
-                                <br>
-
-                                Subject to Delhi Jurisdiction
-                                <br>
-
-                                This Supply is not covered under Reverse Charge
-                                <br>
-
-                                Receive the goods as per Challan No:
-                                {{deliveryChallan?.challanNumber}}
-                                /
-                                {{deliveryChallan?.creationDate | date:'dd-MMM-yyyy'}}
-
-                            </small>
-
-                        </td>
-                    </tr>
                 </table>
             </div>
         </div>

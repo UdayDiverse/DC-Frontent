@@ -197,6 +197,7 @@ export class ChallanDocumentComponent {
   lookupValues: any;
   itemDetailsSummary: any;
   fileName = '';
+  cinNumber = '';
   toastr = inject(ToastrService);
   @Output() onLoaded = new EventEmitter<any>();
 
@@ -232,6 +233,10 @@ export class ChallanDocumentComponent {
         (res: any) => {
           this.deliveryChallan = res;
           this.lookupValues = this.getLookupValues(res?.lookUpResponses);
+          this.cinNumber =
+            res?.lookUpResponses?.find(
+              (x: any) => x.type === 'CIN_Number'
+            )?.value ?? '';
           this.fileName = res?.challanNumber;
           this.calculateAndSetTotalValues(res?.dcItemDetails);
           this.generatePDF();
@@ -301,21 +306,29 @@ export class ChallanDocumentComponent {
     const options = {
       margin: [0, 0, 0, 0],
       filename: this.fileName || 'my-document.pdf',
-      image: { type: 'jpeg', quality: 1 },
+
+      image: {
+        type: 'jpeg',
+        quality: 1,
+      },
+
       html2canvas: {
         scale: 4,
         useCORS: true,
         letterRendering: true,
-        // KEY: do NOT set a fixed windowHeight — let content determine height
-        scrollY: 0,
+        backgroundColor: '#ffffff',
       },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      // KEY FIX: enable text-based page breaking so content flows naturally
-      // across pages instead of being clipped inside a fixed-height canvas
+
+      jsPDF: {
+        unit: 'mm',
+        format: 'a4',
+        orientation: 'portrait',
+      },
+
       pagebreak: {
         mode: ['css', 'legacy'],
-        after: '.print-page', // each challan copy starts on a new page
-        avoid: ['.no-break', 'tr.no-break', 'div[style*="page-break-inside"]'],
+        after: '.print-page',
+        avoid: ['.no-break'],
       },
     };
 
