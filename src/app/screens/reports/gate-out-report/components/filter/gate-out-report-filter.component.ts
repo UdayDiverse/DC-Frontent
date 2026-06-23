@@ -21,7 +21,7 @@ import {
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-eway-bill-filter',
+  selector: 'app-gate-out-report-filter',
   standalone: true,
   imports: [
     FormsModule,
@@ -30,30 +30,36 @@ import { ToastrService } from 'ngx-toastr';
     NgbDatepickerModule,
     NgbModule,
   ],
-  templateUrl: './eway-bill-filter.component.html',
-  styleUrl: './eway-bill-filter.component.scss',
+  templateUrl: './gate-out-report-filter.component.html',
+  styleUrl: './gate-out-report-filter.component.scss',
 })
-export class EwayBillFilterComponent implements OnInit {
+export class GateOutReportFilterComponent implements OnInit {
   @Input() filters: any = [];
   @Output() getData: EventEmitter<any> = new EventEmitter();
-  @Output() exportEvent: EventEmitter<any> = new EventEmitter();
+  documentType = signal(undefined);
+  documentNo = signal(undefined);
+  transporterCode = signal(undefined);
+  vehicleNumber = signal(undefined);
+  status = signal(undefined);
   userService = inject(LoggedInUserService);
   plantCodesFromUMS = this.userService.getPlantsForLoggedInUser();
   plantCodes = signal(this.plantCodesFromUMS);
-  challanStatus = signal(undefined);
-  challanNumber = signal(undefined);
-
   toastr = inject(ToastrService);
   calendar = inject(NgbCalendar);
   todayNgb = this.calendar.getToday();
-  fifteenDaysAgo = this.calendar.getPrev(this.todayNgb, 'd', 15);
-  fromDate = signal<NgbDate>(this.fifteenDaysAgo);
-  toDate = signal<NgbDate>(this.todayNgb);
-  ngOnInit() {
+  fromDate = signal<NgbDate | null>(null);
+  toDate = signal<NgbDate | null>(null);
+
+  ngOnInit(): void {
+    const today = this.calendar.getToday();
+    const fifteenDaysAgo = this.calendar.getPrev(today, 'd', 15);
+    this.fromDate.set(fifteenDaysAgo);
+    this.toDate.set(today);
     this.handleSearch();
   }
 
-  convertNgbToDate(date: NgbDate) {
+  convertNgbToDate(date: NgbDate | null) {
+    if (date == null) return;
     const month = Number(date.month) < 10 ? '0' + date.month : date.month;
     const day = Number(date.day) < 10 ? '0' + date.day : date.day;
     return date.year + '-' + month.toString() + '-' + day.toString();
@@ -73,7 +79,7 @@ export class EwayBillFilterComponent implements OnInit {
       return new NgbDate(
         parseInt(dateParts[0], 10),
         parseInt(dateParts[1], 10),
-        parseInt(dateParts[2], 10)
+        parseInt(dateParts[2], 10),
       );
     }
   }
@@ -82,36 +88,45 @@ export class EwayBillFilterComponent implements OnInit {
     if (
       this.fromDate() &&
       this.toDate() &&
-      this.isBefore(this.toDate(), this.fromDate())
+      this.isBefore(
+        this.toDate() as NgbDateStruct,
+        this.fromDate() as NgbDateStruct,
+      )
     ) {
       this.toastr.error("From Date can't be greater than To Date");
       return;
     }
     this.getData.emit({
+      documentType: this.documentType(),
+      documentNo: this.documentNo(),
+      transporterCode: this.transporterCode(),
+      vehicleNumber: this.vehicleNumber(),
+      status: this.status(),
+      plantCode: this.plantCodes(),
       fromDate: this.convertNgbToDate(this.fromDate()),
       toDate: this.convertNgbToDate(this.toDate()),
-      plantcode: this.plantCodes(),
-      challanStatus: this.challanStatus(),
-      challanNumber: this.challanNumber(),
     });
   }
 
   onClearFilter() {
-    this.fromDate.set(this.fifteenDaysAgo);
-    this.toDate.set(this.todayNgb);
+    this.documentType.set(undefined);
+    this.documentNo.set(undefined);
+    this.transporterCode.set(undefined);
+    this.vehicleNumber.set(undefined);
+    this.status.set(undefined);
     this.plantCodes.set(this.plantCodesFromUMS);
-    this.challanStatus.set(undefined);
-    this.challanNumber.set(undefined);
+    this.fromDate.set(null);
+    this.toDate.set(null);
     let obj = {
-      fromDate: this.convertNgbToDate(this.fromDate()),
-      toDate: this.convertNgbToDate(this.toDate()),
+      documentType: '',
+      documentNo: '',
+      transporterCode: '',
+      vehicleNumber: '',
+      status: '',
       plantCode: '',
-      challanStatus: '',
-      challanNumber: '',
+      fromDate: '',
+      toDate: '',
     };
     this.getData.emit(obj);
-  }
-  exportData() {
-    this.exportEvent.emit();
   }
 }

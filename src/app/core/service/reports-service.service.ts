@@ -45,4 +45,12 @@ export class ReportsServiceService extends CRUDService<ReportsRequest> {
   ) {
     return this.add(APIConstant.getfreightOutBoundReports(offset, count), data);
   }
+
+   getGateOutReports(
+    data: any,
+    offset: number = 0,
+    count: number = this.maxCount
+  ) {
+    return this.add(APIConstant.getGateOutReports(offset, count), data);
+  }
 }

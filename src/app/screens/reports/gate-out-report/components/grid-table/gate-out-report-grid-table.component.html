@@ -1,0 +1,33 @@
+<div class="custom-table">
+    <table #table [ngClass]="sortDirection() === 'asc' ? 'asc' : 'dsc'">
+        <thead>
+            <tr>
+                <th (click)="sortData('documentType')">Document Type</th>
+                <th (click)="sortData('documentNo')">Document Number</th>
+                <th (click)="sortData('plantCode')">Plant Code</th>
+                <th (click)="sortData('transporterCode')">Transporter Type </th>
+                <th (click)="sortData('transporterCode')">Transporter Code </th>
+                <th (click)="sortData('transporterName')">Transporter Name </th>
+                <th (click)="sortData('vehicleNumber')">Vehicle Number</th>
+                <th (click)="sortData('vehicleSize')">Vehicle Size</th>
+                <th (click)="sortData('frlrNumber')">FRLR Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let gateOutReport of gateOutReportList">
+                <td>{{gateOutReport?.documentType}}</td>
+                <td>{{gateOutReport?.documentNo}}</td>
+                <td>{{gateOutReport?.plantCode}}</td>
+                <td>{{gateOutReport?.transporterType}}</td>
+                <td>{{gateOutReport?.transporterCode}}</td>
+                <td>{{gateOutReport?.transporterName}}</td>
+                <td>{{gateOutReport?.vehicleNumber}}</td>
+                <td>{{gateOutReport?.vehicleSize}}</td>
+                <td>{{gateOutReport?.frlrNumber}}</td>
+            </tr>
+            <tr *ngIf="!gateOutReportList?.length">
+                <td align="center" colspan="13">No Gate Out Record Found</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,40 +1,17 @@
+$challan-border: 0.25px solid #000;
+
 .pdf-page {
   font-family: "Times New Roman", Times, serif;
 }
 
 .print-page {
   width: 210mm;
-  // min-height: 297mm;
-  /* REMOVED fixed height: 297mm — it was causing overflow/overlap */
-  padding: 15mm;
+  padding: 8mm;
   box-sizing: border-box;
-  // border: 1px solid black;
-
-  /* Ensure each challan copy starts on a fresh PDF page */
-  // page-break-after: always;
-  // break-after: page;
-
-  /* Prevent the page from being cut mid-content */
+  background: #fff;
   page-break-inside: avoid;
   break-inside: avoid;
 }
-
-.challan-highlighted-text strong {
-  font-size: 0.9rem !important;
-  font-weight: 800 !important;
-}
-
-// .print-page + .print-page {
-//   page-break-before: always;
-//   break-before: page;
-//   margin-top: 0;
-// }
-
-/* Last copy should not force an extra blank page */
-// .print-page:last-child {
-//   page-break-after: auto;
-//   break-after: auto;
-// }
 
 table {
   width: 100%;
@@ -43,8 +20,12 @@ table {
 
 th,
 td {
-  border: 0.1px solid black !important;
-  font-size: 0.7rem;
+  border: $challan-border !important;
+  font-size: 10px;
+  color: #000;
+  padding: 2px 4px;
+  line-height: 1.15;
+  vertical-align: top;
 }
 
 tr>th {
@@ -55,12 +36,217 @@ h4,
 span,
 strong,
 small {
-  font-size: 0.7rem;
-  color: black;
+  font-size: 10px;
+  color: #000;
 }
 
-::ng-deep .h4 {
-  margin-bottom: 0 !important;
+strong {
+  font-weight: 700;
+}
+
+.section-border {
+  border: $challan-border !important;
+  padding: 5px;
+}
+
+.items-table-wrapper {
+  width: 100%;
+  margin-top: 2px;
+}
+
+.invoice-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0;
+}
+
+.invoice-table th,
+.invoice-table td {
+  border-top: $challan-border !important;
+  border-left: $challan-border !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  box-sizing: border-box;
+  font-size: 10px;
+  padding: 2px 4px;
+  line-height: 1.15;
+}
+
+.invoice-table,
+.invoice-table th,
+.invoice-table td {
+  border-color: #000 !important;
+}
+
+.invoice-table th {
+  background: #d3d3d3;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.invoice-table td {
+  text-align: center;
+}
+
+.invoice-table tr:last-child td {
+  border-bottom: $challan-border !important;
+}
+
+.invoice-table th:last-child,
+.invoice-table td:last-child {
+  border-right: $challan-border !important;
+}
+
+/* Item description should behave like reference PDF */
+.description-cell {
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  text-align: left !important;
+  vertical-align: top;
+  line-height: 1.15;
+}
+
+/* First item row height */
+.item-row td {
+  height: 58px;
+}
+
+/* Remarks inside only Item/Description column */
+.remarks-row td {
+  height: 34px;
+}
+
+.remarks-cell {
+  text-align: left !important;
+  vertical-align: top !important;
+  line-height: 1.25;
+  padding: 4px 6px !important;
+}
+
+.authorized-remarks-row td {
+  height: 24px;
+}
+
+.qty-total-cell {
+  text-align: center !important;
+  vertical-align: middle !important;
+  font-size: 12px !important;
+  border-bottom: 0.3px solid #000 !important;
+
+}
+
+/* Transport block exactly like reference: left aligned, not centered */
+.transport-tax-row td {
+  height: 32px;
+}
+
+.transport-cell {
+  text-align: left !important;
+  vertical-align: middle !important;
+  padding: 6px 6px !important;
+}
+
+.left-info-row {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.left-info-block {
+  width: 50%;
+  display: grid;
+  grid-template-columns: 115px 14px 1fr;
+  align-items: center;
+  text-align: left;
+}
+
+.single-info-row .left-info-block {
+  width: 100%;
+}
+
+.info-colon {
+  text-align: center;
+}
+
+.eway-no-block {
+  line-height: 1.2;
+}
+
+.eway-no-text {
+  display: inline-block;
+  margin-left: 129px;
+}
+
+/* Right side tax summary like reference */
+.tax-summary-cell {
+  text-align: left !important;
+  vertical-align: bottom !important;
+  padding: 4px 8px !important;
+}
+
+.tax-line {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  column-gap: 8px;
+  margin-bottom: 7px;
+  line-height: 1.15;
+}
+
+.tax-line strong {
+  text-align: left;
+}
+
+.tax-line span {
+  text-align: right;
+}
+
+/* Rupees and signature */
+.rupees-cell {
+  height: 85px;
+  text-align: left !important;
+  vertical-align: top !important;
+  padding: 6px !important;
+}
+
+.signatory-cell {
+  height: 110px;
+  padding: 8px !important;
+  position: relative;
+  text-align: center !important;
+}
+
+.company-name {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  right: 0;
+}
+
+.signature-text {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+}
+
+/* Footer */
+.footer-cell {
+  text-align: left !important;
+  padding: 8px !important;
+  line-height: 1.25;
+}
+
+.footer-cell small {
+  font-size: 10px;
+  line-height: 1.25;
+}
+
+.container {
+  --bs-gutter-x: 0;
 }
 
 .row {
@@ -74,86 +260,17 @@ small {
   padding-right: 0 !important;
 }
 
-.section-border {
-  border: 1px solid black;
-  padding: 5px;
-
-}
-
-.items-table-wrapper {
-  width: 100%;
-  margin-top: 2px;
-}
-
-.invoice-table {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-  margin: 0;
-}
-
-.invoice-table th,
-.invoice-table td {
-  border: 1px solid #000;
-  font-size: 10px;
-  padding: 2px 4px;
-  line-height: 1.1;
-  text-align: center;
-}
-
-.invoice-table th {
-  background: #d3d3d3;
-  font-weight: 700;
-}
-
-.container {
-  --bs-gutter-x: 0;
-}
-
-.borderless table {
-  border-top-style: none;
-  border-left-style: none;
-  border-right-style: none;
-  border-bottom-style: none;
-}
-
-/* Allow table rows to break across PDF pages naturally */
+/* PDF page break handling */
 tr {
   page-break-inside: auto;
   break-inside: auto;
 }
 
-/* Keep the footer summary rows together — never split them */
 tr.no-break {
   page-break-inside: avoid;
   break-inside: avoid;
 }
 
-.description-cell {
-  white-space: normal !important;
-  word-break: break-word;
-  text-align: left !important;
-  vertical-align: top;
-  line-height: 1.3;
-}
-
-.inner-table {
-  width: 100%;
-}
-
-.inner-table td {
-  width: 50%;
-  border: none !important;
-  padding: 0 10px;
-  vertical-align: top;
-}
-
-.inner-table strong {
-  display: inline-block;
-  min-width: 80px;
-}
-
-/* Prevents html2pdf from adding extra space */
 html,
 body {
   height: auto !important;
@@ -165,6 +282,6 @@ body {
 
   table td,
   table th {
-    border-width: 0.5px !important;
+    border-width: $challan-border !important;
   }
 }

@@ -6,6 +6,7 @@ import {
   Input,
   Output,
   signal,
+  OnInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -32,7 +33,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './control-outgoing-filter.component.html',
   styleUrl: './control-outgoing-filter.component.scss',
 })
-export class ControlOutgoingFilterComponent {
+export class ControlOutgoingFilterComponent implements OnInit {
   @Input() filters: any = [];
   @Output() getData: EventEmitter<any> = new EventEmitter();
   documentType = signal(undefined);
@@ -46,10 +47,13 @@ export class ControlOutgoingFilterComponent {
   toastr = inject(ToastrService);
   calendar = inject(NgbCalendar);
   todayNgb = this.calendar.getToday();
-  tomorrorwNgb = this.calendar.getNext(this.todayNgb, 'd', 1);
-  firstOfMonth = new Date().toISOString().slice(0, 8) + '01';
-  fromDate = signal<NgbDate | null>(null);
-  toDate = signal<NgbDate | null>(null);
+  // 15 days before today
+  fifteenDaysAgo = this.calendar.getPrev(this.todayNgb, 'd', 15);
+  fromDate = signal<NgbDate | null>(this.fifteenDaysAgo);
+  toDate = signal<NgbDate | null>(this.todayNgb);
+  ngOnInit() {
+    this.handleSearch();
+  }
 
   convertNgbToDate(date: NgbDate | null) {
     if (date == null) return;
@@ -108,8 +112,8 @@ export class ControlOutgoingFilterComponent {
     this.vehicleNumber.set(undefined);
     this.status.set(undefined);
     this.plantCodes.set(this.plantCodesFromUMS);
-    this.fromDate.set(null);
-    this.toDate.set(null);
+    this.fromDate.set(this.fifteenDaysAgo);
+    this.toDate.set(this.todayNgb);
     let obj = {
       documentType: '',
       documentNo: '',
@@ -117,8 +121,8 @@ export class ControlOutgoingFilterComponent {
       vehicleNumber: '',
       status: '',
       plantCode: '',
-      fromDate: '',
-      toDate: '',
+      fromDate: this.convertNgbToDate(this.fromDate()),
+      toDate: this.convertNgbToDate(this.toDate()),
     };
     this.getData.emit(obj);
   }

@@ -492,6 +492,7 @@ export class DeliveryChallanCreationComponent {
       });
   }
 
+  
   subscribeToGSTs(group: FormGroup) {
     const cgstCtrl = group.get('cgstPercentage');
     const sgstCtrl = group.get('sgstPercentage');
@@ -560,15 +561,13 @@ export class DeliveryChallanCreationComponent {
       event.preventDefault(); // block non-numeric
     }
   }
-
   validateVehicleNumber(event: any) {
-    const vehicleNumber = event.target.value;
-    const pattern = /^[A-Z]{2}\d{1,2}[A-Z]{2}\d{4}$/;
-    if (!pattern.test(vehicleNumber) && vehicleNumber !== '') {
-      this.isVehicleNumberValid = false;
-    } else {
-      this.isVehicleNumberValid = true;
-    }
+    const vehicleNumber = event.target.value.toUpperCase();
+    event.target.value = vehicleNumber;
+    const pattern = /^[A-Z0-9]+$/;
+    const isLengthValid = vehicleNumber.length >= 8 && vehicleNumber.length <= 10;
+    this.isVehicleNumberValid =
+      vehicleNumber === '' || (pattern.test(vehicleNumber) && isLengthValid);
   }
 
   protected onTransporterChange(event: any) {
@@ -675,7 +674,11 @@ export class DeliveryChallanCreationComponent {
     this.lookupService
       .getLookupSearchByType(LOOKUPS.modeOfTransport)
       .subscribe((res: any) => {
-        this.modeOfTransports.set(res?.lookUps);
+        this.modeOfTransports.set(
+          res?.lookUps
+            .filter((item: any) => item.code)
+            .sort((a: any, b: any) => a.code.localeCompare(b.code))
+        );
       });
   }
   private getUOM() {

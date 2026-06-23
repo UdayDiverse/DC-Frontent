@@ -85,4 +85,6 @@ export const APIConstant = {
   getGateOutFilters: `deliverychallantxn/filters-search`,
   generateEwayBillViaApi: `ewayBill/generateEwayBill`,
   cancelEwayBillViaApi: `ewayBill/CancelledEwayBill`,
+  getGateOutReports: (offset: number, count: number) =>
+    `controloutgoing/search?offset=${offset}&count=${count}`
 };

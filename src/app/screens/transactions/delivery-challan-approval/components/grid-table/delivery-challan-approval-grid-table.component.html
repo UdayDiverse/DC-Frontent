@@ -18,6 +18,7 @@
         <th (click)="sortData('approverRemarks')">Approver Remarks</th>
         <th>Attachments</th>
         <th>Print Challan</th>
+        <th>View Challan</th>
         <th>Approve/Reject</th>
         <th>Cancel Challan</th>
       </tr>
@@ -87,7 +88,22 @@
         <td>{{challan?.transporterType}}</td>
         <td>{{challan?.status?.split("_").join(" ")}}</td>
         <td>{{challan?.userRemarks}}</td>
-        <td>{{challan?.approverRemarks}}</td>
+        <td class="pointer" container="body">
+          <span placement="top" [ngbTooltip]="approverRemarksTooltip" tooltipClass="table-datetime-popover">
+            <u
+              style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block;">
+              {{ challan?.approverRemarks }}
+            </u>
+          </span>
+          <ng-template #approverRemarksTooltip>
+            <div class="">
+              <div class="content-row">
+                <span>Approver Remarks</span>
+                <span>{{ challan?.approverRemarks }}</span>
+              </div>
+            </div>
+          </ng-template>
+        </td>
         <td class="text-center ">
           <img class="pointer" src="../../../assets/images/icons/cloud-arrow-down.svg" alt="" width="15px" height="20px"
             (click)="openPopup(attachmentPopup, challan?.id)">
@@ -112,6 +128,10 @@
         <td class="text-center">
           <img class="pointer" src="../../../assets/images/icons/print-solid-full.svg" alt="" width="15px" height="20px"
             (click)="printDeliveryChallan(challan?.challanNumber, challan?.status, challan?.transporterType, challan?.totalItemSum)">
+        </td>
+        <td class="text-center">
+          <img class="pointer" src="../../../assets/images/icons/viewPassword.svg" alt="" width="15px" height="18px"
+            (click)="openViewScreen(challan?.challanNumber)">
         </td>
         <td class="text-center">
           @if (challan?.status === 'OPEN') {

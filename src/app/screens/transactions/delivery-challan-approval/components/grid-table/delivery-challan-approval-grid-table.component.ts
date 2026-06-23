@@ -26,7 +26,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CommonUtility } from '../../../../../core/utilities/common';
 import { FormsModule } from '@angular/forms';
 import { DeliveryChallanService } from '../../../../../core/service/delivery-challan.service';
-import { ROUTEPATHS as ROUTES } from '../../../../../core/constants/routes.constants';
+import { ROUTEPATHS, ROUTEPATHS as ROUTES } from '../../../../../core/constants/routes.constants';
 import { ChallanDocumentComponent } from '../../../../../layout/challan-document/challan-document.component';
 import { LoggedInUserService } from '../../../../../core/service/user.service';
 import { GateOutService } from '../../../../../core/service/gate-out.service';
@@ -53,6 +53,7 @@ export class ChallanApprovalGridTableComponent implements OnInit, OnChanges {
   sortDirection = signal<'asc' | 'desc'>('asc');
   username = signal<string>('Unknown');
   router = inject(Router);
+  ROUTES = ROUTEPATHS;
   deliveryChallanService = inject(DeliveryChallanService);
   toastr = inject(ToastrService);
   userService = inject(LoggedInUserService);
@@ -122,6 +123,12 @@ export class ChallanApprovalGridTableComponent implements OnInit, OnChanges {
         }
       }
     );
+  }
+
+   openViewScreen(challanNumber: string) {
+    this.router.navigate([
+      this.ROUTES.TRANSACTIONS.VIEW_CHALLAN + '/' + challanNumber,
+    ]);
   }
 
   viewAttachment(file: any) {
