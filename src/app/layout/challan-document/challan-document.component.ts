@@ -313,10 +313,10 @@ export class ChallanDocumentComponent {
       },
 
       html2canvas: {
-        scale: 4,
+        scale: 3,
         useCORS: true,
         letterRendering: true,
-        backgroundColor: '#ffffff',
+        backgroundColor: '#fff',
       },
 
       jsPDF: {

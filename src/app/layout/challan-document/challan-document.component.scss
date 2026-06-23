@@ -1,4 +1,4 @@
-$challan-border: 0.5px solid #000000;
+$challan-border: 0.25px solid #000;
 
 .pdf-page {
   font-family: "Times New Roman", Times, serif;
@@ -58,15 +58,26 @@ strong {
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
+  border-spacing: 0;
   margin: 0;
 }
 
 .invoice-table th,
 .invoice-table td {
-  border: $challan-border !important;
+  border-top: $challan-border !important;
+  border-left: $challan-border !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  box-sizing: border-box;
   font-size: 10px;
   padding: 2px 4px;
   line-height: 1.15;
+}
+
+.invoice-table,
+.invoice-table th,
+.invoice-table td {
+  border-color: #000 !important;
 }
 
 .invoice-table th {
@@ -78,6 +89,15 @@ strong {
 
 .invoice-table td {
   text-align: center;
+}
+
+.invoice-table tr:last-child td {
+  border-bottom: $challan-border !important;
+}
+
+.invoice-table th:last-child,
+.invoice-table td:last-child {
+  border-right: $challan-border !important;
 }
 
 /* Item description should behave like reference PDF */
@@ -115,6 +135,8 @@ strong {
   text-align: center !important;
   vertical-align: middle !important;
   font-size: 12px !important;
+  border-bottom: 0.3px solid #000 !important;
+
 }
 
 /* Transport block exactly like reference: left aligned, not centered */
@@ -162,7 +184,7 @@ strong {
 /* Right side tax summary like reference */
 .tax-summary-cell {
   text-align: left !important;
-  vertical-align: top !important;
+  vertical-align: bottom !important;
   padding: 4px 8px !important;
 }
 
@@ -184,17 +206,31 @@ strong {
 
 /* Rupees and signature */
 .rupees-cell {
-  height: 58px;
+  height: 85px;
   text-align: left !important;
   vertical-align: top !important;
   padding: 6px !important;
 }
 
 .signatory-cell {
-  height: 58px;
+  height: 110px;
+  padding: 8px !important;
+  position: relative;
   text-align: center !important;
-  vertical-align: top !important;
-  padding-top: 6px !important;
+}
+
+.company-name {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  right: 0;
+}
+
+.signature-text {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
 }
 
 /* Footer */
@@ -209,7 +245,6 @@ strong {
   line-height: 1.25;
 }
 
-/* Bootstrap fixes */
 .container {
   --bs-gutter-x: 0;
 }
