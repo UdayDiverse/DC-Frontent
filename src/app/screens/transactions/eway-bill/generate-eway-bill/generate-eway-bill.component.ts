@@ -81,6 +81,7 @@ export class GenerateEwayBillComponent {
     ewayBillDetails: true,
     itemDetails: false,
   });
+  isFormEdited = false;
 
   //Injecting Required services
   plantService = inject(PlantService);
@@ -98,6 +99,7 @@ export class GenerateEwayBillComponent {
   vendors = signal<any[]>([]);
   customers = signal<any[]>([]);
   transporters = signal<any[]>([]);
+  vehicleSizes = signal<any[]>([]);
   itemCategories = signal<any[]>([]);
   subInventories = signal<any[]>([]);
   challanTypes = signal<any[]>([]);
@@ -120,6 +122,9 @@ export class GenerateEwayBillComponent {
   isApiButtonDisabled = false;
   modalService = inject(NgbModal);
   selectedReason!: number;
+  originalValues: any;
+  isTransportDetailsEdited = false;
+  originalTransportValues: any;
   @ViewChild('confirmModal') confirmModal!: TemplateRef<any>;
 
   reasons = [
@@ -196,10 +201,13 @@ export class GenerateEwayBillComponent {
 
   constructor(private fb: FormBuilder) {
     this.addRowToItemlist();
+    
   }
 
   ngOnInit() {
     this.getModeOfTransports();
+    this.getTransporters();
+    this.getVehicleSizes();
 
     if (this.challanNumber() != '') {
       this.getChallanAndBindToForms(this.challanNumber());
@@ -229,7 +237,6 @@ export class GenerateEwayBillComponent {
   }
 
   onRemarksChange(event: any) {
-    // console.log(event.target.value);
     this.remarksField = event.target.value;
   }
 
@@ -405,7 +412,7 @@ export class GenerateEwayBillComponent {
     });
   }
 
-  cancelEwayBill() {}
+  cancelEwayBill() { }
 
   private getModeOfTransports() {
     this.lookupService
@@ -459,12 +466,23 @@ export class GenerateEwayBillComponent {
           dcItemDetails: this.setDcItemList(res?.dcItemDetails),
         });
 
+        this.originalValues = this.challanFormGroup.getRawValue();
+        this.originalTransportValues = {
+          transporterCode: res?.transporterCode,
+          vehicleNumber: res?.vehicleNumber,
+          vehicleSize: res?.vehicleSize,
+          frlrNumber: res?.frlrNumber,
+          frlrDate: res?.frlrDate?.split('T')[0],
+          travellingDistance: res?.travellingDistance
+        };
+
+
         this.eWayBillCreationFlag = res?.eWayBillCreationFlag;
 
         this.expectedDate.patchValue(this.convertToNgbDate(res?.expectedDate));
         this.frlrDate.patchValue(this.convertToNgbDate(res?.frlrDate));
         this.expectedDate.disable();
-        this.frlrDate.disable();
+        this.frlrDate.enable();
 
         this.ewaybillForm.patchValue({
           eWayBillAmount: this.getEwayBillAmount(res?.dcItemDetails),
@@ -504,6 +522,7 @@ export class GenerateEwayBillComponent {
         this.challanFormGroup.get('transporterType')?.disable();
         this.isRGP = res?.challanType === 'RGP';
         this.loading.set(false);
+        this.trackTransportChanges();
       });
   }
 
@@ -725,4 +744,136 @@ export class GenerateEwayBillComponent {
       ?.get('ewayBillGenerationDate')
       ?.setValue(null);
   }
+
+
+  protected onTransporterSelection(transporterCode: any) {
+    const transporter = this.transporters().find(
+      (item: any) => item?.code === transporterCode?.code,
+    );
+    this.challanFormGroup.patchValue({
+      transporterName: transporter?.name,
+      transporterGstin: transporter?.gstInNo,
+    });
+  }
+
+  private getTransporters() {
+    this.transporterService
+      .getTransporters({ status: 'A' }, 0, 0)
+      .subscribe((res: any) => {
+        this.transporters.set(res?.transporters);
+      });
+  }
+
+  private getVehicleSizes() {
+    this.lookupService
+      .getLookupSearchByType(LOOKUPS.vehicleSizes)
+      .subscribe((res: any) => {
+        this.vehicleSizes.set(res?.lookUps);
+      });
+  }
+
+
+  onTransportDetailsUpdate() {
+    const currentValues = this.challanFormGroup.getRawValue();
+
+    if (this.originalValues) {
+      const differences: any = {};
+      const unchanged: any = {};
+
+      Object.keys(currentValues).forEach(key => {
+        if (this.originalValues[key] !== currentValues[key]) {
+          differences[key] = {
+            old: this.originalValues[key],
+            new: currentValues[key]
+          };
+        } else {
+          unchanged[key] = currentValues[key];
+        }
+      });
+      const payload = {
+        ...this.challanFormGroup.value,
+        dcItemDetails: [...this.itemList.value, ...this.deletedItems],
+        dCDocumentsRequestModels: [
+          ...this.selectedFilesBase64,
+          ...this.deletedAttachments,
+        ],
+      };
+      if (this.challanNumber() != null) {
+        this.updateDeliveryChallan(
+          { ...payload, status: 'OPEN' },
+          this.challanNumber(),
+        );
+      }
+    }
+  }
+
+
+
+  trackTransportChanges() {
+    this.challanFormGroup.valueChanges.subscribe(currentValues => {
+      const keysToCheck = [
+        'transporterCode',
+        'vehicleNumber',
+        'vehicleSize',
+        'frlrNumber',
+        'frlrDate',
+        'travellingDistance'
+      ];
+
+      let hasChanges = false;
+
+      keysToCheck.forEach(key => {
+        if (JSON.stringify(this.originalTransportValues[key]) !== JSON.stringify(currentValues[key])) {
+          hasChanges = true;
+        }
+      });
+      this.isTransportDetailsEdited = hasChanges;
+    });
+  }
+
+
+
+  updateDeliveryChallan(payload: any, challanNumber: string) {
+    this.loading.set(true);
+    const actionByValue = payload?.ewayBillFormGroup?.actionBy;
+    const updatedPayload = {
+      ...payload,
+      destinationType: this.destinationType,
+      dcItemDetails: payload.dcItemDetails.map((item: any) => ({
+        ...item,
+        actionBy: item.actionBy ?? actionByValue,
+      })),
+      ewayBillFormGroup: {
+        ...payload.ewayBillFormGroup,
+        actionBy: actionByValue,
+      },
+      transporterType: "Registered",
+      actionBy: actionByValue,
+      status: "CONTROL_OUTGOING",
+    };
+
+    this.deliveryChallanService
+      .updateDeliveryChallan(updatedPayload, challanNumber)
+      .subscribe(
+        (res: any) => {
+          this.toastr.success(
+            `Delivery Challan is Updated Successfully for challan number: ${res?.challanNumber}`,
+          );
+          this.loading.set(false);
+          this.router.navigate([this.ROUTES.TRANSACTIONS.EWAY_BILL_GENERATION]);
+        },
+        (err: any) => {
+          if (err?.error?.details && err?.error?.details.length > 0) {
+            err.error?.details.forEach((errValue: any) => {
+              this.toastr.error(errValue.description);
+            });
+          } else {
+            this.toastr.error('Something went wrong');
+          }
+          this.loading.set(false);
+        },
+      );
+  }
+
+
 }

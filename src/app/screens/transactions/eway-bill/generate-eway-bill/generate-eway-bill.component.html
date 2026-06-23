@@ -3,7 +3,7 @@
     <div class="page-title">
         <h1> Generate e-Way Bill</h1>
         <div class="action-buttons">
-            <button [disabled]="false" class="custom-button-filters" (click)="openModal()">Cancel E-way Bill</button>
+            <button [disabled]="false || isTransportDetailsEdited" class="custom-button-filters" (click)="openModal()">Cancel E-way Bill</button>
 
             <!-- Modal -->
             <ng-template #confirmModal let-modal>
@@ -43,10 +43,12 @@
                 </div>
             </ng-template>
 
-            <button [disabled]="isApiButtonDisabled" class="custom-button-filters" (click)="generateViaApi()">Generate
+            <button [disabled]="isApiButtonDisabled || isTransportDetailsEdited" class="custom-button-filters" (click)="generateViaApi()">Generate
                 via API</button>
             <button [disabled]="ewaybillForm.invalid" class="custom-button-filters"
                 (click)="onPressSubmit()">Save</button>
+            <button *ngIf="isTransportDetailsEdited" class="custom-button-filters"
+                (click)="onTransportDetailsUpdate()">Update Transporter Details</button>
             <button class="custom-button-secondary"
                 [routerLink]='"/" + ROUTES.TRANSACTIONS.EWAY_BILL_GENERATION'>Close</button>
         </div>
@@ -419,25 +421,28 @@
 
 
                         <div class="dynamic-form-row">
-
-
                             <div class="">
                                 <div class="custom-form-input">
                                     <label for="">Transporter Code<span class="text-danger">*</span></label>
-                                    <input type="text" class="input-field" formControlName="transporterCode" readonly />
+                                    <ng-select class="input-field" formControlName="transporterCode"
+                                        (change)="onTransporterSelection($event)" bindLabel="code"
+                                        [items]="transporters()" bindValue="code">
+                                        <ng-template ng-option-tmp let-item="item">
+                                            {{item.code}} ({{item.name}})
+                                        </ng-template>
+                                    </ng-select>
                                 </div>
                             </div>
                             <div class="">
                                 <div class="custom-form-input">
                                     <label for="">Transporter Name <span class="text-danger">*</span></label>
-                                    <input type="text" class="input-field" formControlName="transporterName" readonly />
+                                    <input type="text" class="input-field" readonly formControlName="transporterName" />
                                 </div>
                             </div>
                             <div class="">
                                 <div class="custom-form-input">
                                     <label for="">GSTIN</label>
-                                    <input type="text" class="input-field" formControlName="transporterGstin"
-                                        readonly />
+                                    <input type="text" class="input-field" formControlName="transporterGstin"  readonly/>
                                 </div>
                             </div>
 
@@ -445,13 +450,20 @@
                             <div class="">
                                 <div class="custom-form-input">
                                     <label for="">Vehicle No.<span class="text-danger">*</span></label>
-                                    <input type="text" class="input-field" formControlName="vehicleNumber" readonly />
+                                    <input type="text" class="input-field" formControlName="vehicleNumber" />
                                 </div>
                             </div>
                             <div class="">
                                 <div class="custom-form-input">
-                                    <label for="">Vehicle Size<span class="text-danger">*</span></label>
-                                    <input type="text" class="input-field" formControlName="vehicleSize" readonly />
+                                    <label for="">Vehicle Size@switch (transporterType) {
+                                        @case ('Registered') {<span class="text-danger">*</span>}
+                                        }</label>
+                                    <ng-select class="input-field" formControlName="vehicleSize">
+                                        @for (size of vehicleSizes(); track $index) {
+                                        <ng-option [value]="size?.value">{{size?.value}}
+                                        </ng-option>
+                                        }
+                                    </ng-select>
                                 </div>
                             </div>
 
@@ -461,7 +473,7 @@
                                     <label for="">FRLR No.@switch (transporterType) {
                                         @case ('Registered') {<span class="text-danger">*</span>}
                                         }</label>
-                                    <input type="text" class="input-field" formControlName="frlrNumber" readonly />
+                                    <input type="text" class="input-field" formControlName="frlrNumber" />
                                 </div>
                             </div>
 
@@ -483,8 +495,7 @@
                             <div class="">
                                 <div class="custom-form-input">
                                     <label for="">Trip distance</label>
-                                    <input type="number" class="input-field" formControlName="travellingDistance"
-                                        readonly />
+                                    <input type="number" class="input-field" formControlName="travellingDistance" />
                                 </div>
                             </div>
                             <div>
