@@ -94,6 +94,7 @@ export class DeliveryChallanCreationComponent {
   deletedAttachments: any[] = [];
   storedAttachments: any[] = [];
   MAX_ATTACHMENT_SIZE_MB = 2;
+  sourcePlantCode: string = "";
 
   //Injecting Required services
   plantService = inject(PlantService);
@@ -191,7 +192,7 @@ export class DeliveryChallanCreationComponent {
     vehicleSize: new FormControl('', Validators.required),
     frlrNumber: new FormControl(''),
     frlrDate: new FormControl(null),
-    travellingDistance: new FormControl(0, Validators.required),
+    travellingDistance: new FormControl(0, [Validators.maxLength(6)]),
     modeOfTransport: new FormControl('', Validators.required),
     userRemarks: new FormControl(''),
     // createdBy: new FormControl(this.loggedInUser(), Validators.required),
@@ -492,7 +493,7 @@ export class DeliveryChallanCreationComponent {
       });
   }
 
-  
+
   subscribeToGSTs(group: FormGroup) {
     const cgstCtrl = group.get('cgstPercentage');
     const sgstCtrl = group.get('sgstPercentage');
@@ -694,7 +695,7 @@ export class DeliveryChallanCreationComponent {
     const plant = this.sourcePlants().find(
       (item: any) => item?.plantCode === plantCode,
     );
-
+    this.sourcePlantCode = plant?.postal;
     const destType = this.challanFormGroup.get('destinationType')?.value;
     const destCode = this.challanFormGroup.get('destinationCode')?.value;
 
@@ -731,6 +732,11 @@ export class DeliveryChallanCreationComponent {
   }
 
   protected onPlantSelection(plant: any) {
+    if (this.sourcePlantCode && plant?.postal && this.sourcePlantCode === plant?.postal) {
+      this.challanFormGroup.patchValue({ travellingDistance: 40 });
+    } else {
+      this.challanFormGroup.patchValue({ travellingDistance: 0 });
+    }
     this.challanFormGroup.patchValue({
       destinationCode: plant?.plantCode,
       destinationName: plant?.plantName,

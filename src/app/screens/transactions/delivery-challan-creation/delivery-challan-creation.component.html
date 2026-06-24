@@ -578,11 +578,12 @@
                                 </div>
                                 <div class="">
                                     <div class="custom-form-input">
-                                        <label for="">Trip Distance@switch (transporterType) {
-                                            @case ('Registered') {<span class="text-danger">*</span>}
-                                            }</label>
+                                        <label for="">Trip Distance
+                                            @switch (transporterType) {
+                                            }
+                                        </label>
                                         <input type="number" class="input-field" formControlName="travellingDistance"
-                                            (keypress)="allowNumeric($event)" [maxlength]="5" />
+                                            (keypress)="allowNumeric($event)" [maxlength]="6" style="background-color: #ececec;" />
                                     </div>
                                 </div>
                                 <div class="">
