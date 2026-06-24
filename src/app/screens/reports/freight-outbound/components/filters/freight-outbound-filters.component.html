@@ -38,6 +38,17 @@
 
         <div class="">
             <div class="custom-form-input">
+                <label for="">Challan No</label>
+                <ng-select class="input-field" [(ngModel)]="challanNumber" placeholder="Challan No">
+                    @for (code of filters?.challanNumber; track $index) {
+                    <ng-option [value]="code">{{code}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+
+        <div class="">
+            <div class="custom-form-input">
                 <label for="">Transporter Code</label>
                 <ng-select class="input-field" [(ngModel)]="transporterCode" placeholder="Select Transporter Code">
                     @for (code of filters?.TransporterCode; track $index) {

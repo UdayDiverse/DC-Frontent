@@ -40,6 +40,7 @@ export class FreightOutboundFiltersComponent {
   plantCodesFromUMS = this.userService.getPlantsForLoggedInUser();
   plantCode = signal(this.plantCodesFromUMS);
   transporterCode = signal(undefined);
+  challanNumber = signal(undefined);
   vehicleNumber = signal(undefined);
   vehicleSize = signal(undefined);
   toastr = inject(ToastrService);
@@ -91,6 +92,7 @@ export class FreightOutboundFiltersComponent {
       transporterCode: this.transporterCode(),
       vehicleNumber: this.vehicleNumber(),
       vehicleSize: this.vehicleSize(),
+      challanNumber: this.challanNumber(),
 
     });
   }
@@ -109,6 +111,7 @@ export class FreightOutboundFiltersComponent {
       transporterCode: '',
       vehicleNumber: '',
       vehicleSize: '',
+      challanNumber: '',
     };
     this.getData.emit(obj);
   }

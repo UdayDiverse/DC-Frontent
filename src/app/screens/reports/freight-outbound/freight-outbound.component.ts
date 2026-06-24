@@ -67,6 +67,8 @@ export class FreightOutboundComponent {
       transporterCode: filters?.transporterCode || '',
       vehicleNumber: filters?.vehicleNumber || '',
       vehicleSize: filters?.vehicleSize || '',
+      challanNumber: filters?.challanNumber || '',
+
     };
 
     this.loading.set(true);
@@ -125,6 +127,7 @@ export class FreightOutboundComponent {
     const data = {
       fromDate: filters?.fromDate || this.firstOfMonth,
       toDate: filters?.toDate || this.today,
+      challanNumber: filters?.challanNumber || '',
       plantCode: filters?.plantCode || '',
       TransporterCode: filters?.TransporterCode || '',
       VehicleNumber: filters?.VehicleNumber || '',
@@ -140,6 +143,7 @@ export class FreightOutboundComponent {
       (response: any) => {
         const mappedErrorLogList = response?.freightReports.map(
           (freightReport: any) => ({
+            'Challan Number': freightReport?.challanNumber,
             'Transfer Date': freightReport?.transferDate,
             'Transporter Code': freightReport?.transporterCode,
             'Transporter Name': freightReport?.transporterName,

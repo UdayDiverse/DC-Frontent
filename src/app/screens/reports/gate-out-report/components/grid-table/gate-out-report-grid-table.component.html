@@ -2,8 +2,8 @@
     <table #table [ngClass]="sortDirection() === 'asc' ? 'asc' : 'dsc'">
         <thead>
             <tr>
-                <th (click)="sortData('documentType')">Document Type</th>
                 <th (click)="sortData('documentNo')">Document Number</th>
+                <th (click)="sortData('documentType')">Document Type</th>
                 <th (click)="sortData('plantCode')">Plant Code</th>
                 <th (click)="sortData('transporterCode')">Transporter Type </th>
                 <th (click)="sortData('transporterCode')">Transporter Code </th>
@@ -15,8 +15,8 @@
         </thead>
         <tbody>
             <tr *ngFor="let gateOutReport of gateOutReportList">
-                <td>{{gateOutReport?.documentType}}</td>
                 <td>{{gateOutReport?.documentNo}}</td>
+                <td>{{gateOutReport?.documentType}}</td>
                 <td>{{gateOutReport?.plantCode}}</td>
                 <td>{{gateOutReport?.transporterType}}</td>
                 <td>{{gateOutReport?.transporterCode}}</td>
