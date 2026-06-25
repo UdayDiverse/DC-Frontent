@@ -54,7 +54,8 @@
 
                 <div class="col-md-6 section-border">
                     <div class="text-center mb-3">
-                        <strong>RETURNABLE CHALLAN</strong><br />
+                        <!-- <strong>RETURNABLE CHALLAN</strong><br /> -->
+                         <strong>{{ deliveryChallan?.challanType === 'RGP' ? 'RETURNABLE CHALLAN' : 'NON RETURNABLE CHALLAN' }}</strong><br />
                         <strong>(NOT FOR SALE)</strong><br />
                         <strong>
                             {{i === 0 ? "ORIGINAL FOR RECIPIENT"
