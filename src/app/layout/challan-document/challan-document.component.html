@@ -40,7 +40,9 @@
                     <span>{{deliveryChallan?.plantResponse?.panNo}}</span><br />
 
                     <strong>Organization: </strong>
-                    <span>A02QL, Refrigerator Division(Noida)</span><br />
+                    <span>{{deliveryChallan?.plantResponse?.plantCode}}
+                        {{deliveryChallan?.plantResponse?.plantName}}
+                    </span><br />
 
                     <strong>CIN:</strong>
                     <span>
@@ -117,7 +119,9 @@
 
                 <div class="col-md-6 section-border">
                     <strong>Prepared By: </strong>
-                    <span>{{deliveryChallan?.createdByDetails?.empCode}}</span><br /><br /><br />
+                    <span>{{deliveryChallan?.createdByDetails?.empCode}}
+                        {{deliveryChallan?.createdByDetails?.name}}
+                    </span><br /><br /><br />
 
                     <strong>Checked By: </strong><br /><br /><br />
 
