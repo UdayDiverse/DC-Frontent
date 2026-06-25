@@ -56,6 +56,7 @@ import {
   styleUrl: './generate-eway-bill.component.scss',
 })
 export class GenerateEwayBillComponent {
+  isVehicleNumberValid = true;
   ROUTES = ROUTEPATHS;
   challanNumber = input<string>('');
   expectedReturnDate: Date | null = null;
@@ -201,7 +202,7 @@ export class GenerateEwayBillComponent {
 
   constructor(private fb: FormBuilder) {
     this.addRowToItemlist();
-    
+
   }
 
   ngOnInit() {
@@ -875,5 +876,12 @@ export class GenerateEwayBillComponent {
       );
   }
 
-
+  validateVehicleNumber(event: any) {
+    const vehicleNumber = event.target.value.toUpperCase();
+    event.target.value = vehicleNumber;
+    const pattern = /^[A-Z0-9]+$/;
+    const isLengthValid = vehicleNumber.length >= 8 && vehicleNumber.length <= 10;
+    this.isVehicleNumberValid =
+      vehicleNumber === '' || (pattern.test(vehicleNumber) && isLengthValid);
+  }
 }

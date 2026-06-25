@@ -1,7 +1,9 @@
 <div class="page-title">
     <h1>Control Outgoing</h1>
     <div class="action-buttons">
-        <button class="custom-button-export" [disabled]="rowSelectionService.noRowSelected()" (click)="onPressSubmit()">
+        <button class="custom-button-export"
+            [disabled]="rowSelectionService.noRowSelected() || gridComponent?.hasAnyRowChanged()"
+            (click)="onPressSubmit()">
             Control Outgoing
         </button>
 

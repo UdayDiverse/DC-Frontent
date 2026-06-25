@@ -3,7 +3,8 @@
     <div class="page-title">
         <h1> Generate e-Way Bill</h1>
         <div class="action-buttons">
-            <button [disabled]="false || isTransportDetailsEdited" class="custom-button-filters" (click)="openModal()">Cancel E-way Bill</button>
+            <button [disabled]="false || isTransportDetailsEdited" class="custom-button-filters"
+                (click)="openModal()">Cancel E-way Bill</button>
 
             <!-- Modal -->
             <ng-template #confirmModal let-modal>
@@ -43,7 +44,8 @@
                 </div>
             </ng-template>
 
-            <button [disabled]="isApiButtonDisabled || isTransportDetailsEdited" class="custom-button-filters" (click)="generateViaApi()">Generate
+            <button [disabled]="isApiButtonDisabled || isTransportDetailsEdited" class="custom-button-filters"
+                (click)="generateViaApi()">Generate
                 via API</button>
             <button [disabled]="ewaybillForm.invalid" class="custom-button-filters"
                 (click)="onPressSubmit()">Save</button>
@@ -442,7 +444,8 @@
                             <div class="">
                                 <div class="custom-form-input">
                                     <label for="">GSTIN</label>
-                                    <input type="text" class="input-field" formControlName="transporterGstin"  readonly/>
+                                    <input type="text" class="input-field" formControlName="transporterGstin"
+                                        readonly />
                                 </div>
                             </div>
 
@@ -450,7 +453,12 @@
                             <div class="">
                                 <div class="custom-form-input">
                                     <label for="">Vehicle No.<span class="text-danger">*</span></label>
-                                    <input type="text" class="input-field" formControlName="vehicleNumber" />
+                                    <input type="text" class="input-field" formControlName="vehicleNumber"
+                                        [minlength]="8" [maxlength]="10" (input)="validateVehicleNumber($event)"
+                                        style="text-transform: uppercase" />
+                                    @if (!isVehicleNumberValid) {
+                                    <small class="ms-2 text-danger">Enter a Valid Vehicle Number</small>
+                                    }
                                 </div>
                             </div>
                             <div class="">

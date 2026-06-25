@@ -30,6 +30,7 @@ import { TransporterService } from '../../../../../core/service/transporter.serv
 import { LookupService } from '../../../../../core/service/lookup.service';
 import { LOOKUPS } from '../../../../../core/constants/lookups.constant';
 import { RowSelectionService } from '../../../../../core/service/row-selection.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-control-outgoing-grid-table',
@@ -185,31 +186,26 @@ export class ControlOutgoingGridTableComponent {
 
   protected saveRow(index: number, showMessage: boolean) {
     const row = this.editableArray[index];
-    if (row?.transporterCode === '' || row?.transporterName === '') {
-      this.toastr.error(
-        'Transporter Code and Transporter Name can not be empty'
-      );
+    if (!row?.transporterCode || !row?.transporterName) {
+      this.toastr.error('Transporter Code and Transporter Name can not be empty');
       return;
     }
 
     if (
       row?.transporterType === 'Registered' &&
-      (row?.transporterName === '' ||
-        row?.vehicleNumber === '')
+      (!row?.transporterName || !row?.vehicleNumber)
     ) {
-      this.toastr.error(
-        'All fields are required in case of Registered Transporter'
-      );
+      this.toastr.error('All fields are required in case of Registered Transporter');
       return;
     }
-    let payload: any = {
+    const payload: any = {
       frlrDate: row?.frlrDate ? this.convertNgbToDate(row?.frlrDate) : null,
       frlrNumber: row?.frlrNumber,
       transportaionsDetails: '',
       transporterCode: row?.transporterCode,
       transporterType: row?.transporterType,
       transporterName: row?.transporterName,
-      vehicleNumber: row?.vehicleNumber.toUpperCase(),
+      vehicleNumber: row?.vehicleNumber ? row.vehicleNumber.toUpperCase() : null,
       vehicleSize: row?.vehicleSize,
       controlOutgoingRemarks: row?.controlOutgoingRemarks,
       actionBy: this.userService.getUserId(),
@@ -217,42 +213,37 @@ export class ControlOutgoingGridTableComponent {
 
     this.editedRows.clear();
     this.loadSpinner.set(true);
-
     const request$ =
       row.documentType === 'RGP' || row.documentType === 'NRGP'
         ? this.controlOutgoingService.dcControlOutgoing(row.documentNo, payload)
-        : this.controlOutgoingService.updateControlOutgoing(
-          row.interfaceId,
-          payload
-        );
+        : this.controlOutgoingService.updateControlOutgoing(row.interfaceId, payload);
 
-    request$.subscribe({
-      next: (res: any) => {
-        if (row.documentType === 'RGP' || row.documentType === 'NRGP') {
-          this.toastr.success(
-            `Transportation details updated successfully for challan number: ${res?.challanNumber}`
-          );
-        } else {
-          if (showMessage === true) {
+    request$
+      .pipe(finalize(() => this.loadSpinner.set(false)))
+      .subscribe({
+        next: (res: any) => {
+          if (row.documentType === 'RGP' || row.documentType === 'NRGP') {
+            this.toastr.success(
+              `Transportation details updated successfully for challan number: ${res?.challanNumber}`
+            );
+          } else if (showMessage) {
             this.toastr.success(
               `Transportation details updated successfully for document number: ${res?.documentNumber}`
             );
           }
-        }
-        this.refreshControlList.emit();
-        this.loadSpinner.set(false);
-      },
-      error: (err: any) => {
-        if (err?.error?.details && err?.error?.details.length > 0) {
-          err.error?.details.forEach((errValue: any) => {
-            this.toastr.error(errValue.description);
-          });
-        } else {
-          this.toastr.error('Something went wrong');
-        }
-        this.loadSpinner.set(false);
-      },
-    });
+          this.loadSpinner.set(false);
+          this.refreshControlList.emit();
+        },
+        error: (err: any) => {
+          if (err?.error?.details?.length > 0) {
+            err.error.details.forEach((errValue: any) => {
+              this.toastr.error(errValue.description);
+            });
+          } else {
+            this.toastr.error('Something went wrong');
+          }
+        },
+      });
   }
 
   private formatDate(dateStr: string) {
@@ -306,5 +297,8 @@ export class ControlOutgoingGridTableComponent {
 
   protected closePopover(popover: NgbPopover) {
     popover.close();
+  }
+  public hasAnyRowChanged(): boolean {
+    return this.editableArray?.some((_, index) => this.hasDataChanged(index));
   }
 }
