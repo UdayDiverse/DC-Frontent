@@ -159,6 +159,7 @@ export class DeliveryChallanCreationComponent {
       expanded: false,
     },
   ];
+  isPostalCodeValid: boolean = true;
 
   toggle(index: number) {
     this.items[index].expanded = !this.items[index].expanded;
@@ -182,7 +183,11 @@ export class DeliveryChallanCreationComponent {
     destinationAddress2: new FormControl(''),
     destinationCity: new FormControl(''),
     destinationState: new FormControl(''),
-    destinationPostalCode: new FormControl(''),
+    destinationPostalCode: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^\d{6}$/)
+    ]),
+
     destinationGstin: new FormControl(''),
     transporterType: new FormControl('Registered', Validators.required),
     transporterCode: new FormControl('', Validators.required),
@@ -1036,5 +1041,12 @@ export class DeliveryChallanCreationComponent {
   clearFrlrDate() {
     this.frlrDate.reset();
     this.challanFormGroup.get('frlrDate')?.setValue(null);
+  }
+  validatePostalCode(event: any) {
+    const postalCode = event.target.value;
+    const pattern = /^[0-9]+$/;
+    const isLengthValid = postalCode.length === 6;
+    this.isPostalCodeValid =
+      postalCode === '' || (pattern.test(postalCode) && isLengthValid);
   }
 }

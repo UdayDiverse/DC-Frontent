@@ -163,7 +163,8 @@
 
                             <div class="">
                                 <div class="custom-form-input">
-                                    <label for="" class="d-block">Attachments <small style="color: #dfb206;"> (Total upload
+                                    <label for="" class="d-block">Attachments <small style="color: #dfb206;"> (Total
+                                            upload
                                             limit: 2MB or 4 files)</small></label>
                                     <label for="file-upload" class="file-uploader pointer">
                                         <img src="../../../assets/images/icons/cloud-arrow-up.svg" alt="" width="30px"
@@ -397,10 +398,15 @@
                                 </div>
                                 <div class="">
                                     <div class="custom-form-input">
-                                        <label for="">Postal Code <span class="text-danger">*</span></label>
-                                        <input type="text" class="input-field" [readonly]="isRegistered"
-                                            (keypress)="allowNumeric($event)" [maxlength]="6"
-                                            formControlName="destinationPostalCode" />
+                                        <label for="">
+                                            Postal Code <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" class="input-field" formControlName="destinationPostalCode"
+                                            [maxlength]="6" (keypress)="allowNumeric($event)"
+                                            (input)="validatePostalCode($event)" />
+                                        @if (!isPostalCodeValid) {
+                                        <small class="ms-2 text-danger">Enter a Valid Postal Code</small>
+                                        }
                                     </div>
                                 </div>
                                 <div class="">
@@ -583,7 +589,8 @@
                                             }
                                         </label>
                                         <input type="number" class="input-field" formControlName="travellingDistance"
-                                            (keypress)="allowNumeric($event)" [maxlength]="6" style="background-color: #ececec;" />
+                                            (keypress)="allowNumeric($event)" [maxlength]="6"
+                                            style="background-color: #ececec;" />
                                     </div>
                                 </div>
                                 <div class="">
