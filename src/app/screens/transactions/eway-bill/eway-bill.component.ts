@@ -89,7 +89,7 @@ export class EwayBillComponent {
       toDate: filters?.toDate || this.getTommorrowDate(),
       plantCode: filters?.plantcode || [...this.plantCodesFromUMS],
       eWayBillType: filters?.eWayBillType || '',
-      transporterType: 'Registered',
+      transporterType: '',
       status: filters?.challanStatus || [
         'EWAY_BILL_GENERATED',
         'EWAY_BILL_UPDATED',

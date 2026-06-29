@@ -86,6 +86,8 @@
             <!-- Receiver Details -->
             <div class="row" style="padding-block: 1px; margin-top: 2px;">
                 <div class="col-md-6 section-border" style="border-right: none;">
+                    
+                    <strong>{{deliveryChallan?.destinationType == 'Plant' ? 'Supplier Name: LG Electronics India Ltd.' : ''}}</strong><br />
                     <strong>Details of Receiver: </strong>
                     <span>{{deliveryChallan?.destinationCode}} / {{deliveryChallan?.destinationName}}</span><br />
 
@@ -316,7 +318,7 @@
                                     <div class="left-info-block">
                                         <strong>Carrier Name</strong>
                                         <span class="info-colon">: </span>
-                                        <span>{{deliveryChallan?.modeOfTransport || '.'}}</span>
+                                        <span>{{deliveryChallan?.transporterName || '.'}}</span>
                                     </div>
 
                                     <div class="left-info-block eway-no-block">
@@ -355,7 +357,7 @@
                                     <br />
 
                                     Insurance Policy :
-                                    {{lookupValues?.InsurancePolicyNo}}
+                                    {{lookupValues?.Insurance_Policy_No}}
                                     Effective From
                                     {{lookupValues?.InsuranceEffectiveFrom}}
                                     <br />

@@ -535,9 +535,8 @@
 
                                 <div class="">
                                     <div class="custom-form-input">
-                                        <label for="">Vehicle No@switch (transporterType) {
-                                            @case ('Registered') {<span class="text-danger">*</span>}
-                                            }</label>
+                                        <label for="">Vehicle No <span class="text-danger">*</span>
+                                            </label>
                                         <input type="text" class="input-field" formControlName="vehicleNumber"
                                             [minlength]="8" [maxlength]="10" (keypress)="allowAlphaNumeric($event)"
                                             (input)="validateVehicleNumber($event)" style="text-transform: uppercase" />
