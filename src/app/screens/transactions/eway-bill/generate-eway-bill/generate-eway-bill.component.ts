@@ -848,7 +848,7 @@ export class GenerateEwayBillComponent {
         ...payload.ewayBillFormGroup,
         actionBy: actionByValue,
       },
-      transporterType: "Registered",
+      transporterType: this.challanFormGroup.get('transporterType')?.value,
       actionBy: actionByValue,
       status: "CONTROL_OUTGOING",
     };
