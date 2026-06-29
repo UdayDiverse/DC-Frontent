@@ -29,6 +29,8 @@ import {
   NgbDateStruct,
   NgbCalendar,
 } from '@ng-bootstrap/ng-bootstrap';
+import { LOOKUPS } from '../../../../core/constants/lookups.constant';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-view-challan',
@@ -162,6 +164,7 @@ export class ViewDeliveryChallanComponent {
   }
 
   ngOnInit() {
+    this.getModeOfTransports();
     if (this.challanNumber() != '') {
       this.getChallanAndBindToForms(this.challanNumber());
     }
@@ -364,7 +367,7 @@ export class ViewDeliveryChallanComponent {
           frlrNumber: res?.frlrNumber,
           travellingDistance: res?.travellingDistance,
           frlrDate: res?.frlrDate?.split('T')[0],
-          modeOfTransport: res?.modeOfTransport,
+          modeOfTransport: this.getTransportNameByValue(res?.modeOfTransport),
           userRemarks: res?.userRemarks,
           approverRemarks: res?.approverRemarks,
           createdBy: res?.createdBy,
@@ -419,6 +422,13 @@ export class ViewDeliveryChallanComponent {
         this.isRGP = res?.challanType === 'RGP';
         this.loading.set(false);
       });
+  }
+
+
+  getTransportNameByValue(id: any): string {
+    const transports = this.modeOfTransports();
+    const match = transports.find((t: any) => t.code === id);
+    return match ? match.value : '';
   }
 
   convertToNgbDate(dateString: string): any {
@@ -527,5 +537,17 @@ export class ViewDeliveryChallanComponent {
           this.loading.set(false);
         }
       );
+  }
+
+  private getModeOfTransports() {
+    this.lookupService
+      .getLookupSearchByType(LOOKUPS.modeOfTransport)
+      .subscribe((res: any) => {
+        this.modeOfTransports.set(
+          res?.lookUps
+            .filter((item: any) => item.code)
+            .sort((a: any, b: any) => a.code.localeCompare(b.code))
+        );
+      });
   }
 }

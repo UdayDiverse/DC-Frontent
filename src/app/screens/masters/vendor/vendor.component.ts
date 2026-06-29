@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ViewChild } from '@angular/core';
 import {
   NgbPaginationModule,
   NgbTooltipModule,
@@ -43,7 +43,8 @@ export class VendorComponent {
     private vendorService: VendorService,
     private xlsxService: XlsxService,
     private toastr: ToastrService
-  ) {}
+  ) { }
+  @ViewChild(VendorGridTableComponent) vendorGridTable!: VendorGridTableComponent;
 
   ngOnInit() {
     this.getVendors();
@@ -151,8 +152,8 @@ export class VendorComponent {
             lookup?.status === 'A'
               ? 'Active'
               : lookup?.status === 'O'
-              ? 'Inactive'
-              : '',
+                ? 'Inactive'
+                : '',
         }));
         if (mappedVendorList?.length === 0) {
           this.toastr.error('No data to Export');
@@ -169,5 +170,34 @@ export class VendorComponent {
         this.loading.set(false);
       }
     );
+  }
+
+  onGetSelectedIds() {
+    const selectedIds = this.vendorGridTable.getSelectedIds();
+    const data = {
+      ids: selectedIds
+    };
+    this.loading.set(true);
+    this.vendorService.useVendorasTransporter(data).subscribe(
+      (response: any) => {
+        if (response == 1) {
+          this.toastr.success("Vendor marked as transporter.");
+        }
+        else {
+          this.toastr.error("Issue Occured.");
+        }
+
+        this.getVendors();
+        this.loading.set(false);
+      },
+      (error: any) => {
+        this.loading.set(false);
+        console.log(error);
+      }
+    );
+  }
+
+  hasSelection(): boolean {
+    return this.vendorGridTable?.getSelectedIds().length > 0;
   }
 }

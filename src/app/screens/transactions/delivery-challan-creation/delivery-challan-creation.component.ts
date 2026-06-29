@@ -188,7 +188,7 @@ export class DeliveryChallanCreationComponent {
       Validators.pattern(/^\d{6}$/)
     ]),
 
-    destinationGstin: new FormControl(''),
+    destinationGstin: new FormControl('', Validators.required),
     transporterType: new FormControl('Registered', Validators.required),
     transporterCode: new FormControl('', Validators.required),
     transporterName: new FormControl('', Validators.required),
@@ -953,14 +953,28 @@ export class DeliveryChallanCreationComponent {
         ...this.deletedAttachments,
       ],
     };
-
-    if (this.challanNumber() != null) {
-      this.updateDeliveryChallan(
-        { ...payload, status: 'OPEN' },
-        this.challanNumber(),
-      );
-    } else {
-      this.createDeliveryChallan(payload);
+    let hasError = false;
+    if (
+      payload.destinationGstin === null ||
+      payload.destinationGstin === "NA" ||
+      payload.destinationGstin === "N/A"
+    ) {
+      this.toastr.error('GSTIN No. cannot be Null.');
+      hasError = true;
+    }
+    if (payload.destinationPostalCode === null) {
+      this.toastr.error('Postal Code cannot be Null.');
+      hasError = true;
+    }
+    if (!hasError) {
+      if (this.challanNumber() != null) {
+        this.updateDeliveryChallan(
+          { ...payload, status: 'OPEN' },
+          this.challanNumber(),
+        );
+      } else {
+        this.createDeliveryChallan(payload);
+      }
     }
   }
 

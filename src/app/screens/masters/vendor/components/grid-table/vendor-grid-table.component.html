@@ -2,6 +2,10 @@
     <table #table [ngClass]="sortDirection() === 'asc' ?  'asc' : 'dsc'">
         <thead>
             <tr>
+                <th (click)="toggleSelectAll()" class="select-all-header text-center"
+                    [class.disabled-header]="!vendorList?.length">
+                    {{ isAllSelected() ? 'Unselect All' : 'Select All' }}
+                </th>
                 <th (click)="sortData('code')">Vendor Code</th>
                 <th (click)="sortData('name')">Vendor Name</th>
                 <th (click)="sortData('address1')">Address</th>
@@ -20,6 +24,10 @@
         <tbody>
             @for (vendor of vendorList; track vendor.id) {
             <tr>
+                <td>
+                    <input type="checkbox" [checked]="selectedVendorIds.has(vendor.id)"
+                        (change)="toggleSelection(vendor.id, $event)" [disabled]="vendor.vendorAsTransporter === 'Y'" />
+                </td>
                 <td class="pointer" container="body">
                     <span placement="end" tooltipClass="table-datetime-popover" [ngbTooltip]="tipContent">
                         <u>{{vendor?.code}}</u>

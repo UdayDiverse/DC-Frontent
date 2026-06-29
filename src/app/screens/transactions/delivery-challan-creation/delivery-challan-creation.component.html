@@ -397,6 +397,16 @@
                                     }
                                 </div>
                                 <div class="">
+
+                                    @if (isRegistered) {
+                                    <div class="custom-form-input">
+                                        <label for="">
+                                            Postal Code <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" class="input-field" [readonly]="isRegistered"
+                                            formControlName="destinationPostalCode" [maxlength]="6" />
+                                    </div>
+                                    }@else {
                                     <div class="custom-form-input">
                                         <label for="">
                                             Postal Code <span class="text-danger">*</span>
@@ -408,6 +418,7 @@
                                         <small class="ms-2 text-danger">Enter a Valid Postal Code</small>
                                         }
                                     </div>
+                                    }
                                 </div>
                                 <div class="">
                                     <div class="custom-form-input">

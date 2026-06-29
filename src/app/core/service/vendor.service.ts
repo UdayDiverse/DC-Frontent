@@ -20,4 +20,8 @@ export class VendorService extends CRUDService<VendorRequest> {
   getVendorById(vendorId: number) {
     return this.get(APIConstant.getVendorById(vendorId));
   }
+
+  useVendorasTransporter(data: any) {
+    return this.add(APIConstant.vendorAsTransporter, data);
+  }
 }

@@ -86,5 +86,6 @@ export const APIConstant = {
   generateEwayBillViaApi: `ewayBill/generateEwayBill`,
   cancelEwayBillViaApi: `ewayBill/CancelledEwayBill`,
   getGateOutReports: (offset: number, count: number) =>
-    `controloutgoing/search?offset=${offset}&count=${count}`
+    `controloutgoing/search?offset=${offset}&count=${count}`,
+  vendorAsTransporter: `vendor/vendorAsTrasnporter`,
 };

@@ -1,9 +1,9 @@
 <div class="page-title">
     <h1>Vendor Master</h1>
     <div class="action-buttons">
-        <!-- <button class="custom-button-export" (click)="exportData()">
-            <img src="assets/images/icons/excel.svg" alt="export" /> Export
-        </button> -->
+        <button class="custom-button-export" (click)="onGetSelectedIds()" [disabled]="!hasSelection()">
+            Use as Transporter
+        </button>
         <div container="body">
             <img src="assets/images/icons/fullScreen.svg" alt="" class="pointer" width="14px"
                 (click)="toggleFullScreen()" placement="start" [ngbTooltip]="tipContent" />
