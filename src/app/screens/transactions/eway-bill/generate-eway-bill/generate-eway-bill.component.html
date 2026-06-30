@@ -425,30 +425,45 @@
                         <div class="dynamic-form-row">
                             <div class="">
                                 <div class="custom-form-input">
-                                    <label for="">Transporter Code<span class="text-danger">*</span></label>
-                                    <ng-select class="input-field" formControlName="transporterCode"
-                                        (change)="onTransporterSelection($event)" bindLabel="code"
-                                        [items]="transporters()" bindValue="code">
+                                    <label for="">Transporter Code <span class="text-danger">*</span></label>
+                                    <ng-select *ngIf="challanFormGroup.get('transporterType')?.value === 'Registered'"
+                                        class="input-field" formControlName="transporterCode"
+                                        (change)="onTransporterSelection($event)" bindLabel="name"
+                                        [items]="transporters()" bindValue="name">
                                         <ng-template ng-option-tmp let-item="item">
                                             {{item.code}} ({{item.name}})
                                         </ng-template>
                                     </ng-select>
+                                    <input *ngIf="challanFormGroup.get('transporterType')?.value === 'Unregistered'"
+                                        type="text" class="input-field" formControlName="transporterCode" />
                                 </div>
                             </div>
                             <div class="">
                                 <div class="custom-form-input">
                                     <label for="">Transporter Name <span class="text-danger">*</span></label>
-                                    <input type="text" class="input-field" readonly formControlName="transporterName" />
+                                    <input type="text" class="input-field"
+                                        [readonly]="challanFormGroup.get('transporterType')?.value === 'Registered'"
+                                        formControlName="transporterName" />
                                 </div>
                             </div>
                             <div class="">
                                 <div class="custom-form-input">
                                     <label for="">GSTIN</label>
-                                    <input type="text" class="input-field" formControlName="transporterGstin"
-                                        readonly />
+                                    <input type="text" class="input-field" minlength="15" maxlength="15"
+                                        [readonly]="challanFormGroup.get('transporterType')?.value === 'Registered'"
+                                        formControlName="transporterGstin" />
+                                    <div *ngIf="challanFormGroup.get('transporterGstin')?.touched &&
+              challanFormGroup.get('transporterGstin')?.invalid" class="text-danger">
+                                        <div *ngIf="challanFormGroup.get('transporterGstin')?.errors?.['required']">
+                                            GSTIN is required.
+                                        </div>
+                                        <div *ngIf="challanFormGroup.get('transporterGstin')?.errors?.['minlength'] ||
+                challanFormGroup.get('transporterGstin')?.errors?.['maxlength']">
+                                            GSTIN must be exactly 15 characters.
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
 
                             <div class="">
                                 <div class="custom-form-input">
@@ -461,42 +476,38 @@
                                     }
                                 </div>
                             </div>
-                            <div class="">
-                                <div class="custom-form-input">
-                                    <label for="">Vehicle Size@switch (transporterType) {
-                                        @case ('Registered') {<span class="text-danger">*</span>}
-                                        }</label>
-                                    <ng-select class="input-field" formControlName="vehicleSize">
-                                        @for (size of vehicleSizes(); track $index) {
-                                        <ng-option [value]="size?.value">{{size?.value}}
-                                        </ng-option>
-                                        }
-                                    </ng-select>
-                                </div>
+                            <div class="custom-form-input">
+                                <label for="">
+                                    Vehicle Size
+                                    <span *ngIf="challanFormGroup.get('transporterType')?.value === 'Registered'"
+                                        class="text-danger">*</span>
+                                </label>
+                                <ng-select class="input-field" formControlName="vehicleSize">
+                                    <ng-option *ngFor="let size of vehicleSizes()" [value]="size?.value">
+                                        {{size?.value}}
+                                    </ng-option>
+                                </ng-select>
                             </div>
 
-
-                            <div class="">
-                                <div class="custom-form-input">
-                                    <label for="">FRLR No.@switch (transporterType) {
-                                        @case ('Registered') {<span class="text-danger">*</span>}
-                                        }</label>
-                                    <input type="text" class="input-field" formControlName="frlrNumber" />
-                                </div>
+                            <div class="custom-form-input">
+                                <label for="">
+                                    FRLR No.
+                                    <span *ngIf="challanFormGroup.get('transporterType')?.value === 'Registered'"
+                                        class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="input-field" formControlName="frlrNumber" />
                             </div>
 
-                            <div class="">
-                                <div class="custom-form-input">
-                                    <label for="">FRLR Date.@switch (transporterType) {
-                                        @case ('Registered') {<span class="text-danger">*</span>}
-                                        }</label>
-                                    <div class="input-group datepicker">
-                                        <input class="form-control" [formControl]="frlrDate" placeholder="yyyy-mm-dd"
-                                            name="frlrNumber" [autoClose]="true" ngbDatepicker
-                                            #frlrDt="ngbDatepicker" />
-                                        <button class="btn btn-outline-secondary bi bi-calendar3" type="button">
-                                        </button>
-                                    </div>
+                            <div class="custom-form-input">
+                                <label for="">
+                                    FRLR Date
+                                    <span *ngIf="challanFormGroup.get('transporterType')?.value === 'Registered'"
+                                        class="text-danger">*</span>
+                                </label>
+                                <div class="input-group datepicker">
+                                    <input class="form-control" [formControl]="frlrDate" placeholder="yyyy-mm-dd"
+                                        name="frlrNumber" [autoClose]="true" ngbDatepicker #frlrDt="ngbDatepicker" />
+                                    <button class="btn btn-outline-secondary bi bi-calendar3" type="button"></button>
                                 </div>
                             </div>
 
@@ -509,7 +520,7 @@
                             <div>
                                 <div class="custom-form-input">
                                     <label for="">Mode of Transport<span class="text-danger">*</span></label>
-                                    <ng-select class="input-field" formControlName="modeOfTransport" [readonly]="true">
+                                    <ng-select class="input-field" formControlName="modeOfTransport">
                                         @for (type of modeOfTransports(); track $index) {
                                         <ng-option [value]="type?.code">
                                             {{type?.value}}</ng-option>

@@ -36,7 +36,7 @@
             <tr>
                 <td>{{report?.challanType}}</td>
                 <td class="pointer" container="body">{{report?.challanNumber}}</td>
-
+                <td>{{report?.description}}</td>
                 <td>{{report?.challanDate | date: 'yyyy-MM-dd'}}</td>
                 <td>{{report?.branchName}}</td>
                 <td>{{report?.department}}</td>
@@ -52,11 +52,10 @@
                 <td>{{report?.destinationAddress}}</td>
                 <td>{{report?.destinationCity}}</td>
                 <td>{{report?.destinationState}}</td>
-                <td>{{report?.description}}</td>
-                <td>{{report?.challanQty}}</td>
                 <td>{{report?.amount}}</td>
-                <td>{{report?.balancedQty}}</td>
+                <td>{{report?.challanQty}}</td>
                 <td>{{report?.receivedQty}}</td>
+                <td>{{report?.balancedQty}}</td>
                 <td>{{report?.status?.split("_").join(" ")}}</td>
                 <td>{{report?.itemCategory}}</td>
                 <td>{{report?.userRemarks}}</td>
