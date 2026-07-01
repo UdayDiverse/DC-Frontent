@@ -255,7 +255,7 @@ export class ChallanDocumentComponent {
 
   private getLookupValues(lookups: any[]) {
     const lookupValues = lookups.reduce((prev, item) => {
-      prev[item.code] = item.value;
+      prev[item.type] = item.value;
       return prev;
     }, {});
 

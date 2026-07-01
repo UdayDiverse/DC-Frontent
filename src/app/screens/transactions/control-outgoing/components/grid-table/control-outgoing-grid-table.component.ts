@@ -195,7 +195,7 @@ export class ControlOutgoingGridTableComponent {
       row?.transporterType === 'Registered' &&
       (!row?.transporterName || !row?.vehicleNumber)
     ) {
-      this.toastr.error('All fields are required in case of Registered Transporter');
+      this.toastr.error('Transporter Details & Vehicle No are required for Registered Transporter');
       return;
     }
     const payload: any = {
