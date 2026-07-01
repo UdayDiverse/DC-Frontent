@@ -38,6 +38,7 @@ import { GateOutService } from '../../../../../core/service/gate-out.service';
 export class GateOutFilterComponent implements OnInit {
   @Input() filters: any = [];
   @Output() getData: EventEmitter<any> = new EventEmitter();
+  @Output() exportEvent: EventEmitter<any> = new EventEmitter();
   documentTypeFilters: any[] = [];
   transporterCodeFilters: any[] = [];
   vehicleNumberFilters: any[] = [];
@@ -219,5 +220,8 @@ export class GateOutFilterComponent implements OnInit {
       toDate: this.convertNgbToDate(this.toDate()),
     };
     this.getData.emit(obj);
+  }
+  exportData() {
+    this.exportEvent.emit();
   }
 }

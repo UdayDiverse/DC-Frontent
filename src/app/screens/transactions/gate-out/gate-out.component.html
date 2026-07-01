@@ -1,100 +1,66 @@
 <div class="page-title">
-    <h1>Gate Out</h1>
-    <div class="action-buttons">
-        <button class="custom-button-export" [disabled]="rowSelectionService.noRowSelected()" (click)="onPressSubmit()">
-            Gate Out
-        </button>
-        <ng-template #confirmModal let-modal>
-            <div class="modal-header">
-                <h3 class="modal-title fw-bold">⚠️ Confirm Gate Out</h3>
-                <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('cancel')"></button>
-            </div>
-            <div class="modal-body">
-                <h4>This will complete the Gate Out process. Do you still want to continue?</h4>
-            </div>
-            <div class="modal-footer border-0 d-flex justify-content-center gap-3 pt-3 pb-4">
-                <button type="button" class="btn btn-outline-secondary px-4 py-2 rounded-pill shadow-sm"
-                    (click)="modal.dismiss('no')">
-                    <i class="bi bi-x-circle me-1"></i> No, Cancel
-                </button>
+  <h1>Gate Out</h1>
+  <div class="action-buttons">
+    <button class="custom-button-export" [disabled]="rowSelectionService.noRowSelected()" (click)="onPressSubmit()">
+      Gate Out
+    </button>
 
-                <button type="button" class="btn btn-danger px-4 py-2 rounded-pill shadow-sm"
-                    (click)="modal.close('yes')">
-                    <i class="bi bi-check-circle me-1"></i> Yes, Continue
-                </button>
-            </div>
-        </ng-template>
+    <button class="custom-button-export ms-3" (click)="onExportData()">
+      Export to Excel
+    </button>
 
-        <div container="body">
-            <img src="assets/images/icons/fullScreen.svg" alt="" class="pointer" width="14px"
-                (click)="toggleFullScreen()" placement="start" [ngbTooltip]="tipContent" />
-            <ng-template #tipContent> Full Screen </ng-template>
-        </div>
+    <div container="body">
+      <img src="assets/images/icons/fullScreen.svg" alt="" class="pointer" width="14px" (click)="toggleFullScreen()"
+        placement="start" [ngbTooltip]="tipContent" />
+      <ng-template #tipContent> Full Screen </ng-template>
     </div>
+  </div>
 </div>
 
 <div class="filter-section">
-    <app-gate-out-filter [filters]="filters()" (getData)="getData($event)"></app-gate-out-filter>
-
+  <app-gate-out-filter [filters]="filters()" (getData)="getData($event)" (exportEvent)="onExportData()">
+  </app-gate-out-filter>
 </div>
 
 @if (!loading()) {
 <div class="main-content">
-    <div class="content-section" [ngClass]="{ isFilters: isFilters(), fullScreen : fullScreen() }">
-        @if (fullScreen()) {
-        <img src="assets/images/icons/fullScreenCollapse.svg" alt="" class="me-3 pointer float-end" width="14px"
-            (click)="toggleFullScreen()" />
-        }
-        <div class="grid-table">
-            <div class="table-container">
-                <app-gate-out-grid-table #gridComponent [filterKeyword]="filterKeyword()" [gateOutList]="gateOutList()"
-                    [activeFilters]="activeFilters()" [outGoingData]="gateOutList()">
-                </app-gate-out-grid-table>
+  <div class="content-section" [ngClass]="{ isFilters: isFilters(), fullScreen : fullScreen() }">
+    @if (fullScreen()) {
+    <img src="assets/images/icons/fullScreenCollapse.svg" alt="" class="me-3 pointer float-end" width="14px"
+      (click)="toggleFullScreen()" />
+    }
+    <div class="grid-table">
+      <div class="table-container">
+        <app-gate-out-grid-table #gridComponent [filterKeyword]="filterKeyword()" [gateOutList]="gateOutList()"
+          [activeFilters]="activeFilters()" [outGoingData]="gateOutList()">
+        </app-gate-out-grid-table>
+      </div>
 
-            </div>
-
-            <div class="table-footer d-flex justify-content-center mt-3 align-items-center" style="gap: 5em">
-                @if (gateOutList().length > 0) {
-                <div class="d-flex justify-content-center mt-3">
-                    <ngb-pagination [collectionSize]="totalGateOut()" [page]="currentPage()" [pageSize]="count()"
-                        (pageChange)="onPageChange($event)" [boundaryLinks]="true" [maxSize]="5"
-                        [rotate]="true"></ngb-pagination>
-                    <p class="mt-2 ms-3"> Items per page:</p>
-                    <select class="custom-select ms-3" [(ngModel)]="count" (ngModelChange)="onPageSizeChange(count())">
-                        <option [ngValue]="10">10</option>
-                        <option [ngValue]="20">20</option>
-                        <option [ngValue]="50">50</option>
-                        <option [ngValue]="100">100</option>
-                        <option [ngValue]="500">500</option>
-                    </select>
-                </div>
-                }
-
-                @if (totalGateOut() && totalGateOut() > 0) {
-                <div class="total-rows ml-10 fw-bold">Total Records: {{totalGateOut()}}</div>
-                }
-            </div>
+      <div class="table-footer d-flex justify-content-center mt-3 align-items-center" style="gap: 5em">
+        @if (gateOutList().length > 0) {
+        <div class="d-flex justify-content-center mt-3">
+          <ngb-pagination [collectionSize]="totalGateOut()" [page]="currentPage()" [pageSize]="count()"
+            (pageChange)="onPageChange($event)" [boundaryLinks]="true" [maxSize]="5" [rotate]="true"></ngb-pagination>
+          <p class="mt-2 ms-3"> Items per page:</p>
+          <select class="custom-select ms-3" [(ngModel)]="count" (ngModelChange)="onPageSizeChange(count())">
+            <option [ngValue]="10">10</option>
+            <option [ngValue]="20">20</option>
+            <option [ngValue]="50">50</option>
+            <option [ngValue]="100">100</option>
+            <option [ngValue]="500">500</option>
+          </select>
         </div>
+        }
+
+        @if (totalGateOut() && totalGateOut() > 0) {
+        <div class="total-rows ml-10 fw-bold">Total Records: {{totalGateOut()}}</div>
+        }
+      </div>
     </div>
+  </div>
 </div>
 }@else {
 <div class="progress-bar-wrapper">
-    <div class="progress-bar-indeterminate"></div>
+  <div class="progress-bar-indeterminate"></div>
 </div>
-
 }
-
-<ng-template #warningModal let-modal>
-    <div class="modal-header">
-        <h3 class="modal-title fw-bold">⚠️ Attention</h3>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('cancel')"></button>
-    </div>
-    <div class="modal-body">
-        <h4>Choose atleast one more filter or increase the Date Range and press Search to display the results.</h4>
-    </div>
-    <div class="modal-footer border-0 d-flex justify-content-center gap-3 pt-3 pb-4">
-        <button type="button" class="btn btn-danger px-4 py-2 rounded-pill shadow-sm" (click)="modal.close('yes')">
-            <i class="bi bi-check-circle me-1"></i> Understood
-        </button>
-    </div>
-</ng-template>

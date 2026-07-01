@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import * as XLSX from 'xlsx';
 import {
   Component,
   inject,
@@ -189,7 +190,36 @@ export class GateOutComponent {
             );
         }
       },
-      () => console.log('❌ User canceled')
+      () => console.log()
     );
+  }
+
+  onExportData() {
+    const dataToExport = this.gateOutList();
+
+    if (!dataToExport || dataToExport.length === 0) {
+      this.toastr.warning('No data available to export');
+      return;
+    }
+    const filteredData = dataToExport.map((row: any) => ({
+      'Document Type': row.documentType,
+      'Document Number': row.documentNo,
+      'Document Date': row.documentDate ? row.documentDate.split('T')[0] : '',
+      'Plant Code': row.plantCode,
+      'Destination Type': row.destinationType,
+      'Transporter Type': row.transporterType,
+      'Transporter Code': row.transporterCode,
+      'Transporter Name': row.transporterName,
+      'Vehicle Number': row.vehicleNumber,
+      'Vehicle Size': row.vehicleSize,
+      'FRLR Number': row.frlrNumber,
+      'FRLR Date': row.frlrDate ? row.frlrDate.split('T')[0] : '',
+    }));
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
+    const workbook: XLSX.WorkBook = {
+      Sheets: { 'GateOutData': worksheet },
+      SheetNames: ['GateOutData']
+    };
+    XLSX.writeFile(workbook, 'GateOutData.xlsx');
   }
 }

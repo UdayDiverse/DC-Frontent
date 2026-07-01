@@ -69,10 +69,10 @@
                         <span>{{deliveryChallan?.challanNumber}} &nbsp;&nbsp;</span>
 
                         <strong>Challan Date: </strong>
-                        <span>{{deliveryChallan?.creationDate | date: 'yyyy-MM-dd'}}</span><br />
+                        <span>{{deliveryChallan?.creationDate | date: 'dd-MM-yyyy'}}</span><br />
 
                         <strong>Expected Return Date: </strong>
-                        <span>{{deliveryChallan?.expectedDate | date: 'yyyy-MM-dd'}}</span><br />
+                        <span>{{deliveryChallan?.expectedDate | date: 'dd-MM-yyyy'}}</span><br />
 
                         <strong>Requested Dept: </strong>
                         <span>{{deliveryChallan?.department}}</span><br />
@@ -374,7 +374,7 @@
                                     Receive the goods as per Challan No:
                                     {{deliveryChallan?.challanNumber}}
                                     /
-                                    {{deliveryChallan?.creationDate | date:'dd-MMM-yyyy'}}
+                                    {{deliveryChallan?.creationDate | date:'dd-MM-yyyy'}}
                                 </small>
                             </td>
                         </tr>

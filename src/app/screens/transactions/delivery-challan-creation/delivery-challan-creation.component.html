@@ -536,7 +536,7 @@
                                 <div class="">
                                     <div class="custom-form-input">
                                         <label for="">Vehicle No <span class="text-danger">*</span>
-                                            </label>
+                                        </label>
                                         <input type="text" class="input-field" formControlName="vehicleNumber"
                                             [minlength]="8" [maxlength]="10" (keypress)="allowAlphaNumeric($event)"
                                             (input)="validateVehicleNumber($event)" style="text-transform: uppercase" />
@@ -703,17 +703,17 @@
                                             </td>
                                             <td>
                                                 <div class="custom-form-input mb-0">
-                                                    <input type="text" class="input-field text-end"
-                                                        formControlName="quantity" (keypress)="allowNumeric($event)"
-                                                        [maxlength]="5">
+                                                    <input type="number" class="input-field text-end"
+                                                        formControlName="quantity" [maxlength]="5" step="any">
+
                                                 </div>
                                             </td>
 
                                             <td>
                                                 <div class="custom-form-input mb-0">
-                                                    <input type="text" class="input-field text-end"
-                                                        formControlName="unitPrice" (keypress)="allowNumeric($event)"
-                                                        [maxlength]="10">
+                                                    <input type="number" class="input-field text-end"
+                                                        formControlName="unitPrice" [maxlength]="10" step="any">
+
                                                 </div>
                                             </td>
                                             <td>
