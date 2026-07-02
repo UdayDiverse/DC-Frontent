@@ -54,9 +54,9 @@ export class DueDateExtensionGridTableComponent {
   attachmentList: any[] = [];
   fileDownloaderService = inject(FileDownloaderService);
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   //SORTING DATA FROM FILTER CHANGES
   ngOnChanges(changes: SimpleChanges): void {
@@ -98,8 +98,11 @@ export class DueDateExtensionGridTableComponent {
 
   openViewScreen(challanNumber: string) {
     this.router.navigate([
-      this.ROUTES.TRANSACTIONS.VIEW_CHALLAN + '/' + challanNumber,
-    ]);
+      this.ROUTES.TRANSACTIONS.VIEW_CHALLAN,
+      challanNumber
+    ], {
+      queryParams: { returnRoute: this.ROUTES.TRANSACTIONS.DUEDATE_EXTENSION }
+    });
   }
 
   printDeliveryChallan(challanNumber: string) {

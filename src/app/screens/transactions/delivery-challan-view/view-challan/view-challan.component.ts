@@ -87,6 +87,7 @@ export class ViewDeliveryChallanComponent {
   deliveryChallanService = inject(DeliveryChallanService);
   toastr = inject(ToastrService);
   router = inject(Router);
+  eWayBillCreationFlag: string = '';
 
   plants = signal<any[]>([]);
   vendors = signal<any[]>([]);
@@ -383,6 +384,7 @@ export class ViewDeliveryChallanComponent {
           createdBy: res?.createdBy,
           dcItemDetails: this.setDcItemList(res?.dcItemDetails),
         });
+        this.eWayBillCreationFlag = res?.eWayBillCreationFlag;
 
         this.expectedDate.patchValue(this.convertToNgbDate(res?.expectedDate));
         this.frlrDate.patchValue(this.convertToNgbDate(res?.frlrDate));
@@ -481,16 +483,21 @@ export class ViewDeliveryChallanComponent {
     });
   }
   protected downloadUploadedEwayBill(): void {
-    if (
-      this.uploadedEwayBillDocument?.eWayBillDocumentName &&
-      this.uploadedEwayBillDocument?.eWayBillDocumentContent
-    ) {
-      this.fileDownloaderService.openFileInNewTab({
-        documentName: this.uploadedEwayBillDocument.eWayBillDocumentName,
-        documentData: this.uploadedEwayBillDocument.eWayBillDocumentContent,
-      });
+    if (this.eWayBillCreationFlag === 'Manual') {
+      if (
+        this.uploadedEwayBillDocument?.eWayBillDocumentName &&
+        this.uploadedEwayBillDocument?.eWayBillDocumentContent
+      ) {
+        this.fileDownloaderService.openFileInNewTab({
+          documentName: this.uploadedEwayBillDocument.eWayBillDocumentName,
+          documentData: this.uploadedEwayBillDocument.eWayBillDocumentContent,
+        });
+      } else {
+        console.warn('No E-Way Bill document available to download.');
+      }
     } else {
-      console.warn('No E-Way Bill document available to download.');
+      const url = this.uploadedEwayBillDocument?.eWayBillDocumentName;
+      window.open(url, '_blank');
     }
   }
   protected downloadUploadedApprovalDocument(): void {
@@ -504,6 +511,7 @@ export class ViewDeliveryChallanComponent {
       });
     } else {
       console.warn('No E-Way Bill document available to download.');
+      this.toastr.warning('No E-Way Bill document available to download.');
     }
   }
 

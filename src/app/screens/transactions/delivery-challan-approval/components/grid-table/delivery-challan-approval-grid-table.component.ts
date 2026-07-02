@@ -125,10 +125,13 @@ export class ChallanApprovalGridTableComponent implements OnInit, OnChanges {
     );
   }
 
-   openViewScreen(challanNumber: string) {
+  openViewScreen(challanNumber: string) {
     this.router.navigate([
-      this.ROUTES.TRANSACTIONS.VIEW_CHALLAN + '/' + challanNumber,
-    ]);
+      this.ROUTES.TRANSACTIONS.VIEW_CHALLAN,
+      challanNumber
+    ], {
+      queryParams: { returnRoute: this.ROUTES.TRANSACTIONS.CHALLAN_APPROVAL }
+    });
   }
 
   viewAttachment(file: any) {
@@ -244,8 +247,7 @@ export class ChallanApprovalGridTableComponent implements OnInit, OnChanges {
   ) {
     if (!remarks.trim()) {
       this.toastr.warning(
-        `${
-          action === 'Rejected' ? 'Rejection' : 'Approval'
+        `${action === 'Rejected' ? 'Rejection' : 'Approval'
         } remarks are required`
       );
       return;

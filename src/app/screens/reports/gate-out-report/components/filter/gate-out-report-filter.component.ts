@@ -50,6 +50,7 @@ export class GateOutReportFilterComponent implements OnInit {
   todayNgb = this.calendar.getToday();
   fromDate = signal<NgbDate | null>(null);
   toDate = signal<NgbDate | null>(null);
+  fifteenDaysAgo = this.calendar.getPrev(this.todayNgb, 'd', 15);
 
   ngOnInit(): void {
     const today = this.calendar.getToday();
@@ -116,8 +117,8 @@ export class GateOutReportFilterComponent implements OnInit {
     this.vehicleNumber.set(undefined);
     this.status.set(undefined);
     this.plantCodes.set(this.plantCodesFromUMS);
-    this.fromDate.set(null);
-    this.toDate.set(null);
+    this.fromDate.set(this.fifteenDaysAgo);
+    this.toDate.set(this.todayNgb);
     let obj = {
       documentType: '',
       documentNo: '',
@@ -125,8 +126,8 @@ export class GateOutReportFilterComponent implements OnInit {
       vehicleNumber: '',
       status: '',
       plantCode: '',
-      fromDate: '',
-      toDate: '',
+      fromDate: this.convertNgbToDate(this.fromDate()),
+      toDate: this.convertNgbToDate(this.toDate()),
     };
     this.getData.emit(obj);
   }
