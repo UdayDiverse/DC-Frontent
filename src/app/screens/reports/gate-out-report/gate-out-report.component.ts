@@ -8,6 +8,7 @@ import {
   ViewChild,
   viewChild,
 } from '@angular/core';
+import * as XLSX from 'xlsx';
 import { GateOutReportFilterComponent } from './components/filter/gate-out-report-filter.component';
 import { GateOutReportGridTableComponent } from './components/grid-table/gate-out-report-grid-table.component';
 import {
@@ -63,7 +64,7 @@ export class GateOutReportComponent implements OnInit {
   modalService = inject(NgbModal);
   protected rowSelectionService = inject(RowSelectionService);
   datePipe = inject(DatePipe);
-  
+
   ngOnInit(): void {
     this.getGateOutReportData();
   }
@@ -149,5 +150,72 @@ export class GateOutReportComponent implements OnInit {
 
   toggleFullScreen() {
     this.fullScreen.set(!this.fullScreen());
+  }
+
+  onExportData() {
+    const filters: any = this.appliedFilters() as any;
+
+     const data = {
+      fromDate: filters?.fromDate || this.today,
+      toDate: filters?.toDate || this.getTommorrowDate(),
+      documentType: filters?.documentType || '',
+      documentNo: filters?.documentNo || '',
+      transporterCode: filters?.transporterCode || '',
+      vehicleNumber: filters?.vehicleNumber || '',
+      status: filters?.status || ['GATE_OUT'],
+      plantCodes: filters?.plantCode || this.plantCodesFromUMS,
+    };
+
+    this.loading.set(true);
+
+    this.reportsService.getGateOutReports(data, 0, 0).subscribe({
+      next: (response: any) => {
+        const dataToExport = response?.controlOutgoings;
+
+        if (!dataToExport || dataToExport.length === 0) {
+          this.toastr.warning('No data available to export');
+          this.loading.set(false);
+          return;
+        }
+        const filteredData = dataToExport.map((row: any) => ({
+          'Document Number': row.documentNo,
+          'Document Type': row.documentType,
+          'Plant Code': row.plantCode,
+          'Transporter Type': row.transporterType,
+          'Transporter Code': row.transporterCode,
+          'Transporter Name': row.transporterName,
+          'Vehicle Number': row.vehicleNumber,
+          'Vehicle Size': row.vehicleSize,
+          'FRLR Number': row.frlrNumber,
+        }));
+
+        const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData, {
+          header: [
+            'Document Number',
+            'Document Type',
+            'Plant Code',
+            'Transporter Type',
+            'Transporter Code',
+            'Transporter Name',
+            'Vehicle Number',
+            'Vehicle Size',
+            'FRLR Number',
+          ],
+        });
+
+        const workbook: XLSX.WorkBook = {
+          Sheets: { 'GateOutData': worksheet },
+          SheetNames: ['GateOutData']
+        };
+        XLSX.writeFile(workbook, 'GateOutData.xlsx');
+
+        this.loading.set(false);
+      },
+      error: (error: any) => {
+        console.error('Error fetching gate out report data:', error);
+        this.toastr.error('Failed to fetch data for export');
+        this.loading.set(false);
+      },
+    });
   }
 }

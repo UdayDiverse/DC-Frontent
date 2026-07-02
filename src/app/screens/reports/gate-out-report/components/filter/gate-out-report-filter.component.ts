@@ -36,6 +36,7 @@ import { ToastrService } from 'ngx-toastr';
 export class GateOutReportFilterComponent implements OnInit {
   @Input() filters: any = [];
   @Output() getData: EventEmitter<any> = new EventEmitter();
+  @Output() exportEvent: EventEmitter<any> = new EventEmitter();
   documentType = signal(undefined);
   documentNo = signal(undefined);
   transporterCode = signal(undefined);
@@ -128,5 +129,8 @@ export class GateOutReportFilterComponent implements OnInit {
       toDate: '',
     };
     this.getData.emit(obj);
+  }
+  exportData() {
+    this.exportEvent.emit();
   }
 }

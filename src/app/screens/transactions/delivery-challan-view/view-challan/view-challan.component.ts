@@ -165,6 +165,15 @@ export class ViewDeliveryChallanComponent {
   }
 
   ngOnInit() {
+    if (this.returnRoute === "transactions/gate-out") {
+      this.expandedSections = signal({
+        basicInfo: false,
+        addressInfo: false,
+        transporterDetails: false,
+        ewayBillDetails: false,
+        itemDetails: true,
+      });
+    }
     this.getModeOfTransports();
     if (this.challanNumber() != '') {
       this.getChallanAndBindToForms(this.challanNumber());

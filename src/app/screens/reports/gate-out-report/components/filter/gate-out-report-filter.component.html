@@ -83,8 +83,8 @@
                 <div class="d-flex">
                     <button class="custom-button-filters" (click)="handleSearch()" type="button"
                         [disabled]="plantCodes() === undefined || plantCodes().length === 0">Search</button>
-                    <button class="custom-button-filters ms-2" (click)="onClearFilter()"
-                        [disabled]="!fromDate() && !toDate() && !documentType() && !documentNo() && !transporterCode() && !plantCodes() && !vehicleNumber()">Clear</button>
+                    <button class="custom-button-export ms-2" (click)="exportData()">
+                        <img src="assets/images/icons/excel.svg" alt="export" /> Export</button>
                 </div>
             </div>
         </div>

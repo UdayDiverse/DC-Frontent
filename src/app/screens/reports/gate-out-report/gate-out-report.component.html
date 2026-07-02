@@ -10,7 +10,7 @@
 </div>
 
 <div class="filter-section">
-    <app-gate-out-report-filter [filters]="filters()" (getData)="getData($event)"></app-gate-out-report-filter>
+    <app-gate-out-report-filter [filters]="filters()" (getData)="getData($event)" (exportEvent)="onExportData()"></app-gate-out-report-filter>
 </div>
 
 @if (!loading()) {
