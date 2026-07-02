@@ -103,8 +103,11 @@ export class ChallanGridTableComponent implements OnInit, OnChanges {
   }
   openViewScreen(challanNumber: string) {
     this.router.navigate([
-      this.ROUTES.TRANSACTIONS.VIEW_CHALLAN + '/' + challanNumber,
-    ]);
+      this.ROUTES.TRANSACTIONS.VIEW_CHALLAN,
+      challanNumber
+    ], {
+      queryParams: { returnRoute: this.ROUTES.TRANSACTIONS.CHALLAN_VIEW }
+    });
   }
 
   downloadAttachments(challanId: number) {

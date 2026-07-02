@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject, Input, input, signal } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormsModule,
@@ -48,6 +48,7 @@ import { filter } from 'rxjs';
   styleUrl: './view-challan.component.scss',
 })
 export class ViewDeliveryChallanComponent {
+  @Input() returnRoute: string = '/';
   ROUTES = ROUTEPATHS;
   challanNumber = input<string>('');
   expectedReturnDate: Date | null = null;
@@ -549,5 +550,9 @@ export class ViewDeliveryChallanComponent {
             .sort((a: any, b: any) => a.code.localeCompare(b.code))
         );
       });
+  }
+
+  onClose() {
+    this.router.navigate([this.returnRoute]);
   }
 }

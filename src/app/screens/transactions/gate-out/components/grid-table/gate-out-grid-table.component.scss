@@ -6,3 +6,9 @@
   border: none;
   background: none;
 }
+
+.disabled-icon {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: not-allowed;
+}

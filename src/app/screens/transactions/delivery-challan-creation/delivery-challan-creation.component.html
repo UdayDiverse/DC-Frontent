@@ -703,16 +703,16 @@
                                             </td>
                                             <td>
                                                 <div class="custom-form-input mb-0">
-                                                    <input type="number" class="input-field text-end"
-                                                        formControlName="quantity" [maxlength]="5" step="any">
+                                                    <input type="number" formControlName="quantity" min="0.01"
+                                                        step="0.01" (input)="enforceTwoDecimals($event)">
 
                                                 </div>
                                             </td>
 
                                             <td>
                                                 <div class="custom-form-input mb-0">
-                                                    <input type="number" class="input-field text-end"
-                                                        formControlName="unitPrice" [maxlength]="10" step="any">
+                                                    <input type="number" formControlName="unitPrice" min="0.01"
+                                                        step="0.01" (input)="enforceTwoDecimals($event)">
 
                                                 </div>
                                             </td>

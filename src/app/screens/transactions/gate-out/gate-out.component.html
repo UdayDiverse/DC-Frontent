@@ -4,10 +4,25 @@
     <button class="custom-button-export" [disabled]="rowSelectionService.noRowSelected()" (click)="onPressSubmit()">
       Gate Out
     </button>
+    <ng-template #confirmModal let-modal>
+      <div class="modal-header">
+        <h3 class="modal-title fw-bold">⚠️ Confirm Gate Out</h3>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('cancel')"></button>
+      </div>
+      <div class="modal-body">
+        <h4>This will complete the Gate Out process. Do you still want to continue?</h4>
+      </div>
+      <div class="modal-footer border-0 d-flex justify-content-center gap-3 pt-3 pb-4">
+        <button type="button" class="btn btn-outline-secondary px-4 py-2 rounded-pill shadow-sm"
+          (click)="modal.dismiss('no')">
+          <i class="bi bi-x-circle me-1"></i> No, Cancel
+        </button>
 
-    <button class="custom-button-export ms-3" (click)="onExportData()">
-      Export to Excel
-    </button>
+        <button type="button" class="btn btn-danger px-4 py-2 rounded-pill shadow-sm" (click)="modal.close('yes')">
+          <i class="bi bi-check-circle me-1"></i> Yes, Continue
+        </button>
+      </div>
+    </ng-template>
 
     <div container="body">
       <img src="assets/images/icons/fullScreen.svg" alt="" class="pointer" width="14px" (click)="toggleFullScreen()"

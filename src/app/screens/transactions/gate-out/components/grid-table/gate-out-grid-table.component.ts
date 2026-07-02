@@ -23,6 +23,8 @@ import { GateOutService } from '../../../../../core/service/gate-out.service';
 import { LoggedInUserService } from '../../../../../core/service/user.service';
 import { CommonUtility } from '../../../../../core/utilities/common';
 import { RowSelectionService } from '../../../../../core/service/row-selection.service';
+import { Router } from '@angular/router';
+import { ROUTEPATHS } from '../../../../../core/constants/routes.constants';
 
 @Component({
   selector: 'app-gate-out-grid-table',
@@ -46,7 +48,8 @@ export class GateOutGridTableComponent {
   @Input() activeFilters: any;
   @ViewChild('warningModal') warningModal!: TemplateRef<any>;
   modalService = inject(NgbModal);
-
+  router = inject(Router);
+  ROUTES = ROUTEPATHS;
   protected loadSpinner = signal(true);
   protected sortField = signal('');
   protected sortDirection = signal<'asc' | 'desc'>('asc');
@@ -94,5 +97,13 @@ export class GateOutGridTableComponent {
     //   },
     //   () => console.log('❌ User canceled')
     // );
+  }
+  openViewScreen(challanNumber: string) {
+    this.router.navigate([
+      this.ROUTES.TRANSACTIONS.VIEW_CHALLAN,
+      challanNumber
+    ], {
+      queryParams: { returnRoute: this.ROUTES.TRANSACTIONS.GATE_OUT }
+    });
   }
 }

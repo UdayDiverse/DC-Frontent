@@ -250,8 +250,23 @@ export class DeliveryChallanCreationComponent {
       hsnCode: ['', [Validators.minLength(4), Validators.maxLength(8)]],
       descriptionModelNumber: ['', Validators.required],
       uom: ['', Validators.required],
-      quantity: [0, [Validators.required, Validators.min(0.01)]],
-      unitPrice: [0, [Validators.required, Validators.min(0.01)]],
+      quantity: [
+        0,
+        [
+          Validators.required,
+          Validators.min(0.01),
+          Validators.pattern(/^\d+(\.\d{1,2})?$/)
+        ]
+      ],
+      unitPrice: [
+        0,
+        [
+          Validators.required,
+          Validators.min(0.01),
+          Validators.pattern(/^\d+(\.\d{1,2})?$/)
+        ]
+      ],
+
       sgstPercentage: [0],
       sgstAmount: [0],
       cgstPercentage: [0],
@@ -1062,5 +1077,14 @@ export class DeliveryChallanCreationComponent {
     const isLengthValid = postalCode.length === 6;
     this.isPostalCodeValid =
       postalCode === '' || (pattern.test(postalCode) && isLengthValid);
+  }
+  enforceTwoDecimals(event: any) {
+    const input = event.target;
+    if (input.value.includes('.')) {
+      const [integer, decimal] = input.value.split('.');
+      if (decimal.length > 2) {
+        input.value = integer + '.' + decimal.slice(0, 2);
+      }
+    }
   }
 }

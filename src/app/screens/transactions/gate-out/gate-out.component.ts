@@ -67,12 +67,6 @@ export class GateOutComponent {
     this.getGateOutData();
   }
 
-  // ngAfterViewInit() {
-  //   this.modalService.open(this.warningModal, {
-  //     centered: true,
-  //     size: 'lg',
-  //   });
-  // }
 
   getYesterDayDate() {
     const d = new Date();
@@ -190,36 +184,67 @@ export class GateOutComponent {
             );
         }
       },
-      () => console.log()
+      () => console.log('❌ User canceled')
     );
   }
 
   onExportData() {
-    const dataToExport = this.gateOutList();
+    const filters: any = this.appliedFilters() as any;
 
-    if (!dataToExport || dataToExport.length === 0) {
-      this.toastr.warning('No data available to export');
-      return;
-    }
-    const filteredData = dataToExport.map((row: any) => ({
-      'Document Type': row.documentType,
-      'Document Number': row.documentNo,
-      'Document Date': row.documentDate ? row.documentDate.split('T')[0] : '',
-      'Plant Code': row.plantCode,
-      'Destination Type': row.destinationType,
-      'Transporter Type': row.transporterType,
-      'Transporter Code': row.transporterCode,
-      'Transporter Name': row.transporterName,
-      'Vehicle Number': row.vehicleNumber,
-      'Vehicle Size': row.vehicleSize,
-      'FRLR Number': row.frlrNumber,
-      'FRLR Date': row.frlrDate ? row.frlrDate.split('T')[0] : '',
-    }));
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
-    const workbook: XLSX.WorkBook = {
-      Sheets: { 'GateOutData': worksheet },
-      SheetNames: ['GateOutData']
+    const data = {
+      fromDate: filters?.fromDate || this.today,
+      toDate: filters?.toDate || this.getTommorrowDate(),
+      documentType: filters?.documentType || '',
+      documentNo: filters?.documentNo || '',
+      transporterCode: filters?.transporterCode || '',
+      status: filters?.status || [
+        'EWAY_BILL_GENERATED',
+        'READY_FOR_GATEOUT',
+        'EWAY_BILL_UPDATED',
+        'CONTROL_OUTGOING',
+      ],
+      vehicleNumber: filters?.vehicleNumber || '',
+      plantCodes: filters?.plantCode || this.plantCodesFromUMS,
     };
-    XLSX.writeFile(workbook, 'GateOutData.xlsx');
+
+    this.loading.set(true);
+
+    this.gateOutService.getControlOutgoing(data, 0, 0).subscribe({
+      next: (response: any) => {
+        const dataToExport = response?.controlOutgoings;
+
+        if (!dataToExport || dataToExport.length === 0) {
+          this.toastr.warning('No data available to export');
+          this.loading.set(false);
+          return;
+        }
+        const filteredData = dataToExport.map((row: any) => ({
+          'Document Type': row.documentType,
+          'Document Number': row.documentNo,
+          'Document Date': row.documentDate ? row.documentDate.split('T')[0] : '',
+          'Plant Code': row.plantCode,
+          'Destination Type': row.destinationType,
+          'Transporter Type': row.transporterType,
+          'Transporter Code': row.transporterCode,
+          'Transporter Name': row.transporterName,
+          'Vehicle Number': row.vehicleNumber,
+          'Vehicle Size': row.vehicleSize,
+          'FRLR Number': row.frlrNumber,
+          'FRLR Date': row.frlrDate ? row.frlrDate.split('T')[0] : '',
+        }));
+        const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
+        const workbook: XLSX.WorkBook = {
+          Sheets: { 'GateOutData': worksheet },
+          SheetNames: ['GateOutData']
+        };
+        XLSX.writeFile(workbook, 'GateOutData.xlsx');
+        this.loading.set(false);
+      },
+      error: (error: any) => {
+        console.error('Error fetching all control outgoing data:', error);
+        this.toastr.error('Failed to fetch data for export');
+        this.loading.set(false);
+      }
+    });
   }
 }

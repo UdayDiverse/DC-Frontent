@@ -19,7 +19,8 @@
                 <th (click)="sortData('vehicleSize')">Vehicle Size</th>
                 <th (click)="sortData('frlrNumber')">FRLR Number</th>
                 <th (click)="sortData('frlrDate')">FRLR Date</th>
-                <th >Status</th>  
+                <th>Status</th>
+                <th>View Challan</th>
             </tr>
         </thead>
         <tbody>
@@ -45,6 +46,15 @@
                 <td>{{document?.frlrNumber}}</td>
                 <td>{{document?.frlrDate | date: 'yyyy-MM-dd'}}</td>
                 <td>{{document?.status}}</td>
+                <td class="text-center">
+                    <img *ngIf="document?.documentType === 'RGP' || document?.documentType === 'NGRP'" class="pointer"
+                        src="../../../assets/images/icons/viewPassword.svg" alt="View Challan" width="15px"
+                        height="18px" (click)="openViewScreen(document?.documentNo)">
+
+                    <img *ngIf="document?.documentType !== 'RGP' && document?.documentType !== 'NGRP'"
+                        src="../../../assets/images/icons/viewPassword.svg" alt="View Challan Disabled" width="15px"
+                        height="18px" class="disabled-icon">
+                </td>
             </tr>
             } @empty {
             <tr>
