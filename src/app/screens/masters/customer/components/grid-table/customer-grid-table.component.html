@@ -11,7 +11,7 @@
                 <th (click)="sortData('postal')">Postal</th>
                 <th (click)="sortData('customerContactNo')">Phone</th>
                 <th (click)="sortData('emailId')">Email</th>
-                <th (click)="sortData('auCode')">Business Area</th>
+                <!-- <th (click)="sortData('auCode')">Business Area</th> -->
                 <th (click)="sortData('gstnNo')">GSTIN</th>
                 <th (click)="sortData('')">PAN</th>
                 <th (click)="sortData('status')">Status</th>
@@ -55,7 +55,7 @@
                 <td>{{customer?.postal}}</td>
                 <td>{{customer?.customerContactNo}}</td>
                 <td>{{customer?.emailId}}</td>
-                <td>{{customer?.auCode}}</td>
+                <!-- <td>{{customer?.auCode}}</td> -->
                 <td>{{customer?.gstnNo}}</td>
                 <td>{{customer?.gstnNo ? customer?.gstnNo?.slice(2, 12) : customer?.gstnNo}}</td>
                 <td>{{customer?.status === "A" ? "Active": customer?.status === "I" ? "Inactive": ""}}</td>
