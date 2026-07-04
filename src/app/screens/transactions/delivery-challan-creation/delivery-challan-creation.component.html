@@ -485,7 +485,7 @@
                                     <div class="custom-form-input">
                                         <label for="">Transporter Code<span class="text-danger">*</span></label>
                                         <ng-select class="input-field" formControlName="transporterCode"
-                                            (change)="onTransporterSelection($event)" bindLabel="name"
+                                            (change)="onTransporterSelection($event)" bindLabel="code"
                                             [items]="transporters()" bindValue="name">
                                             <ng-template ng-option-tmp let-item="item">
                                                 {{item.code}} ({{item.name}})
