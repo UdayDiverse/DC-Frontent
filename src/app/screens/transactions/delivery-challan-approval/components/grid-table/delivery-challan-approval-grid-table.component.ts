@@ -68,6 +68,7 @@ export class ChallanApprovalGridTableComponent implements OnInit, OnChanges {
   attachmentList: any[] = [];
   fileDownloaderService = inject(FileDownloaderService);
   @Output() printEvent = new EventEmitter<any>();
+  loading = signal(false);
 
   ngOnInit(): void {
     const loginData = JSON.parse(localStorage.getItem('logindata') || '{}');
@@ -193,35 +194,32 @@ export class ChallanApprovalGridTableComponent implements OnInit, OnChanges {
     transporterType: string,
     totalItemSum: number
   ) {
+    this.loading.set(true);
     if (
       transporterType === 'Registered' &&
-      ['OPEN', 'Approved', 'Rejected', 'CONTROL_OUTGOING'].includes(
-        challanStatus
-      ) &&
+      ['OPEN', 'Approved', 'Rejected', 'CONTROL_OUTGOING'].includes(challanStatus) &&
       totalItemSum >= 50000
     ) {
       this.toastr.error(
         'Not Allowed to Print Challan before Eway Bill Generation'
       );
+      this.loading.set(false);
       return;
     }
 
     if (challanStatus === 'OPEN' || challanStatus === 'REJECTED') {
       this.toastr.error('Not Allowed to Print Challan before Challan Approval');
+      this.loading.set(false);
       return;
     }
 
-    // this.loadSpinner.set(true);
     this.toastr.info('Generating Challan document. Kindly wait…');
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         this.container.clear();
-        this.childRef = this.container.createComponent(
-          ChallanDocumentComponent
-        );
+        this.childRef = this.container.createComponent(ChallanDocumentComponent);
 
-        (this.childRef.location.nativeElement as HTMLElement).style.display =
-          'none';
+        (this.childRef.location.nativeElement as HTMLElement).style.display = 'none';
 
         this.childRef.instance.challanNumber = challanNumber;
         this.childRef.instance.printRequestedBy = 'True';
@@ -229,8 +227,8 @@ export class ChallanApprovalGridTableComponent implements OnInit, OnChanges {
 
         this.childRef.instance.onLoaded.subscribe((result) => {
           this.printEvent.emit(result);
+          this.loading.set(false);
         });
-        // this.loadSpinner.set(false);
       });
     });
   }

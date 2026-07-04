@@ -1,3 +1,4 @@
+@if(!loading()){
 <div class="custom-table">
   <table #table [ngClass]="sortDirection( ) === 'asc' ?  'asc' : 'dsc'">
     <thead>
@@ -180,5 +181,10 @@
     </tbody>
   </table>
 </div>
+}@else {
+<div class="progress-bar-wrapper">
+  <div class="progress-bar-indeterminate"></div>
+</div>
+}
 
 <ng-template #printChallan></ng-template>

@@ -13,12 +13,13 @@
                 <th (click)="sortData('documentNo')">Document Number</th>
                 <th (click)="sortData('plantCode')">Plant Code</th>
                 <th (click)="sortData('transporterCode')">Transporter Type <span class="text-danger">*</span></th>
+                <th (click)="sortData('status')">Status <span class="text-danger">*</span></th>
                 <th (click)="sortData('transporterCode')">Transporter Code <span class="text-danger">*</span></th>
                 <th (click)="sortData('transporterName')">Transporter Name <span class="text-danger">*</span></th>
                 <th (click)="sortData('vehicleNumber')">Vehicle Number</th>
                 <th (click)="sortData('vehicleSize')">Vehicle Size</th>
-                <th (click)="sortData('')">FRLR Number</th>
-                <th (click)="sortData('')">FRLR Date</th>
+                <!-- <th (click)="sortData('')">FRLR Number</th>
+                <th (click)="sortData('')">FRLR Date</th> -->
                 <th (click)="sortData('controlOutgoingRemarks')">Remarks</th>
                 <th class="text-center">Action</th>
             </tr>
@@ -39,6 +40,9 @@
                 <td>{{controlOutGoing?.plantCode}}</td>
                 <td>
                     {{editableArray[i].transporterType}}
+                </td>
+                <td>
+                    {{editableArray[i].status}}
                 </td>
                 <td>
                     <div class="custom-form-input">
@@ -82,7 +86,7 @@
                         </ng-select>
                     </div>
                 </td>
-                <td>
+                <!-- <td>
                     <div class="custom-form-input">
                         <input type="text" class="custom-input-field" style="width: 100px;" (input)="onFieldEdit(i)"
                             [(ngModel)]="editableArray[i].frlrNumber" />
@@ -102,7 +106,7 @@
                             </button>
                         </div>
                     </div>
-                </td>
+                </td> -->
                 <td>
                     <div class="custom-form-input">
                         <textarea type="text" class="custom-input-field" [(ngModel)]="editableArray[i].controlOutgoingRemarks" style="width: 200px; height: 31px;"></textarea>

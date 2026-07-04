@@ -17,8 +17,8 @@
                 <th (click)="sortData('transporterName')">Transporter N ame</th>
                 <th (click)="sortData('vehicleNumber')">Vehicle Number</th>
                 <th (click)="sortData('vehicleSize')">Vehicle Size</th>
-                <th (click)="sortData('frlrNumber')">FRLR Number</th>
-                <th (click)="sortData('frlrDate')">FRLR Date</th>
+                <!-- <th (click)="sortData('frlrNumber')">FRLR Number</th>
+                <th (click)="sortData('frlrDate')">FRLR Date</th> -->
                 <th>Status</th>
                 <th>View Challan</th>
             </tr>
@@ -34,7 +34,45 @@
                           rowSelectionService.selectedNERPIds.has(document?.interfaceId)">
                 </td>
                 <td>{{document?.documentType}}</td>
-                <td>{{document?.documentNo}}</td>
+
+                <td class="pointer" container="body">
+                    <span placement="end" [ngbTooltip]="tipContent" tooltipClass="table-datetime-popover">
+                        <u>{{ document?.documentNo }}</u>
+                    </span>
+                    <ng-template #tipContent>
+                        <div class="">
+                            <!-- <div class="content-row">
+                                <span>Creation Date</span>
+                                <span>{{document.creationDate | date: 'yyyy-MM-dd'}}</span>
+                            </div> -->
+                            <div class="content-row">
+                                <span>Control Outgoing By</span>
+                                <span>{{document.createdByDetails?.name}}</span>
+                            </div>
+                            @if (document?.lastUpdatedByDetails) {
+
+                            <div class="content-row">
+                                <span>Last Update Date</span>
+                                <span>{{document?.lastUpdateDate | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>Last Updated By</span>
+                                <span>{{document?.lastUpdatedByDetails?.name}}</span>
+                            </div>
+                            }@if (document?.approverByDetails) {
+
+                            <div class="content-row">
+                                <span>Approval Date</span>
+                                <span>{{document?.approvedOn | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="content-row">
+                                <span>Approved By</span>
+                                <span>{{document?.approverByDetails?.name}}</span>
+                            </div>
+                            }
+                        </div>
+                    </ng-template>
+                </td>
                 <td>{{document?.documentDate | date: 'yyyy-MM-dd'}}</td>
                 <td>{{document?.plantCode}}</td>
                 <td>{{document?.destinationType}}</td>
@@ -43,8 +81,8 @@
                 <td>{{document?.transporterName}}</td>
                 <td>{{document?.vehicleNumber}}</td>
                 <td>{{document?.vehicleSize}}</td>
-                <td>{{document?.frlrNumber}}</td>
-                <td>{{document?.frlrDate | date: 'yyyy-MM-dd'}}</td>
+                <!-- <td>{{document?.frlrNumber}}</td>
+                <td>{{document?.frlrDate | date: 'yyyy-MM-dd'}}</td> -->
                 <td>{{document?.status}}</td>
                 <td class="text-center">
                     <img *ngIf="document?.documentType === 'RGP' || document?.documentType === 'NGRP'" class="pointer"

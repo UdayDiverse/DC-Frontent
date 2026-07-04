@@ -35,6 +35,7 @@ export class EwayBillGridTableComponent {
   @Input() filterKeyword!: string;
   @Input() challanListOrg: any;
   @Input() challansList: any;
+  loading = signal(false);
   loadSpinner = signal(true);
   sortField = signal('');
   sortDirection = signal<'asc' | 'desc'>('asc');
@@ -49,9 +50,9 @@ export class EwayBillGridTableComponent {
   container!: ViewContainerRef;
   private childRef!: ComponentRef<ChallanDocumentComponent>;
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   //SORTING DATA FROM FILTER CHANGES
   ngOnChanges(changes: SimpleChanges): void {
@@ -96,6 +97,7 @@ export class EwayBillGridTableComponent {
     challanStatus: string,
     totalItemSum: number
   ) {
+    this.loading.set(true);
     if (
       !['EWAY_BILL_GENERATED', 'EWAY_BILL_UPDATED'].includes(challanStatus) &&
       totalItemSum >= 50000
@@ -103,14 +105,14 @@ export class EwayBillGridTableComponent {
       this.toastr.error(
         'Not Allowed to Print Challan before Eway Bill Generation'
       );
+      this.loading.set(false);
       return;
     }
     this.toastr.info('Generating Challan document. Kindly wait…');
     this.container.clear();
     this.childRef = this.container.createComponent(ChallanDocumentComponent);
 
-    (this.childRef.location.nativeElement as HTMLElement).style.display =
-      'none';
+    (this.childRef.location.nativeElement as HTMLElement).style.display = 'none';
 
     this.childRef.instance.challanNumber = challanNumber;
     this.childRef.instance.printRequestedBy = this.isApprover;
@@ -118,6 +120,7 @@ export class EwayBillGridTableComponent {
 
     this.childRef.instance.onLoaded.subscribe((result) => {
       this.printEvent.emit(result);
+      this.loading.set(false);
     });
   }
 
@@ -125,26 +128,26 @@ export class EwayBillGridTableComponent {
     console.log(challan)
     if (challan?.eWayBillCreationFlag === 'Manual') {
       this.challanService.printEwayBill(challan?.challanNumber).subscribe(
-      (res: any) => {
-        const doc = [
-          {
-            documentName: res?.eWayBillDocumentName,
-            documentData: res?.eWayBillDocumentContent,
-          },
-        ];
-        this.downloadAllSelectedBase64Files(doc);
-      },
-      (err: any) => {
-        if (err.status === 404) {
-          this.toastr.error('No Attachments to download');
+        (res: any) => {
+          const doc = [
+            {
+              documentName: res?.eWayBillDocumentName,
+              documentData: res?.eWayBillDocumentContent,
+            },
+          ];
+          this.downloadAllSelectedBase64Files(doc);
+        },
+        (err: any) => {
+          if (err.status === 404) {
+            this.toastr.error('No Attachments to download');
+          }
         }
-      }
-    )
+      )
     } else {
       const url = challan.eWayBillDocumentName;
       window.open(url, '_blank');
     }
-    
+
   }
 
   downloadAllSelectedBase64Files(

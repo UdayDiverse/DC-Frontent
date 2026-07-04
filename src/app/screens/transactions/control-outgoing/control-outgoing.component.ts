@@ -79,7 +79,7 @@ export class ControlOutgoingComponent implements OnInit {
       documentNo: filters?.documentNo || '',
       transporterCode: filters?.transporterCode || '',
       vehicleNumber: filters?.vehicleNumber || '',
-      status: filters?.status || ['Approved'],
+      status: filters?.status || ['Approved','READY_FOR_GATEOUT'],
       plantCodes: filters?.plantCode || this.plantCodesFromUMS,
     };
     this.loading.set(true);
