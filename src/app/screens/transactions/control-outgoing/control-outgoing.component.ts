@@ -67,6 +67,41 @@ export class ControlOutgoingComponent implements OnInit {
     this.getControlOutgoingData();
   }
 
+  // getControlOutgoingData(
+  //   offset: number = 0,
+  //   count: number = this.count(),
+  //   filters: any = this.appliedFilters()
+  // ) {
+  //   const data = {
+  //     fromDate: filters?.fromDate || this.today,
+  //     toDate: filters?.toDate || this.getTommorrowDate(),
+  //     documentType: filters?.documentType || '',
+  //     documentNo: filters?.documentNo || '',
+  //     transporterCode: filters?.transporterCode || '',
+  //     vehicleNumber: filters?.vehicleNumber || '',
+  //     status: filters?.status || ['Approved','READY_FOR_GATEOUT'],
+  //     plantCodes: filters?.plantCode || this.plantCodesFromUMS,
+  //   };
+  //   this.loading.set(true);
+  //   this.gateOutService.getControlOutgoing(data, offset, count).subscribe({
+  //     next: (response: any) => {
+  //       const list = response?.controlOutgoings.map((item: any) => ({
+  //         ...item,
+  //         frlrDate: this.convertToNgbDate(item?.frlrDate),
+  //       }));
+  //       this.controlOutgoingList.set(list);
+  //       this.filters.set(response?.filters);
+  //       this.totalControlOutgoing.set(response?.paging.total);
+  //       this.loading.set(false);
+  //     },
+  //     error: (error: any) => {
+  //       console.error('Error fetching control outgoing data:', error);
+  //       this.loading.set(false);
+  //     },
+  //   });
+  // }
+
+
   getControlOutgoingData(
     offset: number = 0,
     count: number = this.count(),
@@ -79,7 +114,7 @@ export class ControlOutgoingComponent implements OnInit {
       documentNo: filters?.documentNo || '',
       transporterCode: filters?.transporterCode || '',
       vehicleNumber: filters?.vehicleNumber || '',
-      status: filters?.status || ['Approved','READY_FOR_GATEOUT'],
+      status: [...new Set([...(filters?.status || ['Approved']), 'READY_FOR_GATEOUT'])],
       plantCodes: filters?.plantCode || this.plantCodesFromUMS,
     };
     this.loading.set(true);
