@@ -37,7 +37,7 @@
 </div>
 
 <div class="filter-section">
-    <app-control-outgoing-filter [filters]="filters()" (getData)="getData($event)"></app-control-outgoing-filter>
+    <app-control-outgoing-filter [filters]="filters()" (getData)="getData($event)" (exportEvent)="onExportData()"></app-control-outgoing-filter>
 </div>
 
 @if (!loading()) {

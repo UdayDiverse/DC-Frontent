@@ -36,6 +36,7 @@ import { ToastrService } from 'ngx-toastr';
 export class ControlOutgoingFilterComponent implements OnInit {
   @Input() filters: any = [];
   @Output() getData: EventEmitter<any> = new EventEmitter();
+  @Output() exportEvent: EventEmitter<any> = new EventEmitter();
   documentType = signal(undefined);
   documentNo = signal(undefined);
   transporterCode = signal(undefined);
@@ -125,5 +126,9 @@ export class ControlOutgoingFilterComponent implements OnInit {
       toDate: this.convertNgbToDate(this.toDate()),
     };
     this.getData.emit(obj);
+  }
+
+  exportData() {
+    this.exportEvent.emit();
   }
 }

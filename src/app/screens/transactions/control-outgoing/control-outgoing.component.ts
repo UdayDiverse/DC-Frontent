@@ -23,6 +23,7 @@ import { RouterModule } from '@angular/router';
 import { GateOutService } from '../../../core/service/gate-out.service';
 import { LoggedInUserService } from '../../../core/service/user.service';
 import { RowSelectionService } from '../../../core/service/row-selection.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-control-outgoing',
@@ -203,5 +204,59 @@ export class ControlOutgoingComponent implements OnInit {
       },
       () => console.log('❌ User canceled')
     );
+  }
+  onExportData() {
+    const filters: any = this.appliedFilters() as any;
+
+    const data = {
+      fromDate: filters?.fromDate || this.today,
+      toDate: filters?.toDate || this.getTommorrowDate(),
+      documentType: filters?.documentType || '',
+      documentNo: filters?.documentNo || '',
+      transporterCode: filters?.transporterCode || '',
+      vehicleNumber: filters?.vehicleNumber || '',
+      status: [...new Set([...(filters?.status || ['Approved']), 'READY_FOR_GATEOUT'])],
+      plantCodes: filters?.plantCode || this.plantCodesFromUMS,
+    };
+
+    this.loading.set(true);
+
+    this.gateOutService.getControlOutgoing(data, 0, 0).subscribe({
+      next: (response: any) => {
+        const dataToExport = response?.controlOutgoings;
+
+        if (!dataToExport || dataToExport.length === 0) {
+          this.toastr.warning('No data available to export');
+          this.loading.set(false);
+          return;
+        }
+        const filteredData = dataToExport.map((row: any) => ({
+          'Document Type': row.documentType,
+          'Document Date': row.documentDate ? row.documentDate.split('T')[0] : '',
+          'Document Number': row.documentNo,
+          'Plant Code': row.plantCode,
+          'Transporter Type': row.transporterType,
+          'Status': row.status,
+          'Transporter Code': row.transporterCode,
+          'Transporter Name': row.transporterName,
+          'Vehicle Number': row.vehicleNumber,
+          'Vehicle Size': row.vehicleSize,
+          'Remarks': row.controlOutgoingRemarks || ''
+        }));
+
+        const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
+        const workbook: XLSX.WorkBook = {
+          Sheets: { 'ControlOutgoingData': worksheet },
+          SheetNames: ['ControlOutgoingData']
+        };
+        XLSX.writeFile(workbook, 'ControlOutgoing.xlsx');
+        this.loading.set(false);
+      },
+      error: (error: any) => {
+        console.error('Error fetching all control outgoing data:', error);
+        this.toastr.error('Failed to fetch data for export');
+        this.loading.set(false);
+      }
+    });
   }
 }

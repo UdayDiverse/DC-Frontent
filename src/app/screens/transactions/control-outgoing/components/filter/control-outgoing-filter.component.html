@@ -13,7 +13,7 @@
         </div>
 
         <div class="">
-            <div class="custom-form-input"  style="width: 150px;">
+            <div class="custom-form-input" style="width: 150px;">
                 <label for="">To Date</label>
                 <div class="input-group datepicker">
                     <input class="form-control" [(ngModel)]="toDate" placeholder="yyyy-mm-dd" name="toDate"
@@ -76,6 +76,17 @@
             </div>
         </div>
 
+        <div class="">
+            <div class="custom-form-input">
+                <label for="">Status</label>
+                <ng-select class="input-field" [(ngModel)]="status" placeholder="Select Status" style="width: 150px;">
+                    @for (code of filters?.Status; track $index) {
+                    <ng-option [value]="code">{{code}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+        </div>
+
 
         <div class="col-lg-2 d-flex gap-3 align-items-center">
             <div class="custom-form-input">
@@ -85,6 +96,8 @@
                         [disabled]="plantCodes() === undefined || plantCodes().length === 0">Search</button>
                     <button class="custom-button-filters ms-2" (click)="onClearFilter()"
                         [disabled]="!fromDate() && !toDate() && !documentType() && !documentNo() && !transporterCode() && !plantCodes() && !vehicleNumber()">Clear</button>
+                    <button class="custom-button-export ms-2" (click)="exportData()">
+                        <img src="assets/images/icons/excel.svg" alt="export" /> Export</button>
                 </div>
             </div>
         </div>
