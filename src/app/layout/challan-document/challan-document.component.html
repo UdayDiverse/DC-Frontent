@@ -149,11 +149,11 @@
                         <col style="width: 8%">
                         <col style="width: 5%">
                         <col style="width: 7%">
-                        <col style="width: 8%">
+                        <col style="width: 10%">
                         <col style="width: 7%">
                         <col style="width: 5%">
                         <col style="width: 6%">
-                        <col style="width: 8%">
+                        <col style="width: 10%">
                     </colgroup>
 
                     <thead>
@@ -190,11 +190,11 @@
                             <td>/</td>
                             <td>{{item?.uom}}</td>
                             <td>{{item?.unitPrice}}</td>
-                            <td>{{+item?.unitPrice * +item?.quantity}}</td>
+                            <td>{{+item?.unitPrice * +item?.quantity | number:'1.2-2'}}</td>
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>{{+item?.unitPrice * +item?.quantity}}</td>
+                            <td>{{+item?.unitPrice * +item?.quantity | number:'1.2-2'}}</td>
                         </tr>
                         }
 
