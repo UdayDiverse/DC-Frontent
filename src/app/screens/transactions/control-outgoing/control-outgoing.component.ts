@@ -108,16 +108,30 @@ export class ControlOutgoingComponent implements OnInit {
     count: number = this.count(),
     filters: any = this.appliedFilters()
   ) {
-    const data = {
-      fromDate: filters?.fromDate || this.today,
-      toDate: filters?.toDate || this.getTommorrowDate(),
-      documentType: filters?.documentType || '',
-      documentNo: filters?.documentNo || '',
-      transporterCode: filters?.transporterCode || '',
-      vehicleNumber: filters?.vehicleNumber || '',
-      status: [...new Set([...(filters?.status || ['Approved']), 'READY_FOR_GATEOUT'])],
-      plantCodes: filters?.plantCode || this.plantCodesFromUMS,
-    };
+    let data;
+    if (filters?.status == null || filters?.status == undefined || filters?.status == "") {
+      data = {
+        fromDate: filters?.fromDate || this.today,
+        toDate: filters?.toDate || this.getTommorrowDate(),
+        documentType: filters?.documentType || '',
+        documentNo: filters?.documentNo || '',
+        transporterCode: filters?.transporterCode || '',
+        vehicleNumber: filters?.vehicleNumber || '',
+        status: ['Approved', 'READY_FOR_GATEOUT'],
+        plantCodes: filters?.plantCode || this.plantCodesFromUMS,
+      };
+    } else {
+      data = {
+        fromDate: filters?.fromDate || this.today,
+        toDate: filters?.toDate || this.getTommorrowDate(),
+        documentType: filters?.documentType || '',
+        documentNo: filters?.documentNo || '',
+        transporterCode: filters?.transporterCode || '',
+        vehicleNumber: filters?.vehicleNumber || '',
+        status: [filters?.status],
+        plantCodes: filters?.plantCode || this.plantCodesFromUMS,
+      };
+    }
     this.loading.set(true);
     this.gateOutService.getControlOutgoing(data, offset, count).subscribe({
       next: (response: any) => {
@@ -207,17 +221,30 @@ export class ControlOutgoingComponent implements OnInit {
   }
   onExportData() {
     const filters: any = this.appliedFilters() as any;
-
-    const data = {
-      fromDate: filters?.fromDate || this.today,
-      toDate: filters?.toDate || this.getTommorrowDate(),
-      documentType: filters?.documentType || '',
-      documentNo: filters?.documentNo || '',
-      transporterCode: filters?.transporterCode || '',
-      vehicleNumber: filters?.vehicleNumber || '',
-      status: [...new Set([...(filters?.status || ['Approved']), 'READY_FOR_GATEOUT'])],
-      plantCodes: filters?.plantCode || this.plantCodesFromUMS,
-    };
+    let data;
+    if (filters?.status == null || filters?.status == undefined || filters?.status == "") {
+      data = {
+        fromDate: filters?.fromDate || this.today,
+        toDate: filters?.toDate || this.getTommorrowDate(),
+        documentType: filters?.documentType || '',
+        documentNo: filters?.documentNo || '',
+        transporterCode: filters?.transporterCode || '',
+        vehicleNumber: filters?.vehicleNumber || '',
+        status: ['Approved', 'READY_FOR_GATEOUT'],
+        plantCodes: filters?.plantCode || this.plantCodesFromUMS,
+      };
+    } else {
+      data = {
+        fromDate: filters?.fromDate || this.today,
+        toDate: filters?.toDate || this.getTommorrowDate(),
+        documentType: filters?.documentType || '',
+        documentNo: filters?.documentNo || '',
+        transporterCode: filters?.transporterCode || '',
+        vehicleNumber: filters?.vehicleNumber || '',
+        status: [filters?.status],
+        plantCodes: filters?.plantCode || this.plantCodesFromUMS,
+      };
+    }
 
     this.loading.set(true);
 

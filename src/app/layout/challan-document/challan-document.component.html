@@ -55,7 +55,8 @@
                 <div class="col-md-6 section-border">
                     <div class="text-center mb-3">
                         <!-- <strong>RETURNABLE CHALLAN</strong><br /> -->
-                         <strong>{{ deliveryChallan?.challanType === 'RGP' ? 'RETURNABLE CHALLAN' : 'NON RETURNABLE CHALLAN' }}</strong><br />
+                        <strong>{{ deliveryChallan?.challanType === 'RGP' ? 'RETURNABLE CHALLAN' : 'NON RETURNABLE
+                            CHALLAN' }}</strong><br />
                         <strong>(NOT FOR SALE)</strong><br />
                         <strong>
                             {{i === 0 ? "ORIGINAL FOR RECIPIENT"
@@ -87,7 +88,8 @@
             <div class="row" style="padding-block: 1px; margin-top: 2px;">
                 <div class="col-md-6 section-border" style="border-right: none;">
 
-                    <strong>{{deliveryChallan?.destinationType == 'Plant' ? 'Receiver Name: LG Electronics India Ltd.' : ''}}</strong><br />
+                    <strong>{{deliveryChallan?.destinationType == 'Plant' ? 'Receiver Name: LG Electronics India Ltd.' :
+                        ''}}</strong><br />
                     <strong>Details of Receiver: </strong>
                     <span>{{deliveryChallan?.destinationCode}} / {{deliveryChallan?.destinationName}}</span><br />
 
@@ -343,7 +345,7 @@
                             </div>
 
                             <div class="signature-text">
-                                    <strong>AUTHORISED SIGNATORY</strong>
+                                <strong>AUTHORISED SIGNATORY</strong>
                             </div>
                         </td>
                     </tr>

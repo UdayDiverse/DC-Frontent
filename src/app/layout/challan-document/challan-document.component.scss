@@ -187,10 +187,18 @@ strong {
   padding: 4px 8px !important;
 }
 
+// .tax-line {
+//   display: grid;
+//   grid-template-columns: 120px 1fr;
+//   column-gap: 8px;
+//   margin-bottom: 7px;
+//   line-height: 1.15;
+// }
+
 .tax-line {
   display: grid;
-  grid-template-columns: 120px 1fr;
-  column-gap: 8px;
+  grid-template-columns: 100px 1fr;
+  column-gap: 4px;
   margin-bottom: 7px;
   line-height: 1.15;
 }
