@@ -86,7 +86,7 @@
             <!-- Receiver Details -->
             <div class="row" style="padding-block: 1px; margin-top: 2px;">
                 <div class="col-md-6 section-border" style="border-right: none;">
-                    
+
                     <strong>{{deliveryChallan?.destinationType == 'Plant' ? 'Receiver Name: LG Electronics India Ltd.' : ''}}</strong><br />
                     <strong>Details of Receiver: </strong>
                     <span>{{deliveryChallan?.destinationCode}} / {{deliveryChallan?.destinationName}}</span><br />
@@ -142,13 +142,13 @@
 
                     <colgroup>
                         <col style="width: 5%">
-                        <col style="width: 25%">
+                        <col style="width: 28%">
                         <col style="width: 8%">
                         <col style="width: 6%">
-                        <col style="width: 7%">
-                        <col style="width: 8%">
+                        <!-- <col style="width: 3%"> -->
+                        <col style="width: 6%">
                         <col style="width: 5%">
-                        <col style="width: 7%">
+                        <col style="width: 13%">
                         <col style="width: 10%">
                         <col style="width: 7%">
                         <col style="width: 5%">
@@ -162,7 +162,7 @@
                             <th>Item/Description</th>
                             <th>HS Code</th>
                             <th>Qty</th>
-                            <th>Other<br />Account</th>
+                            <!-- <th>Other<br />Account</th> -->
                             <th>Ref. Id/<br />Date</th>
                             <th>UOM</th>
                             <th>Rate</th>
@@ -181,12 +181,12 @@
                             <td>{{i + 1}}</td>
 
                             <td class="description-cell">
-                                {{item?.descriptionModelNumber}}
+                                <span class="wrapped-text">{{ item?.descriptionModelNumber }}</span>
                             </td>
 
                             <td>{{item?.hsnCode}}</td>
                             <td>{{item?.quantity}}</td>
-                            <td></td>
+                            <!-- <td></td> -->
                             <td>/</td>
                             <td>{{item?.uom}}</td>
                             <td>{{item?.unitPrice}}</td>
@@ -214,7 +214,7 @@
                                 <div>{{itemDetailsSummary?.totalQuantity}}</div>
                             </td>
 
-                            <td rowspan="2"></td>
+                            <!-- <td rowspan="2"></td> -->
                             <td rowspan="2"></td>
                             <td rowspan="2"></td>
                             <td rowspan="2"></td>
@@ -330,55 +330,49 @@
                             </td>
                         </tr>
 
-                        <!-- Rupees in Words and Signatory -->
+                    <!-- Rupees in Words and Signatory -->
                         <tr class="no-break">
-                            <td colspan="8" class="rupees-cell">
-                                <strong>Rupees in Word : </strong>
-                                {{itemDetailsSummary?.amountInWords}}
-                            </td>
+                        <td colspan="8" class="rupees-cell">
+                            <strong>Rupees in Word : </strong>
+                            {{itemDetailsSummary?.amountInWords}}
+                        </td>
 
-                            <td colspan="5" class="signatory-cell">
-                                <div class="company-name">
-                                    <strong>For LG ELECTRONICS INDIA LTD.</strong>
-                                </div>
+                        <td colspan="5" class="signatory-cell">
+                            <div class="company-name">
+                                <strong>For LG ELECTRONICS INDIA LTD.</strong>
+                            </div>
 
-                                <div class="signature-text">
+                            <div class="signature-text">
                                     <strong>AUTHORISED SIGNATORY</strong>
-                                </div>
-                            </td>
-                        </tr>
+                            </div>
+                        </td>
+                    </tr>
 
-                        <!-- Footer -->
+                    <!-- Footer -->
                         <tr class="no-break">
-                            <td colspan="13" class="footer-cell">
-                                <small>
-                                    Regd. Office Address :
-                                    {{lookupValues?.Footer_Text}}
-                                    <br />
+                        <td colspan="13" class="footer-cell">
+                            <small>
+                                Regd. Office Address :
+                                {{lookupValues?.Footer_Text}}
+                                <br />
 
-                                    Insurance Policy :
-                                    {{lookupValues?.Insurance_Policy_No}}
-                                    <!-- Effective From
-                                    {{lookupValues?.InsuranceEffectiveFrom}} -->
-                                    <br />
+                                Insurance Policy :
+                                {{lookupValues?.Insurance_Policy_No}}
+                                <br />
 
-                                    <!-- {{lookupValues?.Jusrisdiction}} -->
-                                    <br />
+                                Subject to Delhi Jurisdiction
+                                <br />
 
-                                    Subject to Delhi Jurisdiction
-                                    <br />
+                                This Supply is not covered under Reverse Charge
+                                <br />
 
-                                    This Supply is not covered under Reverse Charge
-                                    <br />
-
-                                    Receive the goods as per Challan No:
-                                    {{deliveryChallan?.challanNumber}}
-                                    /
-                                    {{deliveryChallan?.creationDate | date:'dd-MM-yyyy'}}
-                                </small>
-                            </td>
-                        </tr>
-                    </tbody>
+                                Receive the goods as per Challan No:
+                                {{deliveryChallan?.challanNumber}}
+                                /
+                                {{deliveryChallan?.creationDate | date:'dd-MM-yyyy'}}
+                            </small>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>

@@ -1,57 +1,72 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
-
-// For LG Server
-
-// export const environment = {
-//   production: false,
-//   apiPath: '',
-//   commonAPI: 'http://10.101.0.225:8086/',
-//   dcURL: 'http://10.101.0.225:9097/',
-//   dcAPIURL: 'http://10.101.0.225:8080/api/v1/',
-//   umsURL: 'http://10.101.0.225:3252',
-//   umsAPIURL: 'http://10.101.0.225:8087/api/',
-// };
-
-// For DIPL Server
-
-//old
-// export const environment = {
-//   production: false,
-//   apiPath: '',
-//   commonAPI: 'http://111.93.61.251:8086/',
-//   dcURL: 'http://111.93.61.253:9097/',
-//   dcAPIURL: 'http://111.93.61.253:8091/api/v1/',
-//   umsURL: 'http://111.93.61.253:3252',
-//   umsAPIURL: 'http://111.93.61.253:8087/api/',
-// };
-
-//New
+// prod
 export const environment = {
   production: false,
+  // apiPath: window.location.origin,
   apiPath: '',
-  commonAPI: 'https://ilnerpqas.lge.com:8086/',
-  dcURL: 'http://10.101.0.235:9097/',
-  dcAPIURL: 'http://10.101.0.235:8098/api/v1/',
-  umsURL:  'https://10.101.0.235:3252',
-  umsAPIURL: 'https://ilnerpqas.lge.com:8087/api/',
+  commonAPI: "https://lgeilsso.lge.com:8086/",
+  umsURL: "https://lgeilsso.lge.com:8087/api/",
+  mfgURL: "https://ilmfg.lge.com:9090",
+  svcURL: "https://ilmfg.lge.com:9091",
+  gtmURL: "http://ilsales.lge.com:9092",
+  dcURL: "https://ilmfg.lge.com:9097/",
 };
 
-//OLD
-// {
-//   "commonAPI": "http://111.93.61.253:8086/",
-//   "dcURL": "http://111.93.61.253:9097/",
-//   "dcAPIURL": "http://111.93.61.253:8091/api/v1/",
-//   "umsURL": "http://111.93.61.253:3252",
-//   "umsAPIURL": "http://111.93.61.253:8087/api/"
-//  }
 
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+
+// prod resource
+// // {
+// //   "commonAPI": "https://lgeilsso.lge.com:8086/",
+// //   "umsURL": "https://lgeilsso.lge.com:3252",
+// //   "umsAPIURL": "https://lgeilsso.lge.com:8087/api/",
+// //   "mfgURL": "https://ilmfg.lge.com:9090",
+// //   "mfgAPIURL": "https://ilmfg.lge.com:8088/api/",
+// //   "svcURL": "https://ilmfg.lge.com:9091",
+// //   "svcAPIURL": "https://ilmfg.lge.com:8084/api/",
+// //   "dcURL": "https://ilmfg.lge.com:9097/",
+// //   "dcAPIURL": "https://ilmfg.lge.com:8098/api/v1/",
+// //   "gtmURL": "https://ilsales.lge.com:9092",
+// //   "gtmAPIURL": "https://ilsales.lge.com:8081/api/",
+// //   "dmdcURL": "https://ilsales.lge.com:9094",
+// //   "dmdcAPIURL": "https://ilsales.lge.com:8089/api/",
+// //   "ppURL": "https://ilsales.lge.com:9095",
+// //   "ppAPIURL": "https://ilsales.lge.com:8083/api/"
+// // }
+
+
+
+//test
+
+// // export const environment = {
+// //   production: false,
+// //   // apiPath: window.location.origin,
+// //   apiPath: '',
+// //   commonAPI: "http://111.93.61.253:8086/",
+// //   umsURL: "http://111.93.61.253:3252",
+// //   mfgURL: "http://111.93.61.253:9090",
+// //   svcURL: "http://111.93.61.253:9091",
+// //   gtmURL: "http://111.93.61.253:9092",
+// // };
+
+
+
+
+
+
+
+
+
+
+//qa resource
+// {
+//   "commonAPI": "https://ilnerpqas.lge.com:8086/",
+//   "umsAPIURL": "https://ilnerpqas.lge.com:8087/api/",
+//   "mfgAPIURL": "http://10.101.0.235:8088/api/",
+//   "svcAPIURL": "http://10.101.0.235:8084/api/",
+//   "gtmAPIURL": "http://10.101.0.235:8081/api/",
+//   "dmdcAPIURL": "http://10.101.0.235:8089/api/",
+//   "umsURL": "https://ilnerpqas.lge.com:3252",
+//   "mfgURL": "http://ilnerpqas.lge.com:9090",
+//   "svcURL": "http://ilnerpqas.lge.com:9091",
+//   "gtmURL": "http://ilnerpqas.lge.com:9092",
+//   "dmdcURL": "http://ilnerpqas.lge.com:9094"
+// }
