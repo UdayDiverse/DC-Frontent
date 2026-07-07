@@ -481,17 +481,15 @@
                             <div class="dynamic-form-row column-layout">
                                 @switch (transporterType) {
                                 @case ('Registered') {
-                                <div class="">
-                                    <div class="custom-form-input">
-                                        <label for="">Transporter Code<span class="text-danger">*</span></label>
-                                        <ng-select class="input-field" formControlName="transporterCode"
-                                            (change)="onTransporterSelection($event)" bindLabel="code"
-                                            [items]="transporters()" bindValue="name">
-                                            <ng-template ng-option-tmp let-item="item">
-                                                {{item.code}} ({{item.name}})
-                                            </ng-template>
-                                        </ng-select>
-                                    </div>
+                                <div class="custom-form-input">
+                                    <label for="">Transporter Code<span class="text-danger">*</span></label>
+                                    <ng-select class="input-field" formControlName="transporterCode"
+                                        (change)="onTransporterSelection($event)" [items]="transporters()"
+                                        bindLabel="code" bindValue="code" [searchFn]="customSearchFn">
+                                        <ng-template ng-option-tmp let-item="item">
+                                            {{item.code}} ({{item.name}})
+                                        </ng-template>
+                                    </ng-select>
                                 </div>
                                 <div class="">
                                     <div class="custom-form-input">
@@ -679,8 +677,7 @@
                                             <td>
                                                 <div class="custom-form-input mb-0">
                                                     <input type="text" class="input-field"
-                                                        formControlName="descriptionModelNumber"
-                                                        [maxlength]="100">
+                                                        formControlName="descriptionModelNumber" [maxlength]="100">
                                                 </div>
                                             </td>
                                             <td>

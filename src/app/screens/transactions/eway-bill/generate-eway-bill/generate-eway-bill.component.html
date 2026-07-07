@@ -428,8 +428,8 @@
                                     <label for="">Transporter Code <span class="text-danger">*</span></label>
                                     <ng-select *ngIf="challanFormGroup.get('transporterType')?.value === 'Registered'"
                                         class="input-field" formControlName="transporterCode"
-                                        (change)="onTransporterSelection($event)" bindLabel="name"
-                                        [items]="transporters()" bindValue="name">
+                                        (change)="onTransporterSelection($event)" [items]="transporters()"
+                                        bindLabel="code" bindValue="code" [searchFn]="customSearchFn">
                                         <ng-template ng-option-tmp let-item="item">
                                             {{item.code}} ({{item.name}})
                                         </ng-template>

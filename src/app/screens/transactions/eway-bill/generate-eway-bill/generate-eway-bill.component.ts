@@ -173,7 +173,7 @@ export class GenerateEwayBillComponent {
     destinationGstin: new FormControl(''),
     transporterType: new FormControl('Registered'),
     transporterCode: new FormControl(''),
-    transporterGstin: new FormControl('',[Validators.minLength(15), Validators.maxLength(15)]),
+    transporterGstin: new FormControl('', [Validators.minLength(15), Validators.maxLength(15)]),
     transporterName: new FormControl(''),
     vehicleNumber: new FormControl(''),
     vehicleSize: new FormControl(''),
@@ -884,4 +884,11 @@ export class GenerateEwayBillComponent {
     this.isVehicleNumberValid =
       vehicleNumber === '' || (pattern.test(vehicleNumber) && isLengthValid);
   }
+
+
+  customSearchFn(term: string, item: any) {
+    term = term.toLowerCase();
+    return item.code.toLowerCase().includes(term) || item.name.toLowerCase().includes(term);
+  }
+
 }

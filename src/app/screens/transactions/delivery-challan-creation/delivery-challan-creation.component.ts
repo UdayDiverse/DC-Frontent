@@ -993,6 +993,12 @@ export class DeliveryChallanCreationComponent {
     }
   }
 
+  customSearchFn(term: string, item: any) {
+    term = term.toLowerCase();
+    return item.code.toLowerCase().includes(term) || item.name.toLowerCase().includes(term);
+  }
+
+
   createDeliveryChallan(payload: any) {
     this.loading.set(true);
     this.deliveryChallanService.createDeliveryChallan(payload).subscribe(
