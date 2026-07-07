@@ -88,7 +88,23 @@
         </td>
         <td>{{challan?.transporterType}}</td>
         <td>{{challan?.status?.split("_").join(" ")}}</td>
-        <td>{{challan?.userRemarks}}</td>
+        <td class="pointer" container="body">
+          <span placement="top" [ngbTooltip]="UserRemarksTooltip" tooltipClass="table-datetime-popover">
+            <u
+              style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block;">
+              {{ challan?.userRemarks }}
+            </u>
+          </span>
+          <ng-template #UserRemarksTooltip>
+            <div class="">
+              <div class="content-row">
+                <span>User Remarks</span>
+                <span>{{ challan?.userRemarks }}</span>
+              </div>
+            </div>
+          </ng-template>
+        </td>
+
         <td class="pointer" container="body">
           <span placement="top" [ngbTooltip]="approverRemarksTooltip" tooltipClass="table-datetime-popover">
             <u

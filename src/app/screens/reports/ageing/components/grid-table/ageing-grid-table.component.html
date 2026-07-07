@@ -58,8 +58,39 @@
                 <td>{{report?.balancedQty}}</td>
                 <td>{{report?.status?.split("_").join(" ")}}</td>
                 <td>{{report?.itemCategory}}</td>
-                <td>{{report?.userRemarks}}</td>
-                <td>{{report?.approverRemarks}}</td>
+ <td class="pointer" container="body">
+          <span placement="top" [ngbTooltip]="ReportRemarksTooltip" tooltipClass="table-datetime-popover">
+            <u
+              style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block;">
+              {{ report?.userRemarks }}
+            </u>
+          </span>
+          <ng-template #ReportRemarksTooltip>
+            <div class="">
+              <div class="content-row">
+                <span>User Remarks</span>
+                <span>{{ report?.userRemarks }}</span>
+              </div>
+            </div>
+          </ng-template>
+                </td>
+
+                <td class="pointer" container="body">
+                    <span placement="top" [ngbTooltip]="ReportApproverRemarksTooltip" tooltipClass="table-datetime-popover">
+                <u
+                    style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block;">
+              {{ report?.approverRemarks }}
+                    </u>
+                </span>
+                <ng-template #ReportApproverRemarksTooltip>
+                    <div class="">
+                        <div class="content-row">
+                            <span>Approver Remarks</span>
+                        <span>{{ report?.approverRemarks }}</span>
+                    </div>
+                    </div>
+                </ng-template>
+                </td>
             </tr>
             }@empty {
             <tr>
