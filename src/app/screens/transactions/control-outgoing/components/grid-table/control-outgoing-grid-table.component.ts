@@ -191,13 +191,13 @@ export class ControlOutgoingGridTableComponent {
     //   return;
     // }
 
-    if (
-      row?.transporterType === 'Registered' &&
-      (!row?.transporterName || !row?.vehicleNumber)
-    ) {
-      this.toastr.error('Transporter Details & Vehicle No are required for Registered Transporter');
-      return;
-    }
+    // if (
+    //   row?.transporterType === 'Registered' &&
+    //   (!row?.transporterName || !row?.vehicleNumber)
+    // ) {
+    //   this.toastr.error('Transporter Details & Vehicle No are required for Registered Transporter');
+    //   return;
+    // }
     const payload: any = {
       frlrDate: row?.frlrDate ? this.convertNgbToDate(row?.frlrDate) : null,
       frlrNumber: row?.frlrNumber,
