@@ -460,7 +460,6 @@
                     <div [@expandCollapse]="items[2].expanded ? 'expanded' : 'collapsed'" class="accordion-body">
                         <div class="dynamic-form-row">
                             <div class="custom-form-input full-width">
-                                <!-- <h4 class="fw-bold">Transporter Details</h4> -->
                                 <div class="d-flex gap-4">
                                     <div class="transporter-type">
                                         <input type="radio" class="input-field" id="registered" name="transporterType"
@@ -482,7 +481,7 @@
                                 @switch (transporterType) {
                                 @case ('Registered') {
                                 <div class="custom-form-input">
-                                    <label for="">Transporter Code<span class="text-danger">*</span></label>
+                                    <label for="">Transporter Code</label>
                                     <ng-select class="input-field" formControlName="transporterCode"
                                         (change)="onTransporterSelection($event)" [items]="transporters()"
                                         bindLabel="code" bindValue="code" [searchFn]="customSearchFn">
@@ -493,14 +492,14 @@
                                 </div>
                                 <div class="">
                                     <div class="custom-form-input">
-                                        <label for="">Transporter Name <span class="text-danger">*</span></label>
+                                        <label for="">Transporter Name </label>
                                         <input type="text" class="input-field" readonly
                                             formControlName="transporterName" />
                                     </div>
                                 </div>
                                 <div class="">
                                     <div class="custom-form-input">
-                                        <label for="">GSTIN <span class="text-danger">*</span></label>
+                                        <label for="">GSTIN </label>
                                         <input type="text" class="input-field" readonly
                                             formControlName="transporterGstin" [maxlength]="15">
                                     </div>
@@ -516,7 +515,7 @@
                                 </div>
                                 <div class="">
                                     <div class="custom-form-input">
-                                        <label for="">Transporter Name <span class="text-danger">*</span></label>
+                                        <label for="">Transporter Name </label>
                                         <input type="text" class="input-field" formControlName="transporterName"
                                             [maxlength]="50" />
                                     </div>
@@ -533,7 +532,7 @@
 
                                 <div class="">
                                     <div class="custom-form-input">
-                                        <label for="">Vehicle No <span class="text-danger">*</span>
+                                        <label for="">Vehicle No 
                                         </label>
                                         <input type="text" class="input-field" formControlName="vehicleNumber"
                                             [minlength]="8" [maxlength]="10" (keypress)="allowAlphaNumeric($event)"
@@ -546,7 +545,7 @@
                                 <div class="">
                                     <div class="custom-form-input">
                                         <label for="">Vehicle Size@switch (transporterType) {
-                                            @case ('Registered') {<span class="text-danger">*</span>}
+                                            @case ('Registered') {}
                                             }</label>
                                         <ng-select class="input-field" formControlName="vehicleSize">
                                             @for (size of vehicleSizes(); track $index) {
@@ -562,7 +561,7 @@
                                     <div class="custom-form-input">
                                         <label for="">FRLR No.
                                             <!-- @switch (transporterType) {
-                                            @case ('Registered') {<span class="text-danger">*</span>}
+                                            @case ('Registered') {}
                                             } -->
                                         </label>
                                         <input type="text" class="input-field" formControlName="frlrNumber"
@@ -574,7 +573,7 @@
                                     <div class="custom-form-input">
                                         <label for="">FRLR Date.
                                             <!-- @switch (transporterType) {
-                                            @case ('Registered') {<span class="text-danger">*</span>}
+                                            @case ('Registered') {}
                                             } -->
                                         </label>
                                         <div class="input-group datepicker">
@@ -603,13 +602,27 @@
                                 </div>
                                 <div class="">
                                     <div class="custom-form-input">
-                                        <label for="">Mode of Transport<span class="text-danger">*</span></label>
+                                        <label>Mode of Transport </label>
                                         <ng-select class="input-field" formControlName="modeOfTransport">
                                             @for (type of modeOfTransports(); track $index) {
-                                            <ng-option [value]="type?.code">
-                                                {{type?.value}}</ng-option>
+                                            <ng-option [value]="type.code">
+                                                {{type.value}}
+                                            </ng-option>
                                             }
                                         </ng-select>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="custom-form-input">
+                                        <label>Freight Applicable</label>
+                                            <label>
+                                                <input type="radio" formControlName="freightApplicable" value="Yes">
+                                                Applicable
+                                            </label>
+                                            <label>
+                                                <input type="radio" formControlName="freightApplicable" value="No">
+                                                Not Applicable
+                                            </label>
                                     </div>
                                 </div>
                             </div>

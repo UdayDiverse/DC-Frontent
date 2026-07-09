@@ -186,10 +186,10 @@ export class ControlOutgoingGridTableComponent {
 
   protected saveRow(index: number, showMessage: boolean) {
     const row = this.editableArray[index];
-    if (!row?.transporterCode || !row?.transporterName) {
-      this.toastr.error('Transporter Code and Transporter Name can not be empty');
-      return;
-    }
+    // if (!row?.transporterCode || !row?.transporterName) {
+    //   this.toastr.error('Transporter Code and Transporter Name can not be empty');
+    //   return;
+    // }
 
     if (
       row?.transporterType === 'Registered' &&

@@ -166,6 +166,12 @@ export class DeliveryChallanCreationComponent {
   }
 
   challanFormGroup: FormGroup = new FormGroup({
+    modeOfTransport: new FormControl('', Validators.required),
+    freightApplicable: new FormControl('No'),
+    vehicleNumber: new FormControl(''),
+    vehicleSize: new FormControl(''),
+    frlrNumber: new FormControl(''),
+    frlrDate: new FormControl(null),
     plantName: new FormControl(''),
     plantCode: new FormControl('', Validators.required),
     branchName: new FormControl('', Validators.required),
@@ -193,12 +199,12 @@ export class DeliveryChallanCreationComponent {
     transporterCode: new FormControl('', Validators.required),
     transporterName: new FormControl('', Validators.required),
     transporterGstin: new FormControl('', Validators.required),
-    vehicleNumber: new FormControl('', Validators.required),
-    vehicleSize: new FormControl('', Validators.required),
-    frlrNumber: new FormControl(''),
-    frlrDate: new FormControl(null),
+    // vehicleNumber: new FormControl('', Validators.required),
+    // vehicleSize: new FormControl('', Validators.required),
+    // frlrNumber: new FormControl(''),
+    // frlrDate: new FormControl(null),
     travellingDistance: new FormControl(0, [Validators.maxLength(6)]),
-    modeOfTransport: new FormControl('', Validators.required),
+    //modeOfTransport: new FormControl('', Validators.required),
     userRemarks: new FormControl(''),
     // createdBy: new FormControl(this.loggedInUser(), Validators.required),
     dcItemDetails: new FormArray<FormGroup>([]),
@@ -969,6 +975,7 @@ export class DeliveryChallanCreationComponent {
       ],
     };
     let hasError = false;
+    hasError = this.validateTransporterDetails(payload);
     if (
       payload.destinationGstin === null ||
       payload.destinationGstin === "NA" ||
@@ -991,6 +998,32 @@ export class DeliveryChallanCreationComponent {
         this.createDeliveryChallan(payload);
       }
     }
+  }
+
+
+  validateTransporterDetails(data: any): boolean {
+    // Condition 1: Vehicle number required if modeOfTransport is "1"
+    if (data.modeOfTransport === "1" && !data.vehicleNumber) {
+      this.toastr.error('Vehicle Number is required.');
+      return true; // error exists
+    }
+
+    // Condition 2: Freight applicable requires additional details
+    if (data.freightApplicable === "Yes") {
+      const missingFields: string[] = [];
+      if (!data.vehicleNumber) missingFields.push("Vehicle Number");
+      if (!data.vehicleSize) missingFields.push("Vehicle Size");
+      if (!data.frlrNumber) missingFields.push("FRLR Number");
+      if (!data.frlrDate) missingFields.push("FRLR Date");
+
+      if (missingFields.length > 0) {
+        this.toastr.error(`Freight details are incomplete. Missing: ${missingFields.join(", ")}`);
+        return true; // error exists
+      }
+    }
+
+    // No errors
+    return false;
   }
 
   customSearchFn(term: string, item: any) {
