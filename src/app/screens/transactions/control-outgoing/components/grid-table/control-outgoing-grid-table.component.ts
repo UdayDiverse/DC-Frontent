@@ -298,7 +298,7 @@ export class ControlOutgoingGridTableComponent {
   protected closePopover(popover: NgbPopover) {
     popover.close();
   }
-  public hasAnyRowChanged(): boolean {
-    return this.editableArray?.some((_, index) => this.hasDataChanged(index));
-  }
+  // public hasAnyRowChanged(): boolean {
+  //   return this.editableArray?.some((_, index) => this.hasDataChanged(index));
+  // }
 }
