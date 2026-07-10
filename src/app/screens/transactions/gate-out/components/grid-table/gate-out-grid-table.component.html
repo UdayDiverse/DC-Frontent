@@ -85,11 +85,11 @@
                 <td>{{document?.frlrDate | date: 'yyyy-MM-dd'}}</td> -->
                 <td>{{document?.status}}</td>
                 <td class="text-center">
-                    <img *ngIf="document?.documentType === 'RGP' || document?.documentType === 'NGRP'" class="pointer"
+                    <img *ngIf="document?.documentType === 'RGP' || document?.documentType === 'NRGP'" class="pointer"
                         src="../../../assets/images/icons/viewPassword.svg" alt="View Challan" width="15px"
                         height="18px" (click)="openViewScreen(document?.documentNo)">
 
-                    <img *ngIf="document?.documentType !== 'RGP' && document?.documentType !== 'NGRP'"
+                    <img *ngIf="document?.documentType !== 'RGP' && document?.documentType !== 'NRGP'"
                         src="../../../assets/images/icons/viewPassword.svg" alt="View Challan Disabled" width="15px"
                         height="18px" class="disabled-icon">
                 </td>
