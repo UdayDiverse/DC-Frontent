@@ -8,6 +8,7 @@ import {
   Output,
   signal,
   SimpleChanges,
+  TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -16,6 +17,7 @@ import {
   NgbDate,
   NgbDatepickerModule,
   NgbDateStruct,
+  NgbModal,
   NgbPopover,
   NgbPopoverModule,
   NgbTooltipModule,
@@ -47,6 +49,8 @@ import { finalize } from 'rxjs';
   styleUrl: './control-outgoing-grid-table.component.scss',
 })
 export class ControlOutgoingGridTableComponent {
+  modalService = inject(NgbModal);
+  gateOutService = inject(GateOutService);
   @ViewChild('table') table!: ElementRef;
   @Output() exportHeader = new EventEmitter<string[]>();
   @Output() refreshControlList = new EventEmitter<void>();
@@ -244,6 +248,53 @@ export class ControlOutgoingGridTableComponent {
           }
         },
       });
+  }
+
+  cancelChallan(confirmModal: TemplateRef<any>, data: any) {
+    const modalRef = this.modalService.open(confirmModal, {
+      centered: true,
+      size: 'lg',
+    });
+    modalRef.result.then(
+      (result) => {
+        if (result === 'yes') {
+          if (data.documentType === "RGP" || data.documentType === "NRGP") {
+            this.gateOutService.bulkStatusUpdate({
+              actionBy: this.ACTION_BY_VALUE,
+              dcIds: [data.interfaceId],
+              nerpIds: [],
+              status: 'CANCELLED',
+            }).subscribe(
+              (res: any) => {
+                this.toastr.success(`Challan with challan number: ${data.documentNo} is cancelled`);
+                this.refreshControlList.emit();
+              },
+              (err: any) => {
+                this.toastr.error('Something went wrong from server side while cancelling the challan');
+              }
+            );
+          }
+          else {
+            this.gateOutService.bulkStatusUpdate({
+              actionBy: this.ACTION_BY_VALUE,
+              dcIds: [],
+              nerpIds: [data.interfaceId],
+              status: 'CANCELLED',
+            }).subscribe(
+              (res: any) => {
+                this.toastr.success(`Challan with challan number: ${data.documentNo} is cancelled`);
+                this.refreshControlList.emit();
+              },
+              (err: any) => {
+                this.toastr.error('Something went wrong from server side while cancelling the challan');
+              }
+            );
+
+          }
+        }
+      },
+      () => console.log('❌ User canceled')
+    );
   }
 
   private formatDate(dateStr: string) {

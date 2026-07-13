@@ -154,34 +154,28 @@ export class ChallanApprovalGridTableComponent implements OnInit, OnChanges {
     documentModal.componentInstance.challanNumber = challanNumber;
   }
 
-  cancelChallan(challanId: number, challanNumber: string) {
-    const modalRef = this.modalService.open(this.confirmModal, {
+   cancelChallan(challanId: number, challanNumber: string, confirmModal: TemplateRef<any>) {
+    const modalRef = this.modalService.open(confirmModal, {
       centered: true,
       size: 'lg',
     });
     modalRef.result.then(
       (result) => {
         if (result === 'yes') {
-          this.gateOutService
-            .bulkStatusUpdate({
-              actionBy: this.ACTION_BY_VALUE,
-              dcIds: [challanId],
-              nerpIds: [],
-              status: 'CANCELLED',
-            })
-            .subscribe(
-              (res: any) => {
-                this.toastr.success(
-                  `Challan with challan number: ${challanNumber} is cancelled`
-                );
-                this.refreshChallanList.emit();
-              },
-              (err: any) => {
-                this.toastr.error(
-                  'Something went wrong from server side while cancelling the challan'
-                );
-              }
-            );
+          this.gateOutService.bulkStatusUpdate({
+            actionBy: this.ACTION_BY_VALUE,
+            dcIds: [challanId],
+            nerpIds: [],
+            status: 'CANCELLED',
+          }).subscribe(
+            (res: any) => {
+              this.toastr.success(`Challan with challan number: ${challanNumber} is cancelled`);
+              this.refreshChallanList.emit();
+            },
+            (err: any) => {
+              this.toastr.error('Something went wrong from server side while cancelling the challan');
+            }
+          );
         }
       },
       () => console.log('❌ User canceled')

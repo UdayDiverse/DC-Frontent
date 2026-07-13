@@ -161,9 +161,10 @@
         <td class="text-center">
           @if (challan?.status === 'OPEN' ||
           challan?.status === 'CONTROL_OUTGOING' ||
-          challan?.status === 'Rejected' || challan?.status === 'Approved') {
+          challan?.status === 'Rejected' || challan?.status === 'Approved' || challan?.status === 'EWAY BILL CANCELLED'
+          ) {
           <button type="button" class="custom-button-secondary-small me-2"
-            (click)="cancelChallan(challan?.id, challan?.challanNumber)">
+            (click)="cancelChallan(challan?.id, challan?.challanNumber, confirmModal)">
             Cancel
           </button>
           }
@@ -180,7 +181,6 @@
                 (click)="modal.dismiss('no')">
                 <i class="bi bi-x-circle me-1"></i> No, Cancel
               </button>
-
               <button type="button" class="btn btn-danger px-4 py-2 rounded-pill shadow-sm"
                 (click)="modal.close('yes')">
                 <i class="bi bi-check-circle me-1"></i> Yes, Continue

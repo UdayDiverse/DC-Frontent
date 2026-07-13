@@ -13,8 +13,8 @@
                 <th (click)="sortData('documentNo')">Document Number</th>
                 <th (click)="sortData('plantCode')">Plant Code</th>
                 <th (click)="sortData('transporterCode')">Transporter Type </th>
-                <th (click)="sortData('containerNumber')">Container Number </th>
                 <th (click)="sortData('status')">Status</th>
+                <th (click)="sortData('containerNumber')">Container Number </th>
                 <th (click)="sortData('transporterCode')">Transporter Code </th>
                 <th (click)="sortData('transporterName')">Transporter Name</th>
                 <th (click)="sortData('vehicleNumber')">Vehicle Number</th>
@@ -23,6 +23,7 @@
                 <th (click)="sortData('')">FRLR Date</th> -->
                 <th (click)="sortData('controlOutgoingRemarks')">Remarks</th>
                 <th class="text-center">Action</th>
+                <th class="text-center">Cancel Challan</th>
             </tr>
         </thead>
         <tbody>
@@ -43,10 +44,10 @@
                     {{editableArray[i].transporterType}}
                 </td>
                 <td>
-                    {{controlOutGoing.containerNumber}}
+                    {{editableArray[i].status}}
                 </td>
                 <td>
-                    {{editableArray[i].status}}
+                    {{controlOutGoing.containerNumber}}
                 </td>
                 <td>
                     <div class="custom-form-input">
@@ -90,36 +91,45 @@
                         </ng-select>
                     </div>
                 </td>
-                <!-- <td>
-                    <div class="custom-form-input">
-                        <input type="text" class="custom-input-field" style="width: 100px;" (input)="onFieldEdit(i)"
-                            [(ngModel)]="editableArray[i].frlrNumber" />
-                    </div>
-                </td>
                 <td>
                     <div class="custom-form-input">
-
-                        <div class="input-group datepicker" style="width: 150px;">
-                            <input class="form-control"
-                                [ngModel]="controlOutGoing.frlrDate ? (controlOutGoing.frlrDate) : ''"
-                                (ngModelChange)="editableArray[i].frlrDate = $event; onFieldEdit(controlOutGoing)"
-                                [maxDate]="todayNgb" placeholder="yyyy-mm-dd" name="fromDt" [autoClose]="true"
-                                ngbDatepicker #fromDt="ngbDatepicker" />
-                            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="fromDt.toggle()"
-                                type="button">
-                            </button>
-                        </div>
-                    </div>
-                </td> -->
-                <td>
-                    <div class="custom-form-input">
-                        <textarea type="text" class="custom-input-field" [(ngModel)]="editableArray[i].controlOutgoingRemarks" style="width: 200px; height: 31px;"></textarea>
+                        <textarea type="text" class="custom-input-field"
+                            [(ngModel)]="editableArray[i].controlOutgoingRemarks"
+                            style="width: 200px; height: 31px;"></textarea>
                     </div>
                 </td>
                 <td class="text-center">
                     <button class="custom-button-save" *ngIf="hasDataChanged(i)" (click)="saveRow(i,true)">
                         Save
                     </button>
+                </td>
+                <td class="text-center">
+                    <button type="button" class="custom-button-secondary-small me-2"
+                        (click)="cancelChallan(confirmModal,editableArray[i])">
+                        Cancel
+                    </button>
+                    <ng-template #confirmModal let-modal>
+                        <div class="modal-header">
+                            <h3 class="modal-title fw-bold">⚠️ Cancel Challan</h3>
+                            <button type="button" class="btn-close" aria-label="Close"
+                                (click)="modal.dismiss('cancel')"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h4>Do you really want to cancel the challan with challan number
+                                {{editableArray[i]?.documentNo}}?
+                            </h4>
+                        </div>
+                        <div class="modal-footer border-0 d-flex justify-content-center gap-3 pt-3 pb-4">
+                            <button type="button" class="btn btn-outline-secondary px-4 py-2 rounded-pill shadow-sm"
+                                (click)="modal.dismiss('no')">
+                                <i class="bi bi-x-circle me-1"></i> No, Cancel
+                            </button>
+                            <button type="button" class="btn btn-danger px-4 py-2 rounded-pill shadow-sm"
+                                (click)="modal.close('yes')">
+                                <i class="bi bi-check-circle me-1"></i> Yes, Continue
+                            </button>
+                        </div>
+                    </ng-template>
                 </td>
             </tr>
             } @empty {

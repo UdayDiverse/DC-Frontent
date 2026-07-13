@@ -68,6 +68,7 @@ import { AuthGuard } from '../../../core/guards/auth.guard';
   ],
 })
 export class DeliveryChallanCreationComponent {
+  disableSaveButton: boolean = false;
   ROUTES = ROUTEPATHS;
   challanNumber = input<string>('');
 
@@ -1034,12 +1035,14 @@ export class DeliveryChallanCreationComponent {
 
   createDeliveryChallan(payload: any) {
     this.loading.set(true);
+    this.disableSaveButton = true;
     this.deliveryChallanService.createDeliveryChallan(payload).subscribe(
       (res: any) => {
         this.toastr.success(
           `Delivery Challan is Created Successfully for challan number: ${res?.challanNumber}`,
         );
         this.loading.set(false);
+        this.disableSaveButton = false;
         this.router.navigate([this.ROUTES.TRANSACTIONS.CHALLAN_VIEW]);
       },
       (err: any) => {
@@ -1069,12 +1072,13 @@ export class DeliveryChallanCreationComponent {
           this.toastr.error('Something went wrong');
         }
         this.loading.set(false);
+        this.disableSaveButton = false;
       },
     );
   }
   updateDeliveryChallan(payload: any, challanNumber: string) {
     this.loading.set(true);
-
+    this.disableSaveButton = true;
     this.deliveryChallanService
       .updateDeliveryChallan(
         { ...payload, destinationType: this.destinationType },
@@ -1086,6 +1090,7 @@ export class DeliveryChallanCreationComponent {
             `Delivery Challan is Updated Successfully for challan number: ${res?.challanNumber}`,
           );
           this.loading.set(false);
+          this.disableSaveButton = false;
           this.router.navigate([this.ROUTES.TRANSACTIONS.CHALLAN_VIEW]);
         },
         (err: any) => {
@@ -1097,6 +1102,7 @@ export class DeliveryChallanCreationComponent {
             this.toastr.error('Something went wrong');
           }
           this.loading.set(false);
+          this.disableSaveButton = false;
         },
       );
   }
