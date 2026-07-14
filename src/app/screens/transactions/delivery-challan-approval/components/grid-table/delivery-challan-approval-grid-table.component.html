@@ -151,7 +151,7 @@
             (click)="openViewScreen(challan?.challanNumber)">
         </td>
         <td class="text-center">
-          @if (challan?.status === 'OPEN') {
+          @if (challan?.status === 'OPEN' || challan?.status === 'Approved' ) {
 
           <img class="pointer" src="../../../assets/images/icons/editPencil.svg" alt="" width="15px" height="20px"
             (click)="openEditScreen(challan?.challanNumber)">
@@ -161,7 +161,8 @@
         <td class="text-center">
           @if (challan?.status === 'OPEN' ||
           challan?.status === 'CONTROL_OUTGOING' ||
-          challan?.status === 'Rejected' || challan?.status === 'Approved' || challan?.status === 'EWAY BILL CANCELLED'
+          challan?.status === 'Rejected' || challan?.status === 'Approved' || challan?.status === 'EWAY_BILL_CANCELLED'
+          || challan?.status === 'EWAY_BILL_GENERATED'
           ) {
           <button type="button" class="custom-button-secondary-small me-2"
             (click)="cancelChallan(challan?.id, challan?.challanNumber, confirmModal)">
