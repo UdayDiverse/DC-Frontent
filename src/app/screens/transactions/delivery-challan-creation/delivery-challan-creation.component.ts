@@ -200,7 +200,6 @@ export class DeliveryChallanCreationComponent {
     transporterCode: new FormControl('', Validators.required),
     transporterName: new FormControl('', Validators.required),
     transporterGstin: new FormControl('', [
-      Validators.required,
       Validators.minLength(15),
       Validators.maxLength(15)
     ]),
@@ -976,7 +975,7 @@ export class DeliveryChallanCreationComponent {
       ],
     };
     let hasError = false;
-    if (!payload.transporterGstin || payload.transporterGstin.length !== 15) {
+    if (payload.transporterGstin && payload.transporterGstin.length !== 15) {
       this.toastr.error('Transporter GSTIN must be exactly 15 characters.');
       hasError = true;
     }
