@@ -520,11 +520,13 @@
                                             [maxlength]="50" />
                                     </div>
                                 </div>
-                                <div class="">
-                                    <div class="custom-form-input">
-                                        <label for="">GSTIN</label>
-                                        <input type="text" class="input-field" formControlName="transporterGstin"
-                                            [maxlength]="15" style="text-transform: uppercase;" />
+                                <div class="custom-form-input">
+                                    <label for="">GSTIN</label>
+                                    <input type="text" class="input-field" formControlName="transporterGstin"
+                                        [maxlength]="15" style="text-transform: uppercase;" />
+                                    <div *ngIf="challanFormGroup.get('transporterGstin')?.invalid && challanFormGroup.get('transporterGstin')?.touched"
+                                        class="error">
+                                        GSTIN must be exactly 15 characters.
                                     </div>
                                 </div>
                                 }
@@ -532,7 +534,7 @@
 
                                 <div class="">
                                     <div class="custom-form-input">
-                                        <label for="">Vehicle No 
+                                        <label for="">Vehicle No
                                         </label>
                                         <input type="text" class="input-field" formControlName="vehicleNumber"
                                             [minlength]="8" [maxlength]="10" (keypress)="allowAlphaNumeric($event)"
@@ -615,14 +617,14 @@
                                 <div class="">
                                     <div class="custom-form-input">
                                         <label>Freight Applicable</label>
-                                            <label>
-                                                <input type="radio" formControlName="freightApplicable" value="Yes">
-                                                Applicable
-                                            </label>
-                                            <label>
-                                                <input type="radio" formControlName="freightApplicable" value="No">
-                                                Not Applicable
-                                            </label>
+                                        <label>
+                                            <input type="radio" formControlName="freightApplicable" value="Yes">
+                                            Applicable
+                                        </label>
+                                        <label>
+                                            <input type="radio" formControlName="freightApplicable" value="No">
+                                            Not Applicable
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -729,8 +731,8 @@
                                             <td>
                                                 <div class="custom-form-input mb-0">
                                                     <input type="text" class="input-field text-end"
-                                                        formControlName="cgstPercentage"
-                                                        (keypress)="allowNumeric($event)" [maxlength]="2">
+                                                        formControlName="cgstPercentage" min="0.01" step="0.01"
+                                                        (input)="enforceTwoDecimals($event)" [maxlength]="5">
                                                 </div>
                                             </td>
                                             <td>
@@ -742,8 +744,8 @@
                                             <td>
                                                 <div class="custom-form-input mb-0">
                                                     <input type="text" class="input-field text-end"
-                                                        formControlName="sgstPercentage"
-                                                        (keypress)="allowNumeric($event)" [maxlength]="2">
+                                                        formControlName="sgstPercentage" min="0.01" step="0.01"
+                                                        (input)="enforceTwoDecimals($event)" [maxlength]="5">
                                                 </div>
                                             </td>
                                             <td>
@@ -755,8 +757,8 @@
                                             <td>
                                                 <div class="custom-form-input mb-0">
                                                     <input type="text" class="input-field text-end"
-                                                        formControlName="igstPercentage"
-                                                        (keypress)="allowNumeric($event)" [maxlength]="2">
+                                                        formControlName="igstPercentage" min="0.01" step="0.01"
+                                                        (input)="enforceTwoDecimals($event)" [maxlength]="5">
                                                 </div>
                                             </td>
                                             <td>

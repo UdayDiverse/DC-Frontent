@@ -199,7 +199,11 @@ export class DeliveryChallanCreationComponent {
     transporterType: new FormControl('Registered', Validators.required),
     transporterCode: new FormControl('', Validators.required),
     transporterName: new FormControl('', Validators.required),
-    transporterGstin: new FormControl('', Validators.required),
+    transporterGstin: new FormControl('', [
+      Validators.required,
+      Validators.minLength(15),
+      Validators.maxLength(15)
+    ]),
     // vehicleNumber: new FormControl('', Validators.required),
     // vehicleSize: new FormControl('', Validators.required),
     // frlrNumber: new FormControl(''),
@@ -963,10 +967,6 @@ export class DeliveryChallanCreationComponent {
   }
 
   protected onPressSubmit() {
-    // if (!this.challanFormGroup.valid) {
-    //   this.toastr.error('Please fill all the mandatory fields marked with *');
-    //   return;
-    // }
     const payload = {
       ...this.challanFormGroup.value,
       dcItemDetails: [...this.itemList.value, ...this.deletedItems],
@@ -976,13 +976,17 @@ export class DeliveryChallanCreationComponent {
       ],
     };
     let hasError = false;
-    hasError = this.validateTransporterDetails(payload);
+    if (!payload.transporterGstin || payload.transporterGstin.length !== 15) {
+      this.toastr.error('Transporter GSTIN must be exactly 15 characters.');
+      hasError = true;
+    }
     if (
+      this.isRegistered === true &&
       payload.destinationGstin === null ||
       payload.destinationGstin === "NA" ||
       payload.destinationGstin === "N/A"
     ) {
-      this.toastr.error('GSTIN No. cannot be Null.');
+      this.toastr.error('Destination GSTIN No. cannot be Null.');
       hasError = true;
     }
     if (payload.destinationPostalCode === null) {
