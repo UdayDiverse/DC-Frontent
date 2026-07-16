@@ -23,21 +23,21 @@
                         {{deliveryChallan?.plantResponse?.plantAddress2}}
                         ({{deliveryChallan?.plantResponse?.plantName}}-{{deliveryChallan?.plantResponse?.businessArea}})
                     </span><br />
+                    <strong>Country: </strong>
+                    <span>{{deliveryChallan?.plantResponse?.country}} &nbsp;&nbsp;</span>
 
                     <strong>State Code: </strong>
                     <span>{{deliveryChallan?.plantResponse?.state}} &nbsp;&nbsp;</span>
 
-                    <strong>Country: </strong>
-                    <span>{{deliveryChallan?.plantResponse?.country}}</span><br />
 
                     <strong>Postal Code: </strong>
                     <span>{{deliveryChallan?.plantResponse?.postal}}</span><br />
 
-                    <strong>GST No: </strong>
-                    <span>{{deliveryChallan?.plantResponse?.gstNo}}</span><br />
+                    <span>
+                        <strong>GST No: </strong> {{deliveryChallan?.plantResponse?.gstNo}} &nbsp;&nbsp;
 
-                    <strong>PAN: </strong>
-                    <span>{{deliveryChallan?.plantResponse?.panNo}}</span><br />
+                        <strong>PAN: </strong> {{deliveryChallan?.plantResponse?.panNo}}
+                    </span><br />
 
                     <strong>Organization: </strong>
                     <span>{{deliveryChallan?.plantResponse?.plantCode}}
@@ -76,7 +76,7 @@
                         <span>{{deliveryChallan?.expectedDate | date: 'dd-MM-yyyy'}}</span><br />
 
                         <strong>Requested Dept: </strong>
-                        <span>{{deliveryChallan?.department}}</span><br />
+                        <span>{{deliveryChallan?.department}}&nbsp;&nbsp;</span>
 
                         <strong>Status: </strong>
                         <span>CONFIRM</span>
@@ -88,10 +88,13 @@
             <div class="row" style="padding-block: 1px; margin-top: 2px;">
                 <div class="col-md-6 section-border" style="border-right: none;">
 
-                    <strong>{{deliveryChallan?.destinationType == 'Plant' ? 'Receiver Name: LG Electronics India Ltd.' :
-                        ''}}</strong><br />
+                    <strong>
+                        {{deliveryChallan?.destinationType == 'Plant' ? 'Receiver Name: LG Electronics India Ltd.' :
+                        ''}}
+                    </strong>
+                    <span *ngIf="deliveryChallan?.destinationType == 'Plant'"><br /></span>
                     <strong>Details of Receiver: </strong>
-                    <span>{{deliveryChallan?.destinationCode}} / {{deliveryChallan?.destinationName}}</span><br />
+                    <span>{{deliveryChallan?.destinationCode}} / {{deliveryChallan?.destinationName}}</span><br>
 
                     <strong>Address: </strong>
                     <span>
@@ -101,15 +104,15 @@
 
                     <strong>Country: </strong>
                     <span>IN &nbsp;&nbsp;</span>
-
+                    <strong>State: </strong>
+                    <span>{{deliveryChallan?.destinationState}}&nbsp;&nbsp;</span>
+                    
                     <strong>Pin No: </strong>
                     <span>{{deliveryChallan?.destinationPostalCode}}</span><br />
 
                     <strong>GST No/UIN: </strong>
                     <span>{{deliveryChallan?.destinationGstin}} &nbsp;&nbsp;</span>
 
-                    <strong>State: </strong>
-                    <span>{{deliveryChallan?.destinationState}}</span><br />
 
                     <strong>PAN: </strong>
                     <span>{{deliveryChallan?.destinationGstin?.slice(2, 12)}} &nbsp;&nbsp;</span><br />
@@ -126,9 +129,9 @@
                     <strong>Prepared By: </strong>
                     <span>{{deliveryChallan?.createdByDetails?.empCode}}
                         {{deliveryChallan?.createdByDetails?.name}}
-                    </span><br /><br /><br />
+                    </span><br /><br />
 
-                    <strong>Checked By: </strong><br /><br /><br />
+                    <strong>Checked By: </strong><br /><br />
 
                     <strong>Authorized: </strong>
                     <span>
@@ -144,10 +147,8 @@
 
                     <colgroup>
                         <col style="width: 5%">
-                        <col style="width: 28%">
+                        <col style="width: 34%">
                         <col style="width: 8%">
-                        <col style="width: 6%">
-                        <!-- <col style="width: 3%"> -->
                         <col style="width: 6%">
                         <col style="width: 5%">
                         <col style="width: 13%">
@@ -165,7 +166,7 @@
                             <th>HS Code</th>
                             <th>Qty</th>
                             <!-- <th>Other<br />Account</th> -->
-                            <th>Ref. Id/<br />Date</th>
+                            <!-- <th>Ref. Id/<br />Date</th> -->
                             <th>UOM</th>
                             <th>Rate</th>
                             <th>Taxable<br />Value</th>
@@ -189,7 +190,7 @@
                             <td>{{item?.hsnCode}}</td>
                             <td>{{item?.quantity}}</td>
                             <!-- <td></td> -->
-                            <td>/</td>
+                            <!-- <td>/</td> -->
                             <td>{{item?.uom}}</td>
                             <td>{{item?.unitPrice}}</td>
                             <td>{{+item?.unitPrice * +item?.quantity | number:'1.2-2'}}</td>
@@ -217,7 +218,7 @@
                             </td>
 
                             <!-- <td rowspan="2"></td> -->
-                            <td rowspan="2"></td>
+                            <!-- <td rowspan="2"></td> -->
                             <td rowspan="2"></td>
                             <td rowspan="2"></td>
 
@@ -251,7 +252,7 @@
 
                         <!-- Truck / LR + Tax Summary -->
                         <tr class="no-break transport-tax-row">
-                            <td colspan="8" class="transport-cell">
+                            <td colspan="7" class="transport-cell">
                                 <div class="left-info-row">
                                     <div class="left-info-block">
                                         <strong>Truck No</strong>
@@ -302,7 +303,7 @@
 
                         <!-- eWay Bill Type -->
                         <tr class="no-break transport-tax-row">
-                            <td colspan="8" class="transport-cell">
+                            <td colspan="7" class="transport-cell">
                                 <div class="left-info-row single-info-row">
                                     <div class="left-info-block">
                                         <strong>eWay Bill Type</strong>
@@ -315,7 +316,7 @@
 
                         <!-- Carrier Name / eWay Bill No -->
                         <tr class="no-break transport-tax-row">
-                            <td colspan="8" class="transport-cell">
+                            <td colspan="7" class="transport-cell">
                                 <div class="left-info-row">
                                     <div class="left-info-block">
                                         <strong>Carrier Name</strong>
@@ -332,49 +333,49 @@
                             </td>
                         </tr>
 
-                    <!-- Rupees in Words and Signatory -->
+                        <!-- Rupees in Words and Signatory -->
                         <tr class="no-break">
-                        <td colspan="8" class="rupees-cell">
-                            <strong>Rupees in Word : </strong>
-                            {{itemDetailsSummary?.amountInWords}}
-                        </td>
+                            <td colspan="7" class="rupees-cell">
+                                <strong>Rupees in Word : </strong>
+                                {{itemDetailsSummary?.amountInWords}}
+                            </td>
 
-                        <td colspan="5" class="signatory-cell">
-                            <div class="company-name">
-                                <strong>For LG ELECTRONICS INDIA LTD.</strong>
-                            </div>
+                            <td colspan="5" class="signatory-cell">
+                                <div class="company-name">
+                                    <strong>For LG ELECTRONICS INDIA LTD.</strong>
+                                </div>
 
-                            <div class="signature-text">
-                                <strong>AUTHORISED SIGNATORY</strong>
-                            </div>
-                        </td>
-                    </tr>
+                                <div class="signature-text">
+                                    <strong>AUTHORISED SIGNATORY</strong>
+                                </div>
+                            </td>
+                        </tr>
 
-                    <!-- Footer -->
+                        <!-- Footer -->
                         <tr class="no-break">
-                        <td colspan="13" class="footer-cell">
-                            <small>
-                                Regd. Office Address :
-                                {{lookupValues?.Footer_Text}}
-                                <br />
+                            <td colspan="13" class="footer-cell">
+                                <small>
+                                    Regd. Office Address :
+                                    {{lookupValues?.Footer_Text}}
+                                    <br />
 
-                                Insurance Policy :
-                                {{lookupValues?.Insurance_Policy_No}}
-                                <br />
+                                    Insurance Policy :
+                                    {{lookupValues?.Insurance_Policy_No}}
+                                    <br />
 
-                                Subject to Delhi Jurisdiction
-                                <br />
+                                    Subject to Delhi Jurisdiction
+                                    <br />
 
-                                This Supply is not covered under Reverse Charge
-                                <br />
+                                    This Supply is not covered under Reverse Charge
+                                    <br />
 
-                                Receive the goods as per Challan No:
-                                {{deliveryChallan?.challanNumber}}
-                                /
-                                {{deliveryChallan?.creationDate | date:'dd-MM-yyyy'}}
-                            </small>
-                        </td>
-                    </tr>
+                                    Receive the goods as per Challan No:
+                                    {{deliveryChallan?.challanNumber}}
+                                    /
+                                    {{deliveryChallan?.creationDate | date:'dd-MM-yyyy'}}
+                                </small>
+                            </td>
+                        </tr>
                 </table>
             </div>
         </div>
