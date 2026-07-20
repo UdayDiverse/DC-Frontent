@@ -168,7 +168,7 @@ export class DeliveryChallanCreationComponent {
 
   challanFormGroup: FormGroup = new FormGroup({
     modeOfTransport: new FormControl('', Validators.required),
-    freightApplicable: new FormControl('No'),
+    FrieghtApplicable: new FormControl('No'),
     vehicleNumber: new FormControl(''),
     vehicleSize: new FormControl(''),
     frlrNumber: new FormControl(''),
