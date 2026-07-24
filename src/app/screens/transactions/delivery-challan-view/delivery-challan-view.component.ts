@@ -53,7 +53,7 @@ export class DeliveryChallanViewComponent {
     private router: Router,
     private xlsxService: XlsxService,
     private deliveryChallanViewService: DeliveryChallanViewService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getDeliveryChallansData();
@@ -82,6 +82,7 @@ export class DeliveryChallanViewComponent {
     count: number = this.count(),
     filters: any = this.appliedFilters()
   ) {
+    const user = this.userService.getUserId();
     const payload = {
       fromDate: filters?.fromDate || this.firstOfMonth,
       toDate: filters?.toDate || this.getTommorrowDate(),
@@ -90,6 +91,7 @@ export class DeliveryChallanViewComponent {
       eWayBillType: filters?.eWayBillType || '',
       challanNumber: filters?.challanNumber || '',
       status: filters?.challanStatus || [''],
+      createdBy: user,
     };
 
     this.loading.set(true);
